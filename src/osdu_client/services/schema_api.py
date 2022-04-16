@@ -4,6 +4,11 @@ from typing import AnyStr, Dict
 import requests
 
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
+
+
+class SchemaAPIError(OSDUAPIError):
+    pass
 
 
 class SchemaAPIClient(BaseOSDUAPIClient):
@@ -17,7 +22,10 @@ class SchemaAPIClient(BaseOSDUAPIClient):
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise SchemaAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -29,7 +37,10 @@ class SchemaAPIClient(BaseOSDUAPIClient):
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise SchemaAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -45,7 +56,10 @@ class SchemaAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise SchemaAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -61,6 +75,9 @@ class SchemaAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise SchemaAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()

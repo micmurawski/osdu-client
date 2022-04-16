@@ -3,11 +3,11 @@ from typing import Dict
 
 import requests
 
-from . import OSDUAPIException
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
 
 
-class EntitlementsAPIException(OSDUAPIException):
+class EntitlementsAPIException(OSDUAPIError):
     pass
 
 
@@ -23,7 +23,10 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise EntitlementsAPIException(response.text)
+            raise EntitlementsAPIException(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -42,6 +45,9 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers, params=params)
 
         if response.status_code // 100 != 2:
-            raise EntitlementsAPIException(response.text)
+            raise EntitlementsAPIException(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()

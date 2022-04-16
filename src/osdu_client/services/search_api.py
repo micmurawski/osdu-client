@@ -4,6 +4,11 @@ from typing import AnyStr, Dict
 import requests
 
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
+
+
+class SearchAPIError(OSDUAPIError):
+    pass
 
 
 class SearchAPIClient(BaseOSDUAPIClient):
@@ -26,6 +31,9 @@ class SearchAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise SearchAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()

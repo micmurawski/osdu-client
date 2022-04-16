@@ -4,11 +4,11 @@ from typing import AnyStr, Dict, List, Optional
 
 import requests
 
-from . import OSDUAPIException
+from . import OSDUClientError
 from .base_api import BaseOSDUAPIClient
 
 
-class SDMSException(OSDUAPIException):
+class SDMSException(OSDUClientError):
     pass
 
 

@@ -1,2 +1,2 @@
-class OSDUAPIException(Exception):
+class OSDUClientError(Exception):
     pass

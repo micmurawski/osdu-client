@@ -4,6 +4,11 @@ from typing import AnyStr, Dict, List
 import requests
 
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
+
+
+class StorageAPIError(OSDUAPIError):
+    pass
 
 
 class StorageAPIClient(BaseOSDUAPIClient):
@@ -20,7 +25,10 @@ class StorageAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -38,16 +46,17 @@ class StorageAPIClient(BaseOSDUAPIClient):
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
     def delete_record(
         self,
         *,
-        id: AnyStr,
-
-
+        id: AnyStr
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -56,7 +65,10 @@ class StorageAPIClient(BaseOSDUAPIClient):
         response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
     def get_record_versions(
         self,
@@ -70,7 +82,10 @@ class StorageAPIClient(BaseOSDUAPIClient):
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -87,7 +102,10 @@ class StorageAPIClient(BaseOSDUAPIClient):
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -107,6 +125,9 @@ class StorageAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()

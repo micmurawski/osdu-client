@@ -4,6 +4,11 @@ from typing import AnyStr, Dict, List
 import requests
 
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
+
+
+class DatasetAPIError(OSDUAPIError):
+    pass
 
 
 class DatasetAPIClient(BaseOSDUAPIClient):
@@ -23,7 +28,10 @@ class DatasetAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text)
+            raise DatasetAPIClient(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -44,6 +52,9 @@ class DatasetAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise Exception(response.text, response.status_code)
+            raise DatasetAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
