@@ -62,8 +62,6 @@ class StorageAPIClient(BaseOSDUAPIClient):
         self,
         *,
         id: AnyStr,
-
-
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,

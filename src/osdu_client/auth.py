@@ -1,15 +1,23 @@
-from abc import ABCMeta, abstractmethod, abstractproperty
+from abc import ABCMeta, abstractmethod
 from typing import AnyStr, Dict
 
 
-class AuthInterface(metaclass=ABCMeta):
+class AuthBackendInterface(metaclass=ABCMeta):
 
-    @abstractproperty
+    @property
     def headers(self) -> Dict:
+        return self.get_headers()
+
+    @property
+    def osdu_base_url(self) -> AnyStr:
+        return self.get_osdu_base_url()
+
+    @abstractmethod
+    def get_headers(self) -> Dict:
         pass
 
-    @abstractproperty
-    def osdu_base_url(self) -> AnyStr:
+    @abstractmethod
+    def get_osdu_base_url(self) -> AnyStr:
         pass
 
     @abstractmethod
