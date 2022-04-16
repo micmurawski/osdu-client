@@ -1,9 +1,18 @@
 # Introduction
 
-`osdu_client` is a python library implementing a simple OSDU client. With abstracted out authorization backend.
+[![pypi](https://img.shields.io/pypi/v/osdu-client.svg)](https://pypi.org/project/osdu-client/)
 
-## Example
+`osdu-client` is a python library implementing a simple OSDU client. With abstracted out authorization backend.
+
+# Instalation
+```
+pip install osdu-client
+```
+
+# Example
 OSDU API client can be adjusted to specific OSDU deployment by defining auth backend according to `AuthBackendInterface` methods.
+
+
 
 ```python
 from typing import AnyStr, Dict
