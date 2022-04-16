@@ -14,7 +14,7 @@ class SDMSException(Exception):
 
 
 class SDMSDatasetAPI:
-    def get_sdms_dataset(
+    def retrieve_dataset(
         self,
         *,
         tenant_id: AnyStr,
@@ -39,7 +39,7 @@ class SDMSDatasetAPI:
 
         return response.json()
 
-    def get_sdms_dataset_permission(
+    def retrieve_dataset_permission(
         self,
         *,
         tenant_id: AnyStr,
@@ -63,7 +63,7 @@ class SDMSDatasetAPI:
 
         return response.json()
 
-    def delete_sdms_dataset(
+    def delete_dataset(
         self,
         *,
         tenant_id: AnyStr,
@@ -87,7 +87,7 @@ class SDMSDatasetAPI:
 
         return response.json()
 
-    def get_sdms_datasets(
+    def list_subprojects_datasets(
         self,
         *,
         tenant_id: AnyStr,
@@ -105,7 +105,7 @@ class SDMSDatasetAPI:
 
         return response.json()
 
-    def create_sdms_dataset(
+    def register_dataset(
         self,
         *,
         subproject_id: AnyStr,
@@ -160,7 +160,7 @@ class SDMSDatasetAPI:
 
         return response.json()
 
-    def update_sdms_dataset_filemetadata(
+    def patch_datasets_metadata(
         self,
         *,
         tenant_id: AnyStr,
@@ -168,6 +168,7 @@ class SDMSDatasetAPI:
         dataset_id: AnyStr,
         metadata: Dict = {},
         filemetadata: Dict = {},
+        seismicmeta: Dict = None,
         path: AnyStr = None,
         close: AnyStr = None
     ) -> Dict:
@@ -175,6 +176,8 @@ class SDMSDatasetAPI:
             "metadata": metadata,
             "filemetadata": filemetadata,
         }
+        if seismicmeta:
+            request_body["seismicmeta"] = seismicmeta
         params = {"path": path, "close": close}
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -193,7 +196,7 @@ class SDMSDatasetAPI:
 
         return response.json()
 
-    def lock_sdms_dataset(
+    def lock_dataset(
         self,
         *,
         tenant_id: AnyStr,
@@ -219,7 +222,7 @@ class SDMSDatasetAPI:
 
         return True
 
-    def unlock_sdms_dataset(
+    def unlock_dataset(
         self,
         *,
         tenant_id: AnyStr,
@@ -244,37 +247,9 @@ class SDMSDatasetAPI:
 
         return response.json()
 
-    def patch_sdms_dataset(
-        self,
-        *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
-        metadata: Dict = {},
-        filemetadata: Dict = {},
-        seismicmeta: Dict = None
-    ):
 
-        url = os.path.join(
-            self.osdu_auth_backend.base_url,
-            self.service_path,
-            f"dataset/tenant/{tenant_id}/subproject/{subproject_id}/dataset/{dataset_id}",
-        )
-        request_body = {"metadata": metadata, "filemetadata": filemetadata}
-
-        if seismicmeta:
-            request_body["seismicmeta"] = seismicmeta
-
-        response = requests.patch(
-            url=url, headers=self.osdu_auth_backend.headers, json=request_body
-        )
-
-        if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
-
-        return response.json()
-
-    def get_gcs_access_token(
+class SDMSUtilityAPI:
+    def generate_gcs_access_token(
         self,
         *,
         tenant_id: AnyStr,
@@ -469,7 +444,10 @@ class SDMSTenantAPI:
         return response.json()
 
 
-class SDMSAPIClient(BaseOSDUAPIClient, SDMSDatasetAPI, SDMSubprojectAPI, SDMSTenantAPI):
+class SDMSAPIClient(
+    BaseOSDUAPIClient, SDMSDatasetAPI, SDMSubprojectAPI,
+    SDMSTenantAPI, SDMSUtilityAPI
+):
     service_path = "api/seismic-store/v3"
 
     def __init__(self, osdu_auth_backend: AuthInterface):

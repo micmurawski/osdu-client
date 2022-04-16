@@ -1,3 +1,5 @@
+from osdu_client.exceptions import OSDUAPIException
+
 from .dataset_api import DatasetAPIClient
 from .entitlements_api import EntitlementsAPIClient
 from .schema_api import SchemaAPIClient
@@ -17,5 +19,5 @@ CLIENTS = {
 
 def get_service_client(name):
     if name not in CLIENTS:
-        raise Exception(f"Service {name} not recognized. Choose one from available {', '.join(CLIENTS.keys())}")
+        raise OSDUAPIException(f"Service {name} not recognized. Choose one from available {', '.join(CLIENTS.keys())}")
     return CLIENTS[name]
