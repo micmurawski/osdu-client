@@ -9,15 +9,15 @@ class AuthBackendInterface(metaclass=ABCMeta):
         return self.get_headers()
 
     @property
-    def osdu_base_url(self) -> AnyStr:
-        return self.get_osdu_base_url()
+    def base_url(self) -> AnyStr:
+        return self.get_base_url()
 
     @abstractmethod
     def get_headers(self) -> Dict:
         pass
 
     @abstractmethod
-    def get_osdu_base_url(self) -> AnyStr:
+    def get_base_url(self) -> AnyStr:
         pass
 
     @abstractmethod

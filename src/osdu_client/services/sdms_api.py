@@ -4,11 +4,11 @@ from typing import AnyStr, Dict, List, Optional
 
 import requests
 
-from . import OSDUClientError
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
 
 
-class SDMSException(OSDUClientError):
+class SDMSAPIError(OSDUAPIError):
     pass
 
 
@@ -34,7 +34,10 @@ class SDMSDatasetAPI:
         )
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -58,7 +61,10 @@ class SDMSDatasetAPI:
         )
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -82,7 +88,10 @@ class SDMSDatasetAPI:
         )
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -100,7 +109,10 @@ class SDMSDatasetAPI:
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -155,7 +167,10 @@ class SDMSDatasetAPI:
         )
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -191,7 +206,10 @@ class SDMSDatasetAPI:
         )
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.json())
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.json()
+            )
 
         return response.json()
 
@@ -217,7 +235,10 @@ class SDMSDatasetAPI:
         )
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return True
 
@@ -242,7 +263,10 @@ class SDMSDatasetAPI:
         )
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -284,9 +308,15 @@ class SDMSUtilityAPI:
 
         if response.status_code // 100 != 2:
             try:
-                raise SDMSException(response.json())
+                raise SDMSAPIError(
+                    status_code=response.status_code,
+                    message=response.json()
+                )
             except JSONDecodeError:
-                raise SDMSException(response.text)
+                raise SDMSAPIError(
+                    status_code=response.status_code,
+                    message=response.text
+                )
 
         return response.json()
 
@@ -327,7 +357,10 @@ class SDMSubprojectAPI:
         )
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -345,7 +378,10 @@ class SDMSubprojectAPI:
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return {"subprojects": response.json()}
 
@@ -363,7 +399,10 @@ class SDMSubprojectAPI:
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers, query=query)
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -377,7 +416,10 @@ class SDMSubprojectAPI:
         response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -405,7 +447,10 @@ class SDMSubprojectAPI:
         response = requests.patch(url=url, json=requests_body, headers=headers, query=query)
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -425,7 +470,10 @@ class SDMSTenantAPI:
         response = requests.post(url=url, json=requests_body, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -438,7 +486,10 @@ class SDMSTenantAPI:
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise SDMSException(response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 

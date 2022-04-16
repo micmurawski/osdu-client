@@ -22,14 +22,14 @@ from osdu_client.auth import AuthBackendInterface
 
 
 class AuthBackend(AuthBackendInterface):
-    def __init__(self, headers, osdu_base_url) -> None:
+    def __init__(self, headers, base_url) -> None:
         self._headers = headers
-        self._osdu_base_url = osdu_base_url
+        self._base_url = base_url
 
     def get_headers(self) -> Dict:
         return self._headers
 
-    def get_osdu_base_url(self) -> AnyStr:
+    def get_base_url(self) -> AnyStr:
         return self._osdu_base_url
 
     def get_sd_connection_string(self, log_level: int = None) -> AnyStr:
@@ -38,7 +38,7 @@ class AuthBackend(AuthBackendInterface):
 
 auth_backend = AuthBackend(
     headers={"Authorization": "Bearer XYZ"},
-    osdu_base_url="https//exmaple.com"
+    base_url="https://exmaple.com"
 )
 
 storage_client = OSDUAPI.client('storage', auth_backend=auth_backend)
