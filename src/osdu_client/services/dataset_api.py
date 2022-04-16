@@ -15,7 +15,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
         self.osdu_auth_backend = osdu_auth_backend
 
     def get_storage_instructions(
-        self, *, kind_sub_type: AnyStr,
+        self, *, kind_sub_type: AnyStr
     ):
         url = os.path.join(
             self.osdu_auth_backend.base_url,

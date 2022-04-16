@@ -1,7 +1,7 @@
 from .dataset_api import DatasetAPIClient
 from .entitlements_api import EntitlementsAPIClient
 from .schema_api import SchemaAPIClient
-from .sddms_api import SDDMSAPIClient
+from .sdms_api import SDMSAPIClient
 from .search_api import SearchAPIClient
 from .storage_api import StorageAPIClient
 
@@ -9,7 +9,7 @@ CLIENTS = {
     "dataset": DatasetAPIClient,
     "entitlements": EntitlementsAPIClient,
     "schema": SchemaAPIClient,
-    "sddms": SDDMSAPIClient,
+    "sdms": SDMSAPIClient,
     "search": SearchAPIClient,
     "storage": StorageAPIClient,
 }

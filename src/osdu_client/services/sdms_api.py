@@ -9,65 +9,19 @@ from osdu_client.auth import AuthInterface
 from .base_api import BaseOSDUAPIClient
 
 
-class SDDMSException(Exception):
+class SDMSException(Exception):
     pass
 
 
-class SDDMSAPIClient(BaseOSDUAPIClient):
-    service_path = "api/seismic-store/v3"
-
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
-
-    def create_new_subproject(
-        self,
-        *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-
-        admin: AnyStr = None,
-        storage_class: AnyStr = None,
-        storage_location: AnyStr = None,
-        legal_tags: AnyStr = None,
-    ):
-        request_body = {
-            "admin": admin or "admin@testing.com",
-            "storage_class": storage_class or "REGIONAL",
-            "storage_location": (storage_location).upper(),
-        }
-
-        url = os.path.join(
-            self.osdu_auth_backend.base_url,
-            self.service_path,
-            f"subproject/tenant/{tenant_id}/subproject/{subproject_id}",
-        )
-
-        headers = self.osdu_auth_backend.headers
-        # put legal tags into headers
-        if legal_tags:
-            headers.update({"ltag": legal_tags})
-
-        response = requests.post(
-            url=url,
-            headers=headers,
-            json=request_body,
-        )
-
-        if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
-
-        return response.json()
-
-    def get_sddms_dataset(
+class SDMSDatasetAPI:
+    def get_sdms_dataset(
         self,
         *,
         tenant_id: AnyStr,
         subproject_id: AnyStr,
         dataset_id: AnyStr,
         path: Optional[AnyStr] = "/",
-        fetch_meta: bool = False,
-
-
+        fetch_meta: bool = False
     ):
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -81,11 +35,11 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
+            raise SDMSException(response.text)
 
         return response.json()
 
-    def get_sddms_dataset_permission(
+    def get_sdms_dataset_permission(
         self,
         *,
         tenant_id: AnyStr,
@@ -105,11 +59,11 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
+            raise SDMSException(response.text)
 
         return response.json()
 
-    def delete_sddms_dataset(
+    def delete_sdms_dataset(
         self,
         *,
         tenant_id: AnyStr,
@@ -129,11 +83,11 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
+            raise SDMSException(response.text)
 
         return response.json()
 
-    def get_sddms_datasets(
+    def get_sdms_datasets(
         self,
         *,
         tenant_id: AnyStr,
@@ -147,29 +101,11 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
+            raise SDMSException(response.text)
 
         return response.json()
 
-    def get_sddms_subprojects(
-        self,
-        *,
-        tenant_id: AnyStr
-    ):
-        url = os.path.join(
-            self.osdu_auth_backend.base_url,
-            self.service_path,
-            f"subproject/tenant/{tenant_id}",
-        )
-
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
-
-        if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
-
-        return {"subprojects": response.json()}
-
-    def create_sddms_dataset(
+    def create_sdms_dataset(
         self,
         *,
         subproject_id: AnyStr,
@@ -220,11 +156,11 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
+            raise SDMSException(response.text)
 
         return response.json()
 
-    def update_sddms_dataset_filemetadata(
+    def update_sdms_dataset_filemetadata(
         self,
         *,
         tenant_id: AnyStr,
@@ -253,11 +189,11 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.json())
+            raise SDMSException(response.json())
 
         return response.json()
 
-    def lock_sddms_dataset(
+    def lock_sdms_dataset(
         self,
         *,
         tenant_id: AnyStr,
@@ -279,11 +215,11 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
+            raise SDMSException(response.text)
 
         return True
 
-    def unlock_sddms_dataset(
+    def unlock_sdms_dataset(
         self,
         *,
         tenant_id: AnyStr,
@@ -304,11 +240,11 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
+            raise SDMSException(response.text)
 
         return response.json()
 
-    def patch_sddms_dataset(
+    def patch_sdms_dataset(
         self,
         *,
         tenant_id: AnyStr,
@@ -334,7 +270,7 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
         )
 
         if response.status_code // 100 != 2:
-            raise SDDMSException(response.text)
+            raise SDMSException(response.text)
 
         return response.json()
 
@@ -374,8 +310,167 @@ class SDDMSAPIClient(BaseOSDUAPIClient):
 
         if response.status_code // 100 != 2:
             try:
-                raise SDDMSException(response.json())
+                raise SDMSException(response.json())
             except JSONDecodeError:
-                raise SDDMSException(response.text)
+                raise SDMSException(response.text)
 
         return response.json()
+
+
+class SDMSubprojectAPI:
+    def create_new_subproject(
+        self,
+        *,
+        tenant_id: AnyStr,
+        subproject_id: AnyStr,
+
+        admin: AnyStr = None,
+        storage_class: AnyStr = None,
+        storage_location: AnyStr = None,
+        legal_tags: AnyStr = None
+    ):
+        request_body = {
+            "admin": admin or "admin@testing.com",
+            "storage_class": storage_class or "REGIONAL",
+            "storage_location": (storage_location).upper(),
+        }
+
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            f"subproject/tenant/{tenant_id}/subproject/{subproject_id}",
+        )
+
+        headers = self.osdu_auth_backend.headers
+        # put legal tags into headers
+        if legal_tags:
+            headers.update({"ltag": legal_tags})
+
+        response = requests.post(
+            url=url,
+            headers=headers,
+            json=request_body,
+        )
+
+        if response.status_code // 100 != 2:
+            raise SDMSException(response.text)
+
+        return response.json()
+
+    def get_sdms_subprojects(
+        self,
+        *,
+        tenant_id: AnyStr
+    ):
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            f"subproject/tenant/{tenant_id}",
+        )
+
+        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+
+        if response.status_code // 100 != 2:
+            raise SDMSException(response.text)
+
+        return {"subprojects": response.json()}
+
+    def get_sdms_subproject(self, *, tenant_id: AnyStr, subproject_id: AnyStr, translate_user_info=True):
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            f"subproject/tenant/{tenant_id}",
+            f"subproject/{subproject_id}"
+        )
+        query = {
+            "translate-user-info": translate_user_info
+        }
+
+        response = requests.get(url=url, headers=self.osdu_auth_backend.headers, query=query)
+
+        if response.status_code // 100 != 2:
+            raise SDMSException(response.text)
+
+        return response.json()
+
+    def delete_sdms_subproject(self, *, tenant_id: AnyStr, subproject_id: AnyStr):
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            f"subproject/tenant/{tenant_id}",
+            f"subproject/{subproject_id}"
+        )
+        response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
+
+        if response.status_code // 100 != 2:
+            raise SDMSException(response.text)
+
+        return response.json()
+
+    def patch_sdms_subproject_metadata(self, *, tenant_id: AnyStr, subproject_id: AnyStr,
+                                       ltag: AnyStr, acl: Dict = None, access_policy: AnyStr = None,
+                                       recursive: AnyStr = None):
+        requests_body = {}
+        if acl:
+            requests_body['acl'] = acl
+        if access_policy:
+            requests_body['access_policy'] = access_policy
+
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            f"subproject/tenant/{tenant_id}",
+            f"subproject/{subproject_id}"
+        )
+        headers = self.osdu_auth_backend.headers
+        headers['ltag'] = ltag
+        query = {}
+        if recursive:
+            query['recursive'] = recursive
+
+        response = requests.patch(url=url, json=requests_body, headers=headers, query=query)
+
+        if response.status_code // 100 != 2:
+            raise SDMSException(response.text)
+
+        return response.json()
+
+
+class SDMSTenantAPI:
+    def register_sdms_tenant(self, *, tenant_id: AnyStr, gcpid: AnyStr, esd: AnyStr, default_acl: AnyStr):
+        requests_body = {
+            "gcpid": gcpid,
+            "esd": esd,
+            "default_acl": default_acl
+        }
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            f"tenant/{tenant_id}"
+        )
+        response = requests.post(url=url, json=requests_body, headers=self.osdu_auth_backend.headers)
+
+        if response.status_code // 100 != 2:
+            raise SDMSException(response.text)
+
+        return response.json()
+
+    def get_sdms_tenant(self, *, tenant_id: AnyStr):
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            f"tenant/{tenant_id}"
+        )
+        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+
+        if response.status_code // 100 != 2:
+            raise SDMSException(response.text)
+
+        return response.json()
+
+
+class SDMSAPIClient(BaseOSDUAPIClient, SDMSDatasetAPI, SDMSubprojectAPI, SDMSTenantAPI):
+    service_path = "api/seismic-store/v3"
+
+    def __init__(self, osdu_auth_backend: AuthInterface):
+        self.osdu_auth_backend = osdu_auth_backend

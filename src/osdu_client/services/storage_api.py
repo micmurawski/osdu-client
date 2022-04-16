@@ -13,7 +13,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         self.osdu_auth_backend = osdu_auth_backend
 
     def create_or_update_records(
-        self, records: List[Dict],
+        self, records: List[Dict]
     ):
         url = os.path.join(
             self.osdu_auth_backend.base_url,
