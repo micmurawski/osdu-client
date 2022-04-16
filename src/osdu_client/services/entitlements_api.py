@@ -1,8 +1,7 @@
 import os
+from typing import Dict
 
 import requests
-
-from osdu_client.auth import AuthInterface
 
 from .base_api import BaseOSDUAPIClient
 
@@ -10,10 +9,7 @@ from .base_api import BaseOSDUAPIClient
 class EntitlementsAPIClient(BaseOSDUAPIClient):
     service_path = "api/entitlements/v2"
 
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
-
-    def get_groups(self):
+    def get_groups(self) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,

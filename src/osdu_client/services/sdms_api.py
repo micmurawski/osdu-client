@@ -4,12 +4,11 @@ from typing import AnyStr, Dict, List, Optional
 
 import requests
 
-from osdu_client.auth import AuthInterface
-
+from . import OSDUAPIException
 from .base_api import BaseOSDUAPIClient
 
 
-class SDMSException(Exception):
+class SDMSException(OSDUAPIException):
     pass
 
 
@@ -22,7 +21,7 @@ class SDMSDatasetAPI:
         dataset_id: AnyStr,
         path: Optional[AnyStr] = "/",
         fetch_meta: bool = False
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -46,7 +45,7 @@ class SDMSDatasetAPI:
         subproject_id: AnyStr,
         dataset_id: AnyStr,
         path: Optional[AnyStr] = "/"
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -70,7 +69,7 @@ class SDMSDatasetAPI:
         subproject_id: AnyStr,
         dataset_id: AnyStr,
         path: Optional[AnyStr] = "/"
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -92,7 +91,7 @@ class SDMSDatasetAPI:
         *,
         tenant_id: AnyStr,
         subproject_id: AnyStr
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -303,7 +302,7 @@ class SDMSubprojectAPI:
         storage_class: AnyStr = None,
         storage_location: AnyStr = None,
         legal_tags: AnyStr = None
-    ):
+    ) -> Dict:
         request_body = {
             "admin": admin or "admin@testing.com",
             "storage_class": storage_class or "REGIONAL",
@@ -336,7 +335,7 @@ class SDMSubprojectAPI:
         self,
         *,
         tenant_id: AnyStr
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -350,7 +349,7 @@ class SDMSubprojectAPI:
 
         return {"subprojects": response.json()}
 
-    def get_sdms_subproject(self, *, tenant_id: AnyStr, subproject_id: AnyStr, translate_user_info=True):
+    def get_sdms_subproject(self, *, tenant_id: AnyStr, subproject_id: AnyStr, translate_user_info=True) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -368,7 +367,7 @@ class SDMSubprojectAPI:
 
         return response.json()
 
-    def delete_sdms_subproject(self, *, tenant_id: AnyStr, subproject_id: AnyStr):
+    def delete_sdms_subproject(self, *, tenant_id: AnyStr, subproject_id: AnyStr) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -384,7 +383,7 @@ class SDMSubprojectAPI:
 
     def patch_sdms_subproject_metadata(self, *, tenant_id: AnyStr, subproject_id: AnyStr,
                                        ltag: AnyStr, acl: Dict = None, access_policy: AnyStr = None,
-                                       recursive: AnyStr = None):
+                                       recursive: AnyStr = None) -> Dict:
         requests_body = {}
         if acl:
             requests_body['acl'] = acl
@@ -412,7 +411,7 @@ class SDMSubprojectAPI:
 
 
 class SDMSTenantAPI:
-    def register_sdms_tenant(self, *, tenant_id: AnyStr, gcpid: AnyStr, esd: AnyStr, default_acl: AnyStr):
+    def register_sdms_tenant(self, *, tenant_id: AnyStr, gcpid: AnyStr, esd: AnyStr, default_acl: AnyStr) -> Dict:
         requests_body = {
             "gcpid": gcpid,
             "esd": esd,
@@ -430,7 +429,7 @@ class SDMSTenantAPI:
 
         return response.json()
 
-    def get_sdms_tenant(self, *, tenant_id: AnyStr):
+    def get_sdms_tenant(self, *, tenant_id: AnyStr) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -449,6 +448,3 @@ class SDMSAPIClient(
     SDMSTenantAPI, SDMSUtilityAPI
 ):
     service_path = "api/seismic-store/v3"
-
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend

@@ -3,18 +3,13 @@ from typing import AnyStr, Dict
 
 import requests
 
-from osdu_client.auth import AuthInterface
-
 from .base_api import BaseOSDUAPIClient
 
 
 class SchemaAPIClient(BaseOSDUAPIClient):
     service_path = "api/schema-service/v1/schema"
 
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
-
-    def get_schema(self, *, id: AnyStr, ):
+    def get_schema(self, *, id: AnyStr, ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"{self.service_path}/{id}",
@@ -26,7 +21,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
 
         return response.json()
 
-    def get_schemas(self):
+    def get_schemas(self) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -40,7 +35,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
 
     def create_schema(
         self, *, schema: Dict
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -56,7 +51,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
 
     def update_schema(
         self, *, schema: Dict
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,

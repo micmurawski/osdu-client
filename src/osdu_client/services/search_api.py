@@ -1,16 +1,12 @@
 import os
-from typing import AnyStr
+from typing import AnyStr, Dict
 
 import requests
-
-from osdu_client.auth import AuthInterface
 
 from .base_api import BaseOSDUAPIClient
 
 
 class SearchAPIClient(BaseOSDUAPIClient):
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
 
     def search_query(
         self,
@@ -19,7 +15,7 @@ class SearchAPIClient(BaseOSDUAPIClient):
         query: AnyStr,
         limit: int = 20,
         offset: int = 0
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             "api/search/v2/query",

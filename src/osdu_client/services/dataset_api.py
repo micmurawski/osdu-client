@@ -1,9 +1,7 @@
 import os
-from typing import AnyStr, List
+from typing import AnyStr, Dict, List
 
 import requests
-
-from osdu_client.auth import AuthInterface
 
 from .base_api import BaseOSDUAPIClient
 
@@ -11,12 +9,9 @@ from .base_api import BaseOSDUAPIClient
 class DatasetAPIClient(BaseOSDUAPIClient):
     service_path = "api/dataset/v1"
 
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
-
     def get_storage_instructions(
         self, *, kind_sub_type: AnyStr
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -36,7 +31,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
         self,
         *,
         dataset_registry_ids: List[AnyStr]
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,

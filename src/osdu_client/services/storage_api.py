@@ -3,18 +3,14 @@ from typing import AnyStr, Dict, List
 
 import requests
 
-from osdu_client.auth import AuthInterface
-
 from .base_api import BaseOSDUAPIClient
 
 
 class StorageAPIClient(BaseOSDUAPIClient):
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
 
     def create_or_update_records(
         self, records: List[Dict]
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             "api/storage/v2/records/",
@@ -34,7 +30,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         id: AnyStr,
 
 
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/{id}",
@@ -52,7 +48,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         id: AnyStr,
 
 
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/{id}",
@@ -68,7 +64,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         id: AnyStr,
 
 
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/versions/{id}",
@@ -84,7 +80,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         self,
         *,
         versioned_id: AnyStr
-    ):
+    ) -> Dict:
         id, version = versioned_id.rsplit(":", 1)
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -101,7 +97,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         self,
         *,
         records: List[AnyStr]
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             "api/storage/v2/query/records",
