@@ -17,7 +17,7 @@ def get_dependencies():
 
 setup(
     name='osdu_client',
-    version='0.1.3',
+    version='0.1.4',
     author="Michal Murawski",
     author_email="mmurawski777@gmail.com",
     description="OSDU API Client",
