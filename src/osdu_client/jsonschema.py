@@ -14,9 +14,10 @@ class OSDURefResolver(RefResolver):
             except SchemaAPIError as e:
                 raise RefResolutionError(str(e)) from e
         else:
-            # fallback to original
-            return super(RefResolver, self).resolve_remote(uri)
-
+            try:
+                return super().resolve_remote(uri)
+            except RefResolutionError as e:
+                _id = uri.rpslit('/', 1)[-1]
 
 def validate(record, schema, schema_client):
     resolver = OSDURefResolver(None, referrer=None, store={}, schema_client=schema_client)
