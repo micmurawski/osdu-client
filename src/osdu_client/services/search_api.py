@@ -1,16 +1,17 @@
 import os
-from typing import AnyStr
+from typing import AnyStr, Dict
 
 import requests
 
-from osdu_client.auth import AuthInterface
-
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
+
+
+class SearchAPIError(OSDUAPIError):
+    pass
 
 
 class SearchAPIClient(BaseOSDUAPIClient):
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
 
     def search_query(
         self,
@@ -19,7 +20,7 @@ class SearchAPIClient(BaseOSDUAPIClient):
         query: AnyStr,
         limit: int = 20,
         offset: int = 0
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             "api/search/v2/query",
@@ -29,7 +30,10 @@ class SearchAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, json=data
         )
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise SearchAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()

@@ -3,18 +3,19 @@ from typing import AnyStr, Dict, List
 
 import requests
 
-from osdu_client.auth import AuthInterface
-
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
+
+
+class StorageAPIError(OSDUAPIError):
+    pass
 
 
 class StorageAPIClient(BaseOSDUAPIClient):
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
 
     def create_or_update_records(
-        self, records: List[Dict],
-    ):
+        self, records: List[Dict]
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             "api/storage/v2/records/",
@@ -23,8 +24,11 @@ class StorageAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, json=records
         )
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -34,49 +38,54 @@ class StorageAPIClient(BaseOSDUAPIClient):
         id: AnyStr,
 
 
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/{id}",
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
     def delete_record(
         self,
         *,
-        id: AnyStr,
-
-
-    ):
+        id: AnyStr
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/{id}",
         )
         response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
     def get_record_versions(
         self,
         *,
         id: AnyStr,
-
-
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/versions/{id}",
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -84,7 +93,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         self,
         *,
         versioned_id: AnyStr
-    ):
+    ) -> Dict:
         id, version = versioned_id.rsplit(":", 1)
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -92,8 +101,11 @@ class StorageAPIClient(BaseOSDUAPIClient):
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
@@ -101,7 +113,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         self,
         *,
         records: List[AnyStr]
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             "api/storage/v2/query/records",
@@ -112,7 +124,10 @@ class StorageAPIClient(BaseOSDUAPIClient):
             json={"records": records},
         )
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise StorageAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()

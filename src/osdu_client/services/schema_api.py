@@ -3,44 +3,50 @@ from typing import AnyStr, Dict
 
 import requests
 
-from osdu_client.auth import AuthInterface
-
 from .base_api import BaseOSDUAPIClient
+from .exceptions import OSDUAPIError
+
+
+class SchemaAPIError(OSDUAPIError):
+    pass
 
 
 class SchemaAPIClient(BaseOSDUAPIClient):
     service_path = "api/schema-service/v1/schema"
 
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        self.osdu_auth_backend = osdu_auth_backend
-
-    def get_schema(self, *, id: AnyStr, ):
+    def get_schema(self, *, id: AnyStr, ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"{self.service_path}/{id}",
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise SchemaAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
-    def get_schemas(self):
+    def get_schemas(self) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise SchemaAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
     def create_schema(
         self, *, schema: Dict
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -49,14 +55,17 @@ class SchemaAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, json=schema
         )
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise SchemaAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()
 
     def update_schema(
         self, *, schema: Dict
-    ):
+    ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -65,7 +74,10 @@ class SchemaAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, json=schema
         )
 
-        if response.status_code // 100 != 2:
-            raise Exception(response.text)
+        if response.ok:
+            raise SchemaAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
 
         return response.json()

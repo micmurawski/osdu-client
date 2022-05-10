@@ -1,9 +1,8 @@
-from abc import ABCMeta, abstractclassmethod
+from abc import ABCMeta
 
-from osdu_client.auth import AuthInterface
+from osdu_client.auth import AuthBackendInterface
 
 
 class BaseOSDUAPIClient(metaclass=ABCMeta):
-    @abstractclassmethod
-    def __init__(self, osdu_auth_backend: AuthInterface):
-        pass
+    def __init__(self, osdu_auth_backend: AuthBackendInterface):
+        self.osdu_auth_backend = osdu_auth_backend
