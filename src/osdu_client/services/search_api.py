@@ -30,7 +30,7 @@ class SearchAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, json=data
         )
 
-        if response.ok:
+        if not response.ok:
             raise SearchAPIError(
                 status_code=response.status_code,
                 message=response.text

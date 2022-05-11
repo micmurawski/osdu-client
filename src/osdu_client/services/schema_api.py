@@ -21,7 +21,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise SchemaAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -36,7 +36,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise SchemaAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -55,7 +55,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, json=schema
         )
 
-        if response.ok:
+        if not response.ok:
             raise SchemaAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -74,7 +74,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, json=schema
         )
 
-        if response.ok:
+        if not response.ok:
             raise SchemaAPIError(
                 status_code=response.status_code,
                 message=response.text

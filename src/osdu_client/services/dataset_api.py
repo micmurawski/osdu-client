@@ -27,7 +27,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
-        if response.ok:
+        if not response.ok:
             raise DatasetAPIClient(
                 status_code=response.status_code,
                 message=response.text
@@ -51,7 +51,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
             json={"datasetRegistryIds": dataset_registry_ids},
         )
 
-        if response.ok:
+        if not response.ok:
             raise DatasetAPIError(
                 status_code=response.status_code,
                 message=response.text

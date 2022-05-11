@@ -33,7 +33,7 @@ class SDMSDatasetAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -60,7 +60,7 @@ class SDMSDatasetAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -87,7 +87,7 @@ class SDMSDatasetAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -108,7 +108,7 @@ class SDMSDatasetAPI:
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -166,7 +166,7 @@ class SDMSDatasetAPI:
             params=params,
         )
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -205,7 +205,7 @@ class SDMSDatasetAPI:
             params=params,
         )
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.json()
@@ -234,7 +234,7 @@ class SDMSDatasetAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -262,7 +262,7 @@ class SDMSDatasetAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -306,7 +306,7 @@ class SDMSUtilityAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
-        if response.ok:
+        if not response.ok:
             try:
                 raise SDMSAPIError(
                     status_code=response.status_code,
@@ -356,7 +356,7 @@ class SDMSubprojectAPI:
             json=request_body,
         )
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -377,7 +377,7 @@ class SDMSubprojectAPI:
 
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -398,7 +398,7 @@ class SDMSubprojectAPI:
 
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers, query=query)
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -415,7 +415,7 @@ class SDMSubprojectAPI:
         )
         response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -446,7 +446,7 @@ class SDMSubprojectAPI:
 
         response = requests.patch(url=url, json=requests_body, headers=headers, query=query)
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -469,7 +469,7 @@ class SDMSTenantAPI:
         )
         response = requests.post(url=url, json=requests_body, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -485,7 +485,7 @@ class SDMSTenantAPI:
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise SDMSAPIError(
                 status_code=response.status_code,
                 message=response.text

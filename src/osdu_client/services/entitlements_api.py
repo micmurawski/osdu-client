@@ -22,7 +22,7 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise EntitlementsAPIException(
                 status_code=response.status_code,
                 message=response.text
@@ -44,7 +44,7 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
         params = {"type": type}
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers, params=params)
 
-        if response.ok:
+        if not response.ok:
             raise EntitlementsAPIException(
                 status_code=response.status_code,
                 message=response.text

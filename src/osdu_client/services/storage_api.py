@@ -24,7 +24,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
             url=url, headers=self.osdu_auth_backend.headers, json=records
         )
 
-        if response.ok:
+        if not response.ok:
             raise StorageAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -45,7 +45,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise StorageAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -64,7 +64,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         )
         response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise StorageAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -81,7 +81,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise StorageAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -101,7 +101,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 
-        if response.ok:
+        if not response.ok:
             raise StorageAPIError(
                 status_code=response.status_code,
                 message=response.text
@@ -124,7 +124,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
             json={"records": records},
         )
 
-        if response.ok:
+        if not response.ok:
             raise StorageAPIError(
                 status_code=response.status_code,
                 message=response.text

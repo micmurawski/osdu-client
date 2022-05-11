@@ -50,7 +50,7 @@ class Auth(AuthBackendInterface):
             },
             auth=(self.principal_client_id, self.principal_client_secret),
         )
-        if response.ok:
+        if not response.ok:
             raise AuthorizationError(response.text)
 
         return response.json()
@@ -65,7 +65,7 @@ class Auth(AuthBackendInterface):
                 "client_id": self.client_id,
             },
         )
-        if response.ok:
+        if not response.ok:
             raise AuthorizationError("Token is invalid")
 
     def is_expired(self, raise_excpetion=True):
