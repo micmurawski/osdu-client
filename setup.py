@@ -1,5 +1,6 @@
 import codecs
 import os.path
+from signal import raise_signal
 
 from setuptools import find_packages, setup
 
@@ -17,7 +18,7 @@ def get_dependencies():
 
 setup(
     name='osdu_client',
-    version='0.1.6',
+    version='0.1.7',
     author="Michal Murawski",
     author_email="mmurawski777@gmail.com",
     description="OSDU API Client",
@@ -25,10 +26,12 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/micmurawski/osdu-client/",
     package_dir={"": "src"},
-    packages=find_packages(exclude=(
-        'build',
-        'tests',
-    )),
+    packages=find_packages(
+        where="./src",
+        exclude=(
+            'build',
+            'tests',
+        )),
     install_requires=get_dependencies(),
     include_package_data=True,
     python_requires=">=3.7,<4.0",
