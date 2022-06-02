@@ -1,12 +1,12 @@
-from osdu_client.exceptions import OSDUClientError
-from osdu_client.services.dataset_api import DatasetAPIClient
-from osdu_client.services.entitlements_api import EntitlementsAPIClient
-from osdu_client.services.schema_api import SchemaAPIClient
-from osdu_client.services.sdms_api import SDMSAPIClient
-from osdu_client.services.search_api import SearchAPIClient
-from osdu_client.services.storage_api import StorageAPIClient
-
 from .auth import AuthBackendInterface
+from .exceptions import OSDUClientError
+from .services.dataset_api import DatasetAPIClient
+from .services.entitlements_api import EntitlementsAPIClient
+from .services.legal_api import LegalAPIClient
+from .services.schema_api import SchemaAPIClient
+from .services.sdms_api import SDMSAPIClient
+from .services.search_api import SearchAPIClient
+from .services.storage_api import StorageAPIClient
 
 CLIENTS = {
     "dataset": DatasetAPIClient,
@@ -15,12 +15,15 @@ CLIENTS = {
     "sdms": SDMSAPIClient,
     "search": SearchAPIClient,
     "storage": StorageAPIClient,
+    "legal": LegalAPIClient,
 }
 
 
 def get_service_client(name):
     if name not in CLIENTS:
-        raise OSDUClientError(f"Service {name} not recognized. Choose one from available {', '.join(CLIENTS.keys())}")
+        raise OSDUClientError(
+            f"Service {name} not recognized. Choose one from available {', '.join(CLIENTS.keys())}"
+        )
     return CLIENTS[name]
 
 

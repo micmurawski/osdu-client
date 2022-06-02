@@ -4,6 +4,7 @@ from datetime import datetime
 
 import jwt
 import requests
+
 from osdu_client.auth import AuthBackendInterface
 
 

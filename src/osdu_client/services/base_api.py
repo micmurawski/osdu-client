@@ -1,6 +1,6 @@
 from abc import ABCMeta
 
-from osdu_client.auth import AuthBackendInterface
+from ..auth import AuthBackendInterface
 
 
 class BaseOSDUAPIClient(metaclass=ABCMeta):

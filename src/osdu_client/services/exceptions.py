@@ -1,6 +1,6 @@
 from typing import AnyStr, Dict, Union
 
-from osdu_client.exceptions import OSDUClientError
+from ..exceptions import OSDUClientError
 
 
 class OSDUAPIError(OSDUClientError):
