@@ -27,7 +27,8 @@ class SDMSTokenAPI:
             url=url, headers=headers, json=request_body
         )
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -42,7 +43,8 @@ class SDMSTokenAPI:
         )
         response = requests.put(url=url, headers=headers)
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -59,7 +61,8 @@ class SDMSAppsAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -74,7 +77,8 @@ class SDMSAppsAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return {"apps": response.json()}
 
@@ -89,7 +93,8 @@ class SDMSAppsAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -104,7 +109,8 @@ class SDMSAppsAPI:
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return {"apps": response.json()}
 
@@ -117,7 +123,9 @@ class SDMSDatasetAPI:
         subproject_id: AnyStr,
         dataset_id: AnyStr,
         path: Optional[AnyStr] = "/",
-        fetch_meta: bool = False,
+        seismicmeta: bool = True,
+        translate_user_info: bool = True,
+        record_version: AnyStr = None
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -125,13 +133,20 @@ class SDMSDatasetAPI:
             f"dataset/tenant/{tenant_id}/subproject/{subproject_id}/dataset/{dataset_id}",
         )
         # fill path & meta params
-        params = {"path": path, "seismicmeta": fetch_meta}
+        params = {
+            "path": path,
+            "seismicmeta": seismicmeta,
+            "translate-user-info": translate_user_info
+        }
+        if record_version:
+            params["record_version"] = record_version
         response = requests.get(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -155,7 +170,8 @@ class SDMSDatasetAPI:
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -179,28 +195,40 @@ class SDMSDatasetAPI:
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
     def list_subprojects_datasets(
-        self, *, tenant_id: AnyStr, subproject_id: AnyStr
+        self, *, tenant_id: AnyStr, subproject_id: AnyStr, gtags: List[AnyStr] = None, limit: int = 10, cursor: AnyStr = None,
+        translate_user_info: bool = True
     ) -> Dict:
+
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
             f"dataset/tenant/{tenant_id}/subproject/{subproject_id}",
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        params = {
+            "gtag": gtags,
+            "limit": limit,
+            "cursor": cursor,
+            "translate-user-info": translate_user_info
+        }
+        response = requests.get(
+            url=url, headers=self.osdu_auth_backend.headers, params=params)
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
     def register_dataset(
         self,
         *,
+        tenant_id: AnyStr,
         subproject_id: AnyStr,
         dataset_id: AnyStr,
         legal_tags: List[AnyStr],
@@ -213,8 +241,8 @@ class SDMSDatasetAPI:
         kind: AnyStr = None,
         id: AnyStr = None,
         parents: List[AnyStr] = [],
+        acls=None
     ) -> Dict:
-        tenant_id, *_ = kind.split(":")
 
         request_body = {
             "type": type,
@@ -230,6 +258,8 @@ class SDMSDatasetAPI:
                 "data": data,
             },
         }
+        if acls:
+            request_body["acls"] = acls
 
         if id:
             _prefix = kind.rsplit(":", 1)[0].replace("wks:", "")
@@ -249,7 +279,8 @@ class SDMSDatasetAPI:
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -286,7 +317,7 @@ class SDMSDatasetAPI:
 
         if not response.ok:
             raise SDMSAPIError(
-                status_code=response.status_code, message=response.json()
+                status_code=response.status_code, message=response.text
             )
 
         return response.json()
@@ -313,7 +344,8 @@ class SDMSDatasetAPI:
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return True
 
@@ -323,8 +355,7 @@ class SDMSDatasetAPI:
         tenant_id: AnyStr,
         subproject_id: AnyStr,
         dataset_id: AnyStr,
-        path: AnyStr,
-        openmode: AnyStr,
+        path: AnyStr
     ) -> Dict:
 
         url = os.path.join(
@@ -332,13 +363,14 @@ class SDMSDatasetAPI:
             self.service_path,
             f"dataset/tenant/{tenant_id}/subproject/{subproject_id}/dataset/{dataset_id}/unlock",
         )
-        params = {"path": path, "openmode": openmode}
+        params = {"path": path}  # "openmode": openmode}
         response = requests.put(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -401,15 +433,15 @@ class SDMSubprojectAPI:
         storage_class: AnyStr = None,
         storage_location: AnyStr = None,
         legal_tags: AnyStr = None,
-        acl: Dict = None,
+        acls: Dict = None,
     ) -> Dict:
         request_body = {
             "admin": admin,
             "storage_class": storage_class or "REGIONAL",
             "storage_location": (storage_location).upper(),
         }
-        if acl:
-            request_body["acl"] = acl
+        if acls:
+            request_body["acls"] = acls
 
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -429,21 +461,24 @@ class SDMSubprojectAPI:
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
-    def get_sdms_subprojects(self, *, tenant_id: AnyStr) -> Dict:
+    def list_subprojects(self, *, tenant_id: AnyStr) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
             f"subproject/tenant/{tenant_id}",
         )
 
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = requests.get(
+            url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return {"subprojects": response.json()}
 
@@ -463,7 +498,8 @@ class SDMSubprojectAPI:
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -476,10 +512,12 @@ class SDMSubprojectAPI:
             f"subproject/tenant/{tenant_id}",
             f"subproject/{subproject_id}",
         )
-        response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
+        response = requests.delete(
+            url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -489,13 +527,13 @@ class SDMSubprojectAPI:
         tenant_id: AnyStr,
         subproject_id: AnyStr,
         ltag: AnyStr = None,
-        acl: Dict = None,
+        acls: Dict = None,
         access_policy: AnyStr = None,
         recursive: AnyStr = None,
     ) -> Dict:
         requests_body = {}
-        if acl:
-            requests_body["acl"] = acl
+        if acls:
+            requests_body["acls"] = acls
         if access_policy:
             requests_body["access_policy"] = access_policy
 
@@ -517,7 +555,8 @@ class SDMSubprojectAPI:
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -526,7 +565,8 @@ class SDMSTenantAPI:
     def register_sdms_tenant(
         self, *, tenant_id: AnyStr, gcpid: AnyStr, esd: AnyStr, default_acl: AnyStr
     ) -> Dict:
-        requests_body = {"gcpid": gcpid, "esd": esd, "default_acl": default_acl}
+        requests_body = {"gcpid": gcpid,
+                         "esd": esd, "default_acl": default_acl}
         url = os.path.join(
             self.osdu_auth_backend.base_url, self.service_path, f"tenant/{tenant_id}"
         )
@@ -535,7 +575,8 @@ class SDMSTenantAPI:
         )
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
@@ -543,10 +584,12 @@ class SDMSTenantAPI:
         url = os.path.join(
             self.osdu_auth_backend.base_url, self.service_path, f"tenant/{tenant_id}"
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = requests.get(
+            url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
-            raise SDMSAPIError(status_code=response.status_code, message=response.text)
+            raise SDMSAPIError(
+                status_code=response.status_code, message=response.text)
 
         return response.json()
 
