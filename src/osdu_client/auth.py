@@ -21,5 +21,5 @@ class AuthBackendInterface(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_sd_connection_string(self, log_level: int = None) -> AnyStr:
+    def get_sd_connection_params(self, log_level: int = None) -> Dict:
         pass

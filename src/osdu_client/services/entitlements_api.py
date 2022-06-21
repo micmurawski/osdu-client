@@ -20,7 +20,8 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
             self.service_path,
             "groups",
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = requests.get(
+            url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise EntitlementsAPIException(
@@ -77,7 +78,7 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
-            f"groups",
+            "groups",
         )
         data = {"name": name, "description": description, "email": email}
         headers = self.osdu_auth_backend.headers

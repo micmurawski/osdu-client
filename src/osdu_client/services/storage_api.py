@@ -94,10 +94,10 @@ class StorageAPIClient(BaseOSDUAPIClient):
         *,
         versioned_id: AnyStr
     ) -> Dict:
-        id, version = versioned_id.rsplit(":", 1)
+        _id, version = versioned_id.rsplit(":", 1)
         url = os.path.join(
             self.osdu_auth_backend.base_url,
-            f"api/storage/v2/records/{id}/{version}",
+            f"api/storage/v2/records/{_id}/{version}",
         )
         response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
 

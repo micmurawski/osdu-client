@@ -1,1 +1,1 @@
-from .client import OSDUAPI
+from .client import OSDUAPI, AuthBackendInterface  # NOQA

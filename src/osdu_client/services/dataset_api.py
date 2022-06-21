@@ -28,7 +28,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
         )
 
         if not response.ok:
-            raise DatasetAPIClient(
+            raise DatasetAPIError(
                 status_code=response.status_code,
                 message=response.text
             )
