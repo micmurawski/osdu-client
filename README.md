@@ -32,8 +32,8 @@ class AuthBackend(AuthBackendInterface):
     def get_base_url(self) -> AnyStr:
         return self._osdu_base_url
 
-    def get_sd_connection_string(self, log_level: int = None) -> AnyStr:
-        return ""
+    def get_sd_connection_params(self, log_level: int = None) -> Dict:
+        return {}
 
 
 auth_backend = AuthBackend(
