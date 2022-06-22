@@ -200,6 +200,7 @@ class SDMSDatasetAPI:
     def register_dataset(
         self,
         *,
+        tenant_id: AnyStr,
         subproject_id: AnyStr,
         dataset_id: AnyStr,
         legal_tags: List[AnyStr],
@@ -213,7 +214,7 @@ class SDMSDatasetAPI:
         id: AnyStr = None,
         parents: List[AnyStr] = [],
     ) -> Dict:
-        tenant_id, *_ = kind.split(":")
+        #tenant_id, *_ = kind.split(":")
 
         request_body = {
             "type": type,
