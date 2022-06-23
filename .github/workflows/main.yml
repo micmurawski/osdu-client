@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 jobs:
   publish:
-      name: "Publish in PyPi"
+      name: "Publish in PYPI"
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v3
