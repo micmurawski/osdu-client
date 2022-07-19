@@ -456,10 +456,10 @@ class SDMSubprojectAPI:
             f"subproject/tenant/{tenant_id}",
             f"subproject/{subproject_id}",
         )
-        query = {"translate-user-info": translate_user_info}
+        params = {"translate-user-info": translate_user_info}
 
         response = requests.get(
-            url=url, headers=self.osdu_auth_backend.headers, query=query
+            url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
         if not response.ok:
