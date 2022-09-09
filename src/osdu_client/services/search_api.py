@@ -17,7 +17,7 @@ class SearchAPIClient(BaseOSDUAPIClient):
         self,
         *,
         kind: AnyStr,
-        query: AnyStr,
+        query: AnyStr = None,
         spatial_filter: Dict = None,
         returned_fields: List[AnyStr] = None,
         limit: int = 20,
@@ -29,10 +29,12 @@ class SearchAPIClient(BaseOSDUAPIClient):
         )
         data = {
             "kind": kind,
-            "query": query,
             "limit": limit,
             "offset": offset,
         }
+
+        if query:
+            data['query'] = query
 
         if spatial_filter:
             data["spatialFilter"] = spatial_filter
@@ -56,7 +58,7 @@ class SearchAPIClient(BaseOSDUAPIClient):
         self,
         *,
         kind: AnyStr,
-        query: AnyStr,
+        query: AnyStr = None,
         spatial_filter: Dict = None,
         returned_fields: List[AnyStr] = None,
         cursor: AnyStr = None,
@@ -69,7 +71,6 @@ class SearchAPIClient(BaseOSDUAPIClient):
         )
         data = {
             "kind": kind,
-            "query": query,
             "limit": limit,
             "offset": offset,
         }
@@ -82,6 +83,9 @@ class SearchAPIClient(BaseOSDUAPIClient):
 
         if cursor:
             data["cursor"] = cursor
+
+        if query:
+            data['query'] = query
 
         response = requests.post(
             url=url, headers=self.osdu_auth_backend.headers, json=data
