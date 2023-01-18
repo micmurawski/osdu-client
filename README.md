@@ -2,7 +2,7 @@
 
 [![pypi](https://img.shields.io/pypi/v/osdu-client.svg)](https://pypi.org/project/osdu-client/)
 
-`osdu-client` is a python library implementing a simple OSDU client. With abstracted out authorization backend.
+`osdu-client` is a python library implementing a simple OSDU client with an abstracted-out authorization backend.
 
 # Instalation
 ```
