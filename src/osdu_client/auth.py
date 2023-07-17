@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import AnyStr, Dict
+from typing import Dict
 
 
 class AuthBackendInterface(metaclass=ABCMeta):
@@ -9,7 +9,7 @@ class AuthBackendInterface(metaclass=ABCMeta):
         return self.get_headers()
 
     @property
-    def base_url(self) -> AnyStr:
+    def base_url(self) -> str:
         return self.get_base_url()
 
     @abstractmethod
@@ -17,7 +17,7 @@ class AuthBackendInterface(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_base_url(self) -> AnyStr:
+    def get_base_url(self) -> str:
         pass
 
     @abstractmethod

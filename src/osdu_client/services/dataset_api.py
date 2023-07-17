@@ -1,5 +1,5 @@
 import os
-from typing import AnyStr, Dict, List
+from typing import Dict, List
 
 import requests
 
@@ -15,16 +15,40 @@ class DatasetAPIClient(BaseOSDUAPIClient):
     service_path = "api/dataset/v1"
 
     def get_storage_instructions(
-        self, *, kind_sub_type: AnyStr
+        self, *, kind_sub_type: str
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
-            "getStorageInstructions",
+            "storageInstructions",
         )
         params = {"kindSubType": kind_sub_type}
-        response = requests.get(
+        response = requests.post(
             url=url, headers=self.osdu_auth_backend.headers, params=params
+        )
+
+        if not response.ok:
+            raise DatasetAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
+
+        return response.json()
+
+    def get_batch_retrieval_instructions(
+        self,
+        *,
+        dataset_registry_ids: List[str]
+    ) -> Dict:
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            "retrievalInstructions",
+        )
+        response = requests.post(
+            url=url,
+            headers=self.osdu_auth_backend.headers,
+            json={"datasetRegistryIds": dataset_registry_ids},
         )
 
         if not response.ok:
@@ -38,17 +62,17 @@ class DatasetAPIClient(BaseOSDUAPIClient):
     def get_retrieval_instructions(
         self,
         *,
-        dataset_registry_ids: List[AnyStr]
+        id: str
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
-            "getRetrievalInstructions",
+            "retrievalInstructions",
         )
-        response = requests.post(
+        response = requests.get(
             url=url,
             headers=self.osdu_auth_backend.headers,
-            json={"datasetRegistryIds": dataset_registry_ids},
+            params={"id": id},
         )
 
         if not response.ok:

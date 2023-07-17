@@ -1,5 +1,5 @@
 import os
-from typing import AnyStr, Dict
+from typing import Dict
 
 import requests
 
@@ -14,7 +14,7 @@ class SchemaAPIError(OSDUAPIError):
 class SchemaAPIClient(BaseOSDUAPIClient):
     service_path = "api/schema-service/v1/schema"
 
-    def get_schema(self, *, id: AnyStr, ) -> Dict:
+    def get_schema(self, *, id: str) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             f"{self.service_path}/{id}",

@@ -1,5 +1,5 @@
 import os
-from typing import AnyStr, Dict, List
+from typing import Dict, List
 
 import requests
 
@@ -35,7 +35,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
     def get_record(
         self,
         *,
-        id: AnyStr,
+        id: str,
 
 
     ) -> Dict:
@@ -56,7 +56,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
     def delete_record(
         self,
         *,
-        id: AnyStr
+        id: str
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -73,7 +73,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
     def get_record_versions(
         self,
         *,
-        id: AnyStr,
+        id: str,
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -92,7 +92,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
     def get_specific_record(
         self,
         *,
-        versioned_id: AnyStr
+        versioned_id: str
     ) -> Dict:
         _id, version = versioned_id.rsplit(":", 1)
         url = os.path.join(
@@ -112,7 +112,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
     def query_records(
         self,
         *,
-        records: List[AnyStr]
+        records: List[str]
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,

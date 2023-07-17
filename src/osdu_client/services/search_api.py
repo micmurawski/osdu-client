@@ -1,5 +1,5 @@
 import os
-from typing import AnyStr, Dict, List
+from typing import Dict, List
 
 import requests
 
@@ -16,10 +16,10 @@ class SearchAPIClient(BaseOSDUAPIClient):
     def search_query(
         self,
         *,
-        kind: AnyStr,
-        query: AnyStr = None,
+        kind: str,
+        query: str = None,
         spatial_filter: Dict = None,
-        returned_fields: List[AnyStr] = None,
+        returned_fields: List[str] = None,
         limit: int = 20,
         offset: int = 0,
     ) -> Dict:
@@ -57,11 +57,11 @@ class SearchAPIClient(BaseOSDUAPIClient):
     def search_query_with_cursor(
         self,
         *,
-        kind: AnyStr,
-        query: AnyStr = None,
+        kind: str,
+        query: str = None,
         spatial_filter: Dict = None,
-        returned_fields: List[AnyStr] = None,
-        cursor: AnyStr = None,
+        returned_fields: List[str] = None,
+        cursor: str = None,
         limit: int = 20,
         offset: int = 0,
     ) -> Dict:

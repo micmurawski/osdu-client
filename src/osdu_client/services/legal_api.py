@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List
+from typing import List
 
 import requests
 
@@ -32,7 +32,7 @@ class LegalAPIClient(BaseOSDUAPIClient):
             headers["OSDU-Account-Id"] = osdu_account_id
         if osdu_on_behalf_of:
             headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
-        response = requests.get(url=url, headers=headers)
+        response = requests.get(url=url, headers=headers, params=params)
 
         if not response.ok:
             raise LegalAPIException(
@@ -96,7 +96,6 @@ class LegalAPIClient(BaseOSDUAPIClient):
                 exportClassification=export_classification,
             )
         )
-        #raise Exception(expiration_date, contract_id)
         if expiration_date:
             request_body['properties']['expirationDate'] = expiration_date
         if extension_properties:
@@ -173,10 +172,6 @@ class LegalAPIClient(BaseOSDUAPIClient):
         request_body = dict(
             names=names,
         )
-        if expiration_date:
-            request_body['expirationDate'] = expiration_date
-        if extension_properties:
-            request_body['extensionProperties'] = extension_properties
 
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -208,10 +203,6 @@ class LegalAPIClient(BaseOSDUAPIClient):
         request_body = dict(
             names=names,
         )
-        if expiration_date:
-            request_body['expirationDate'] = expiration_date
-        if extension_properties:
-            request_body['extensionProperties'] = extension_properties
 
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -225,32 +216,6 @@ class LegalAPIClient(BaseOSDUAPIClient):
             headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
 
         response = requests.post(url=url, json=request_body, headers=headers)
-
-        if not response.ok:
-            raise LegalAPIException(
-                status_code=response.status_code, message=response.text
-            )
-
-        return response.json()
-
-    def validate_legal_tags(
-        self, *,
-        osdu_account_id: str = None,
-        osdu_on_behalf_of: str = None,
-    ) -> dict:
-
-        url = os.path.join(
-            self.osdu_auth_backend.base_url,
-            self.service_path,
-            "legaltags:properties"
-        )
-        headers = self.osdu_auth_backend.headers
-        if osdu_account_id:
-            headers["OSDU-Account-Id"] = osdu_account_id
-        if osdu_on_behalf_of:
-            headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
-
-        response = requests.get(url=url, headers=headers)
 
         if not response.ok:
             raise LegalAPIException(

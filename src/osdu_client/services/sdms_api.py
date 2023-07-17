@@ -1,6 +1,6 @@
 import os
 from json import JSONDecodeError
-from typing import AnyStr, Dict, List, Optional
+from typing import Dict, List, Optional
 
 import requests
 
@@ -14,7 +14,7 @@ class SDMSAPIError(OSDUAPIError):
 
 class SDMSTokenAPI:
     def create_impersonation_token(
-        self, *, user_token: AnyStr, resources: List[Dict], metadata: Dict
+        self, *, user_token: str, resources: List[Dict], metadata: Dict
     ) -> Dict:
         headers = self.osdu_auth_backend.headers
         headers["user-token"] = user_token
@@ -31,7 +31,7 @@ class SDMSTokenAPI:
         return response.json()
 
     def refresh_impersonation_token(
-        self, *, impersonation_token: AnyStr, impersonation_token_context: AnyStr
+        self, *, impersonation_token: str, impersonation_token_context: str
     ) -> Dict:
         headers = self.osdu_auth_backend.headers
         headers["impersonation-token"] = impersonation_token
@@ -47,7 +47,7 @@ class SDMSTokenAPI:
 
 
 class SDMSAppsAPI:
-    def register_app(self, *, email: AnyStr, sdpath: AnyStr) -> Dict:
+    def register_app(self, *, email: str, sdpath: str) -> Dict:
         params = {"email": email, "sdpath": sdpath}
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -62,7 +62,7 @@ class SDMSAppsAPI:
 
         return response.json()
 
-    def retrive_registered_apps(self, *, sdpath: AnyStr) -> Dict:
+    def retrive_registered_apps(self, *, sdpath: str) -> Dict:
         params = {"sdpath": sdpath}
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -77,7 +77,7 @@ class SDMSAppsAPI:
 
         return {"apps": response.json()}
 
-    def set_trusted_app(self, *, email: AnyStr, sdpath: AnyStr) -> Dict:
+    def set_trusted_app(self, *, email: str, sdpath: str) -> Dict:
         params = {"email": email, "sdpath": sdpath}
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -92,7 +92,7 @@ class SDMSAppsAPI:
 
         return response.json()
 
-    def retrive_trusted_apps(self, *, sdpath: AnyStr) -> Dict:
+    def retrive_trusted_apps(self, *, sdpath: str) -> Dict:
         params = {"sdpath": sdpath}
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -112,10 +112,10 @@ class SDMSDatasetAPI:
     def retrieve_dataset(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
-        path: Optional[AnyStr] = "/",
+        tenant_id: str,
+        subproject_id: str,
+        dataset_id: str,
+        path: Optional[str] = "/",
         fetch_meta: bool = False,
     ) -> Dict:
         url = os.path.join(
@@ -137,10 +137,10 @@ class SDMSDatasetAPI:
     def retrieve_dataset_permission(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
-        path: Optional[AnyStr] = "/",
+        tenant_id: str,
+        subproject_id: str,
+        dataset_id: str,
+        path: Optional[str] = "/",
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -161,10 +161,10 @@ class SDMSDatasetAPI:
     def delete_dataset(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
-        path: Optional[AnyStr] = "/",
+        tenant_id: str,
+        subproject_id: str,
+        dataset_id: str,
+        path: Optional[str] = "/",
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -183,7 +183,7 @@ class SDMSDatasetAPI:
         return response.json()
 
     def list_subprojects_datasets(
-        self, *, tenant_id: AnyStr, subproject_id: AnyStr
+        self, *, tenant_id: str, subproject_id: str
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -200,21 +200,20 @@ class SDMSDatasetAPI:
     def register_dataset(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
-        legal_tags: List[AnyStr],
-        gtags: List[AnyStr],
-        other_relevant_data_countries: List[AnyStr],
+        tenant_id: str,
+        subproject_id: str,
+        dataset_id: str,
+        legal_tags: List[str],
+        gtags: List[str],
+        other_relevant_data_countries: List[str],
         data: Dict,
-        type: AnyStr,
+        type: str,
         slm: Dict = {},
-        path: AnyStr = None,
-        kind: AnyStr = None,
-        id: AnyStr = None,
-        parents: List[AnyStr] = [],
+        path: str = None,
+        kind: str = None,
+        id: str = None,
+        parents: List[str] = [],
     ) -> Dict:
-        #tenant_id, *_ = kind.split(":")
 
         request_body = {
             "type": type,
@@ -256,14 +255,14 @@ class SDMSDatasetAPI:
     def patch_datasets_metadata(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
+        tenant_id: str,
+        subproject_id: str,
+        dataset_id: str,
         metadata: Dict = {},
         filemetadata: Dict = {},
         seismicmeta: Dict = None,
-        path: AnyStr = None,
-        close: AnyStr = None,
+        path: str = None,
+        close: str = None,
     ) -> Dict:
         request_body = {
             "metadata": metadata,
@@ -294,12 +293,12 @@ class SDMSDatasetAPI:
     def lock_dataset(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
-        path: AnyStr = None,
-        openmode: AnyStr = "write",
-        wid: AnyStr = None,
+        tenant_id: str,
+        subproject_id: str,
+        dataset_id: str,
+        path: str = None,
+        openmode: str = "write",
+        wid: str = None,
     ) -> Dict:
 
         url = os.path.join(
@@ -320,11 +319,11 @@ class SDMSDatasetAPI:
     def unlock_dataset(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
-        path: AnyStr,
-        openmode: AnyStr,
+        tenant_id: str,
+        subproject_id: str,
+        dataset_id: str,
+        path: str,
+        openmode: str,
     ) -> Dict:
 
         url = os.path.join(
@@ -347,10 +346,10 @@ class SDMSUtilityAPI:
     def generate_gcs_access_token(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        dataset_id: AnyStr,
-        dataset_path: AnyStr = "/",
+        tenant_id: str,
+        subproject_id: str,
+        dataset_id: str,
+        dataset_path: str = "/",
         readonly=False,
     ) -> Dict:
 
@@ -395,12 +394,12 @@ class SDMSubprojectAPI:
     def create_new_subproject(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        admin: AnyStr,
-        storage_class: AnyStr = None,
-        storage_location: AnyStr = None,
-        legal_tags: AnyStr = None,
+        tenant_id: str,
+        subproject_id: str,
+        admin: str,
+        storage_class: str = None,
+        storage_location: str = None,
+        legal_tags: str = None,
         acls: Dict = None,
     ) -> Dict:
         request_body = {
@@ -433,7 +432,7 @@ class SDMSubprojectAPI:
 
         return response.json()
 
-    def get_sdms_subprojects(self, *, tenant_id: AnyStr) -> Dict:
+    def get_sdms_subprojects(self, *, tenant_id: str) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -448,7 +447,7 @@ class SDMSubprojectAPI:
         return {"subprojects": response.json()}
 
     def get_sdms_subproject(
-        self, *, tenant_id: AnyStr, subproject_id: AnyStr, translate_user_info=True
+        self, *, tenant_id: str, subproject_id: str, translate_user_info=True
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -468,7 +467,7 @@ class SDMSubprojectAPI:
         return response.json()
 
     def delete_sdms_subproject(
-        self, *, tenant_id: AnyStr, subproject_id: AnyStr
+        self, *, tenant_id: str, subproject_id: str
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
@@ -486,12 +485,12 @@ class SDMSubprojectAPI:
     def patch_sdms_subproject_metadata(
         self,
         *,
-        tenant_id: AnyStr,
-        subproject_id: AnyStr,
-        ltag: AnyStr = None,
+        tenant_id: str,
+        subproject_id: str,
+        ltag: str = None,
         acls: Dict = None,
-        access_policy: AnyStr = None,
-        recursive: AnyStr = None,
+        access_policy: str = None,
+        recursive: str = None,
     ) -> Dict:
         requests_body = {}
         if acls:
@@ -524,7 +523,7 @@ class SDMSubprojectAPI:
 
 class SDMSTenantAPI:
     def register_sdms_tenant(
-        self, *, tenant_id: AnyStr, gcpid: AnyStr, esd: AnyStr, default_acl: AnyStr
+        self, *, tenant_id: str, gcpid: str, esd: str, default_acl: str
     ) -> Dict:
         requests_body = {"gcpid": gcpid, "esd": esd, "default_acl": default_acl}
         url = os.path.join(
@@ -539,7 +538,7 @@ class SDMSTenantAPI:
 
         return response.json()
 
-    def get_sdms_tenant(self, *, tenant_id: AnyStr) -> Dict:
+    def get_sdms_tenant(self, *, tenant_id: str) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url, self.service_path, f"tenant/{tenant_id}"
         )

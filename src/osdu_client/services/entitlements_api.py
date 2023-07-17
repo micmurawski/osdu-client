@@ -1,5 +1,5 @@
 import os
-from typing import AnyStr, Dict
+from typing import Dict
 
 import requests
 
@@ -48,7 +48,7 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
 
         return response.json()
 
-    def add_member(self, *, email: AnyStr, group_name: AnyStr, role: AnyStr) -> Dict:
+    def add_member(self, *, email: str, group_name: str, role: str) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,
             self.service_path,
@@ -70,10 +70,10 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
     def create_group(
         self,
         *,
-        name: AnyStr,
-        description: AnyStr,
-        email: AnyStr,
-        data_partition_id: AnyStr = None,
+        name: str,
+        description: str,
+        email: str,
+        data_partition_id: str = None,
     ) -> Dict:
         url = os.path.join(
             self.osdu_auth_backend.base_url,

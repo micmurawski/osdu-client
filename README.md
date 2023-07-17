@@ -15,7 +15,7 @@ OSDU API client can be adjusted to specific OSDU deployment by defining auth bac
 
 
 ```python
-from typing import AnyStr, Dict
+from typing import Dict
 
 from osdu_client import OSDUAPI
 from osdu_client.auth import AuthBackendInterface
@@ -29,7 +29,7 @@ class AuthBackend(AuthBackendInterface):
     def get_headers(self) -> Dict:
         return self._headers
 
-    def get_base_url(self) -> AnyStr:
+    def get_base_url(self) -> str:
         return self._osdu_base_url
 
     def get_sd_connection_params(self, log_level: int = None) -> Dict:
