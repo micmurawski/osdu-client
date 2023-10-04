@@ -82,3 +82,27 @@ class DatasetAPIClient(BaseOSDUAPIClient):
             )
 
         return response.json()
+
+    def register_dataset(
+        self,
+        *,
+        dataset_registries: List[Dict]
+    ) -> Dict:
+        url = os.path.join(
+            self.osdu_auth_backend.base_url,
+            self.service_path,
+            "registerDataset",
+        )
+        response = requests.put(
+            url=url,
+            headers=self.osdu_auth_backend.headers,
+            json={"datasetRegistries": dataset_registries},
+        )
+
+        if not response.ok:
+            raise DatasetAPIError(
+                status_code=response.status_code,
+                message=response.text
+            )
+
+        return response.json()
