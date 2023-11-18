@@ -208,12 +208,18 @@ class SDMSDatasetAPI:
         other_relevant_data_countries: List[str],
         data: Dict,
         type: str,
-        slm: Dict = {},
+        slm: Dict = None,
         path: str = None,
         kind: str = None,
         id: str = None,
-        parents: List[str] = [],
+        parents: List[str] = None,
     ) -> Dict:
+
+        if parents is None:
+            parents = []
+
+        if slm is None:
+            slm = {}
 
         request_body = {
             "type": type,
@@ -258,18 +264,26 @@ class SDMSDatasetAPI:
         tenant_id: str,
         subproject_id: str,
         dataset_id: str,
-        metadata: Dict = {},
-        filemetadata: Dict = {},
+        metadata: Dict = None,
+        filemetadata: Dict = None,
         seismicmeta: Dict = None,
         path: str = None,
         close: str = None,
     ) -> Dict:
+
+        if metadata is None:
+            metadata = {}
+
+        if filemetadata is None:
+            filemetadata = {}
+
         request_body = {
             "metadata": metadata,
             "filemetadata": filemetadata,
         }
         if seismicmeta:
             request_body["seismicmeta"] = seismicmeta
+
         params = {"path": path, "close": close}
         url = os.path.join(
             self.osdu_auth_backend.base_url,
