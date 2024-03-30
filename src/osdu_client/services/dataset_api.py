@@ -1,8 +1,6 @@
 import os
 from typing import Dict, List
 
-import requests
-
 from .base_api import BaseOSDUAPIClient
 from .exceptions import OSDUAPIError
 
@@ -23,7 +21,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
             "storageInstructions",
         )
         params = {"kindSubType": kind_sub_type}
-        response = requests.post(
+        response = self.http_backend.post(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -45,7 +43,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
             self.service_path,
             "retrievalInstructions",
         )
-        response = requests.post(
+        response = self.http_backend.post(
             url=url,
             headers=self.osdu_auth_backend.headers,
             json={"datasetRegistryIds": dataset_registry_ids},
@@ -69,7 +67,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
             self.service_path,
             "retrievalInstructions",
         )
-        response = requests.get(
+        response = self.http_backend.get(
             url=url,
             headers=self.osdu_auth_backend.headers,
             params={"id": id},
@@ -93,7 +91,7 @@ class DatasetAPIClient(BaseOSDUAPIClient):
             self.service_path,
             "registerDataset",
         )
-        response = requests.put(
+        response = self.http_backend.put(
             url=url,
             headers=self.osdu_auth_backend.headers,
             json={"datasetRegistries": dataset_registries},

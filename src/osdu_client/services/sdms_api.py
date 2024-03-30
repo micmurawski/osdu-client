@@ -2,8 +2,6 @@ import os
 from json import JSONDecodeError
 from typing import Dict, List, Optional
 
-import requests
-
 from .base_api import BaseOSDUAPIClient
 from .exceptions import OSDUAPIError
 
@@ -22,7 +20,7 @@ class SDMSTokenAPI:
             self.osdu_auth_backend.base_url, self.service_path, "impersonation-token"
         )
         request_body = {"resources": resources, "metadata": metadata}
-        response = requests.post(
+        response = self.http_backend.post(
             url=url, headers=headers, json=request_body
         )
         if not response.ok:
@@ -39,7 +37,7 @@ class SDMSTokenAPI:
         url = os.path.join(
             self.osdu_auth_backend.base_url, self.service_path, "impersonation-token"
         )
-        response = requests.put(url=url, headers=headers)
+        response = self.http_backend.put(url=url, headers=headers)
         if not response.ok:
             raise SDMSAPIError(status_code=response.status_code, message=response.text)
 
@@ -54,7 +52,7 @@ class SDMSAppsAPI:
             self.service_path,
             "app",
         )
-        response = requests.post(
+        response = self.http_backend.post(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
         if not response.ok:
@@ -69,7 +67,7 @@ class SDMSAppsAPI:
             self.service_path,
             "app",
         )
-        response = requests.get(
+        response = self.http_backend.get(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
         if not response.ok:
@@ -84,7 +82,7 @@ class SDMSAppsAPI:
             self.service_path,
             "app/trusted",
         )
-        response = requests.post(
+        response = self.http_backend.post(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
         if not response.ok:
@@ -99,7 +97,7 @@ class SDMSAppsAPI:
             self.service_path,
             "app/trusted",
         )
-        response = requests.get(
+        response = self.http_backend.get(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
         if not response.ok:
@@ -125,7 +123,7 @@ class SDMSDatasetAPI:
         )
         # fill path & meta params
         params = {"path": path, "seismicmeta": fetch_meta}
-        response = requests.get(
+        response = self.http_backend.get(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -149,7 +147,7 @@ class SDMSDatasetAPI:
         )
         # fill path & meta params
         params = {"path": path}
-        response = requests.get(
+        response = self.http_backend.get(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -173,7 +171,7 @@ class SDMSDatasetAPI:
         )
         # fill path & meta params
         params = {"path": path}
-        response = requests.delete(
+        response = self.http_backend.delete(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -190,7 +188,7 @@ class SDMSDatasetAPI:
             self.service_path,
             f"dataset/tenant/{tenant_id}/subproject/{subproject_id}",
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise SDMSAPIError(status_code=response.status_code, message=response.text)
@@ -246,7 +244,7 @@ class SDMSDatasetAPI:
             self.service_path,
             f"dataset/tenant/{tenant_id}/subproject/{subproject_id}/dataset/{dataset_id}",
         )
-        response = requests.post(
+        response = self.http_backend.post(
             url=url,
             headers=self.osdu_auth_backend.headers,
             json=request_body,
@@ -290,7 +288,7 @@ class SDMSDatasetAPI:
             self.service_path,
             f"dataset/tenant/{tenant_id}/subproject/{subproject_id}/dataset/{dataset_id}",
         )
-        response = requests.patch(
+        response = self.http_backend.patch(
             url=url,
             headers=self.osdu_auth_backend.headers,
             json=request_body,
@@ -321,7 +319,7 @@ class SDMSDatasetAPI:
             f"dataset/tenant/{tenant_id}/subproject/{subproject_id}/dataset/{dataset_id}/lock",
         )
         params = {"path": path, "openmode": openmode, "wid": wid}
-        response = requests.put(
+        response = self.http_backend.put(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -346,7 +344,7 @@ class SDMSDatasetAPI:
             f"dataset/tenant/{tenant_id}/subproject/{subproject_id}/dataset/{dataset_id}/unlock",
         )
         params = {"path": path, "openmode": openmode}
-        response = requests.put(
+        response = self.http_backend.put(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -387,7 +385,7 @@ class SDMSUtilityAPI:
             "sdpath": sdpath,
             "readonly": readonly,
         }
-        response = requests.get(
+        response = self.http_backend.get(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -435,7 +433,7 @@ class SDMSubprojectAPI:
         if legal_tags:
             headers.update({"ltag": legal_tags})
 
-        response = requests.post(
+        response = self.http_backend.post(
             url=url,
             headers=headers,
             json=request_body,
@@ -453,7 +451,7 @@ class SDMSubprojectAPI:
             f"subproject/tenant/{tenant_id}",
         )
 
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise SDMSAPIError(status_code=response.status_code, message=response.text)
@@ -471,7 +469,7 @@ class SDMSubprojectAPI:
         )
         params = {"translate-user-info": translate_user_info}
 
-        response = requests.get(
+        response = self.http_backend.get(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -489,7 +487,7 @@ class SDMSubprojectAPI:
             f"subproject/tenant/{tenant_id}",
             f"subproject/{subproject_id}",
         )
-        response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.delete(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise SDMSAPIError(status_code=response.status_code, message=response.text)
@@ -525,7 +523,7 @@ class SDMSubprojectAPI:
         if recursive:
             query["recursive"] = recursive
 
-        response = requests.patch(
+        response = self.http_backend.patch(
             url=url, json=requests_body, headers=headers, params=query
         )
 
@@ -543,7 +541,7 @@ class SDMSTenantAPI:
         url = os.path.join(
             self.osdu_auth_backend.base_url, self.service_path, f"tenant/{tenant_id}"
         )
-        response = requests.post(
+        response = self.http_backend.post(
             url=url, json=requests_body, headers=self.osdu_auth_backend.headers
         )
 
@@ -556,7 +554,7 @@ class SDMSTenantAPI:
         url = os.path.join(
             self.osdu_auth_backend.base_url, self.service_path, f"tenant/{tenant_id}"
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise SDMSAPIError(status_code=response.status_code, message=response.text)

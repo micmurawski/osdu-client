@@ -1,3 +1,6 @@
+import os
+from typing import Any, AnyStr
+
 from .auth import AuthBackendInterface
 from .exceptions import OSDUClientError
 from .services.dataset_api import DatasetAPIClient
@@ -29,5 +32,8 @@ def get_service_client(name):
 
 class OSDUAPI:
     @staticmethod
-    def client(service_name, auth_backend: AuthBackendInterface = None):
-        return get_service_client(service_name)(auth_backend)
+    def client(service_name, url: AnyStr = None, auth_backend: AuthBackendInterface = None, http_backend: Any = None):
+        url = url or os.environ.get("OSDU_URL")
+        if url is None:
+            raise ValueError("OSDU url is not provided. Set url attribute or set environment variable OSDU_URL.")
+        return get_service_client(service_name)(url, auth_backend, http_backend)

@@ -1,8 +1,6 @@
 import os
 from typing import Dict
 
-import requests
-
 from .base_api import BaseOSDUAPIClient
 from .exceptions import OSDUAPIError
 
@@ -20,7 +18,7 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
             self.service_path,
             "groups",
         )
-        response = requests.get(
+        response = self.http_backend.get(
             url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
@@ -37,7 +35,7 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
             f"members/{member_email}/groups",
         )
         params = {"type": type}
-        response = requests.get(
+        response = self.http_backend.get(
             url=url, headers=self.osdu_auth_backend.headers, params=params
         )
 
@@ -54,7 +52,7 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
             self.service_path,
             f"groups/{group_name}/members",
         )
-        response = requests.post(
+        response = self.http_backend.post(
             url=url,
             headers=self.osdu_auth_backend.headers,
             json={"role": role, "email": email},
@@ -84,7 +82,7 @@ class EntitlementsAPIClient(BaseOSDUAPIClient):
         headers = self.osdu_auth_backend.headers
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        response = requests.post(url=url, headers=headers, json=data)
+        response = self.http_backend.post(url=url, headers=headers, json=data)
 
         if not response.ok:
             raise EntitlementsAPIException(

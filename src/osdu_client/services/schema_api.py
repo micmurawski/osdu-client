@@ -1,8 +1,6 @@
 import os
 from typing import Dict
 
-import requests
-
 from .base_api import BaseOSDUAPIClient
 from .exceptions import OSDUAPIError
 
@@ -19,7 +17,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             f"{self.service_path}/{id}",
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise SchemaAPIError(
@@ -34,7 +32,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             self.service_path,
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise SchemaAPIError(
@@ -51,7 +49,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             self.service_path,
         )
-        response = requests.post(
+        response = self.http_backend.post(
             url=url, headers=self.osdu_auth_backend.headers, json=schema
         )
 
@@ -70,7 +68,7 @@ class SchemaAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             self.service_path,
         )
-        response = requests.put(
+        response = self.http_backend.put(
             url=url, headers=self.osdu_auth_backend.headers, json=schema
         )
 

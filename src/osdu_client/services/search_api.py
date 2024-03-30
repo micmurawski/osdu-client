@@ -1,8 +1,6 @@
 import os
 from typing import Dict, List
 
-import requests
-
 from .base_api import BaseOSDUAPIClient
 from .exceptions import OSDUAPIError
 
@@ -42,7 +40,7 @@ class SearchAPIClient(BaseOSDUAPIClient):
         if returned_fields:
             data["returnedFields"] = returned_fields
 
-        response = requests.post(
+        response = self.http_backend.post(
             url=url, headers=self.osdu_auth_backend.headers, json=data
         )
 
@@ -87,7 +85,7 @@ class SearchAPIClient(BaseOSDUAPIClient):
         if query:
             data['query'] = query
 
-        response = requests.post(
+        response = self.http_backend.post(
             url=url, headers=self.osdu_auth_backend.headers, json=data
         )
 

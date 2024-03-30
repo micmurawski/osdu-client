@@ -1,8 +1,6 @@
 import os
 from typing import List
 
-import requests
-
 from .base_api import BaseOSDUAPIClient
 from .exceptions import OSDUAPIError
 
@@ -32,7 +30,7 @@ class LegalAPIClient(BaseOSDUAPIClient):
             headers["OSDU-Account-Id"] = osdu_account_id
         if osdu_on_behalf_of:
             headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
-        response = requests.get(url=url, headers=headers, params=params)
+        response = self.http_backend.get(url=url, headers=headers, params=params)
 
         if not response.ok:
             raise LegalAPIException(
@@ -57,7 +55,7 @@ class LegalAPIClient(BaseOSDUAPIClient):
             headers["OSDU-Account-Id"] = osdu_account_id
         if osdu_on_behalf_of:
             headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
-        response = requests.get(url=url, headers=headers)
+        response = self.http_backend.get(url=url, headers=headers)
 
         if not response.ok:
             raise LegalAPIException(
@@ -112,7 +110,7 @@ class LegalAPIClient(BaseOSDUAPIClient):
         if osdu_on_behalf_of:
             headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
 
-        response = requests.post(url=url, json=request_body, headers=headers)
+        response = self.http_backend.post(url=url, json=request_body, headers=headers)
 
         if not response.ok:
             raise LegalAPIException(
@@ -153,7 +151,7 @@ class LegalAPIClient(BaseOSDUAPIClient):
         if osdu_on_behalf_of:
             headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
 
-        response = requests.put(url=url, json=request_body, headers=headers)
+        response = self.http_backend.put(url=url, json=request_body, headers=headers)
 
         if not response.ok:
             raise LegalAPIException(
@@ -184,7 +182,7 @@ class LegalAPIClient(BaseOSDUAPIClient):
         if osdu_on_behalf_of:
             headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
 
-        response = requests.post(url=url, json=request_body, headers=headers)
+        response = self.http_backend.post(url=url, json=request_body, headers=headers)
 
         if not response.ok:
             raise LegalAPIException(
@@ -215,7 +213,7 @@ class LegalAPIClient(BaseOSDUAPIClient):
         if osdu_on_behalf_of:
             headers["OSDU-On-Behalf-Of"] = osdu_on_behalf_of
 
-        response = requests.post(url=url, json=request_body, headers=headers)
+        response = self.http_backend.post(url=url, json=request_body, headers=headers)
 
         if not response.ok:
             raise LegalAPIException(

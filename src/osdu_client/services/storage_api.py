@@ -1,8 +1,6 @@
 import os
 from typing import Dict, List
 
-import requests
-
 from .base_api import BaseOSDUAPIClient
 from .exceptions import OSDUAPIError
 
@@ -20,7 +18,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             "api/storage/v2/records/",
         )
-        response = requests.put(
+        response = self.http_backend.put(
             url=url, headers=self.osdu_auth_backend.headers, json=records
         )
 
@@ -43,7 +41,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/{id}",
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise StorageAPIError(
@@ -62,7 +60,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/{id}",
         )
-        response = requests.delete(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.delete(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise StorageAPIError(
@@ -79,7 +77,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/versions/{id}",
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise StorageAPIError(
@@ -99,7 +97,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             f"api/storage/v2/records/{_id}/{version}",
         )
-        response = requests.get(url=url, headers=self.osdu_auth_backend.headers)
+        response = self.http_backend.get(url=url, headers=self.osdu_auth_backend.headers)
 
         if not response.ok:
             raise StorageAPIError(
@@ -118,7 +116,7 @@ class StorageAPIClient(BaseOSDUAPIClient):
             self.osdu_auth_backend.base_url,
             "api/storage/v2/query/records",
         )
-        response = requests.post(
+        response = self.http_backend.post(
             url=url,
             headers=self.osdu_auth_backend.headers,
             json={"records": records},
