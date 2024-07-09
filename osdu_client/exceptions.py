@@ -1,0 +1,2 @@
+class OSDUAPIError(Exception):
+    pass

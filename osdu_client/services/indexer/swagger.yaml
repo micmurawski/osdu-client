@@ -1,0 +1,511 @@
+openapi: 3.0.1
+info:
+  title: Indexer Service
+  description: Indexer service creates an index, which is a methodical arrangement of records designed to enable users to locate information quickly.
+  contact:
+    name: OSDU Data Platform Team
+    email: dps@OSDU.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '2.0'
+servers:
+  - url: /api/indexer/v2
+security:
+  - Authorization: []
+tags:
+  - name: partition-setup-api
+    description: Partition Setup API
+  - name: reindex-api
+    description: Reindex API
+  - name: health-check-api
+    description: Health Check API
+  - name: cleanup-indicies-api
+    description: Cleanup Indicies API
+  - name: info
+    description: Version info endpoint
+paths:
+  /partitions/provision:
+    put:
+      tags:
+        - partition-setup-api
+      summary: Provision partition
+      description: 'Provision partition. Required roles: `users.datalake.ops`'
+      operationId: provisionPartition
+      parameters:
+        - name: data-partition-id
+          in: header
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /reindex:
+    post:
+      tags:
+        - reindex-api
+      summary: Re-index given 'kind'
+      description: 'This API allows users to re-index a ''kind'' without re-ingesting the records via storage API. Required roles: `service.search.admin`'
+      operationId: reindex
+      parameters:
+        - name: force_clean
+          in: query
+          description: Force Clean
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: data-partition-id
+          in: header
+          description: Data Partition Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordReindexRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+    patch:
+      tags:
+        - reindex-api
+      summary: Full Re-index by data partition
+      description: 'This API allows users to re-index an entire partition without re-ingesting the records via storage API.Required roles: `users.datalake.ops`'
+      operationId: fullReindex
+      parameters:
+        - name: force_clean
+          in: query
+          description: Force Clean
+          required: false
+          schema:
+            type: boolean
+            default: false
+        - name: data-partition-id
+          in: header
+          description: Data Partition Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /reindex/records:
+    post:
+      tags:
+        - reindex-api
+      summary: Re-index given records
+      description: 'This API allows users to re-index the given records by providing record ids without re-ingesting the records via storage API. Required roles: `service.search.admin`'
+      operationId: reindexRecords
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Data Partition Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReindexRecordsRequest'
+        required: true
+      responses:
+        '202':
+          description: Accepted
+          content:
+            '*/*':
+              schema:
+                type: object
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /readiness_check:
+    get:
+      tags:
+        - health-check-api
+      summary: Readiness Check endpoint
+      description: For deployment available public `/readiness_check` endpoint.
+      operationId: readinessCheck
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Data Partition Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /liveness_check:
+    get:
+      tags:
+        - health-check-api
+      summary: Liveness Check endpoint
+      description: For deployment available public `/liveness_check` endpoint.
+      operationId: livenessCheck
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Data Partition Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+  /info:
+    get:
+      tags:
+        - info
+      summary: Version info
+      description: For deployment available public `/info` endpoint, which provides build and git related information.
+      operationId: info
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Data Partition Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Version info.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionInfo'
+  /index:
+    delete:
+      tags:
+        - cleanup-indicies-api
+      summary: Delete Index for the given kind
+      description: 'Delete Index for the given kind. Required roles: `users.datalake.ops`'
+      operationId: deleteIndex
+      parameters:
+        - name: kind
+          in: query
+          description: Kind
+          required: true
+          schema:
+            type: string
+          example: tenant1:public:well:1.0.2
+        - name: data-partition-id
+          in: header
+          description: Data Partition Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+components:
+  schemas:
+    AppError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        message:
+          type: string
+    RecordReindexRequest:
+      required:
+        - kind
+      type: object
+      properties:
+        kind:
+          type: string
+        cursor:
+          type: string
+    ReindexRecordsRequest:
+      required:
+        - recordIds
+      type: object
+      properties:
+        recordIds:
+          maxItems: 1000
+          minItems: 1
+          type: array
+          items:
+            type: string
+    ConnectedOuterService:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+    VersionInfo:
+      type: object
+      properties:
+        groupId:
+          type: string
+        artifactId:
+          type: string
+        version:
+          type: string
+        buildTime:
+          type: string
+        branch:
+          type: string
+        commitId:
+          type: string
+        commitMessage:
+          type: string
+        connectedOuterServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedOuterService'
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+      bearerFormat: Authorization

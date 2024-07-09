@@ -25,9 +25,9 @@ setup(
     long_description=read('README.md'),
     long_description_content_type="text/markdown",
     url="https://github.com/micmurawski/osdu-client/",
-    package_dir={"": "src"},
+    #package_dir={"": "src"},
     packages=find_packages(
-        where="./src",
+        where=".",
         exclude=(
             'build',
             'tests',

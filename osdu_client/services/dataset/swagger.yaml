@@ -1,0 +1,786 @@
+openapi: 3.0.1
+info:
+  title: Dataset Service
+  description: Dataset service provides internal and external API endpoints to allow application or user fetch storage/retrieval instructions for various types of datasets.
+  contact:
+    name: OSDU Data Platform Team
+    email: dps@OSDU.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: /api/dataset/v1/
+security:
+  - Authorization: []
+tags:
+  - name: dataset
+    description: Dataset DMS and Dataset Registry related operations
+  - name: health-check-api
+    description: Health Check API
+  - name: dataset
+    description: dataset api operations
+  - name: info
+    description: Version info endpoint
+paths:
+  /registerDataset:
+    put:
+      tags:
+        - dataset
+      summary: Create or Update Dataset Registry
+      description: |-
+        Create or Update Dataset Registry. 
+        **Required roles: `service.storage.creator` or `service.storage.admin`.
+      operationId: createOrUpdateDatasetRegistry
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDatasetRegistryRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetCreateUpdateDatasetRegistryResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /storageInstructions:
+    post:
+      tags:
+        - dataset
+      summary: 'Generate storage instructions '
+      description: |-
+        Generate storage instructions (Eg - Signed URLs) for datasets. 
+        Required roles: `service.dataset.editors`.
+      operationId: storageInstructions
+      parameters:
+        - name: kindSubType
+          in: query
+          description: subType of the kind (partition:wks:kindSubType:version)
+          required: true
+          schema:
+            type: string
+          example: dataset--File.Generic
+        - name: expiryTime
+          in: query
+          description: The Time for which Signed URL to be valid. Accepted Regex patterns are "^[0-9]+M$", "^[0-9]+H$", "^[0-9]+D$" denoting Integer values in Minutes, Hours, Days respectively. In absence of this parameter the URL would be valid for 1 Hour.
+          required: false
+          schema:
+            type: string
+          example: 5M
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetDatasetStorageInstructionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /revokeURL:
+    post:
+      tags:
+        - datasetDms-admin-api
+        - dataset
+      summary: ${datasetDmsAdminApi.revokeURL.summary}
+      description: ${datasetDmsAdminApi.revokeURL.description}
+      operationId: revokeURL
+      parameters:
+        - name: kindSubType
+          in: query
+          description: subType of the kind (partition:wks:kindSubType:version)
+          required: true
+          schema:
+            type: string
+          example: dataset--File.Generic
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+        required: true
+      responses:
+        '204':
+          description: Revoked URLs successfully.
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /retrievalInstructions:
+    get:
+      tags:
+        - dataset
+      summary: Generate retrieval instructions
+      description: |-
+        Generate retrieval instructions (Eg - Signed URLs) for single dataset. 
+        Required roles: `service.dataset.viewers`.
+      operationId: retrievalInstructions_1
+      parameters:
+        - name: id
+          in: query
+          description: Dataset registry id
+          required: true
+          schema:
+            type: string
+          example: opendes:dataset--File.Generic:8118591ee2
+        - name: expiryTime
+          in: query
+          description: The Time for which Signed URL to be valid. Accepted Regex patterns are "^[0-9]+M$", "^[0-9]+H$", "^[0-9]+D$" denoting Integer values in Minutes, Hours, Days respectively. In absence of this parameter the URL would be valid for 1 Hour.
+          required: false
+          schema:
+            type: string
+          example: 5M
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RetrievalInstructionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+    post:
+      tags:
+        - dataset
+      summary: 'Generate retrieval instructions - multiple datasets '
+      description: |-
+        Generate retrieval instructions (Eg - Signed URLs) for multiple datasets. 
+        Required roles: `service.dataset.viewers`.
+      operationId: retrievalInstructions
+      parameters:
+        - name: expiryTime
+          in: query
+          description: The Time for which Signed URL to be valid. Accepted Regex patterns are "^[0-9]+M$", "^[0-9]+H$", "^[0-9]+D$" denoting Integer values in Minutes, Hours, Days respectively. In absence of this parameter the URL would be valid for 1 Hour.
+          required: false
+          schema:
+            type: string
+          example: 5M
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDatasetRegistryRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/RetrievalInstructionsResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /getDatasetRegistry:
+    get:
+      tags:
+        - dataset
+      summary: Get Dataset Registry
+      description: |-
+        Get Dataset Registry. 
+        **Required roles:  `service.storage.creator` or `service.storage.admin` or `service.storage.viewer`.
+      operationId: getDatasetRegistry_1
+      parameters:
+        - name: id
+          in: query
+          description: Dataset registry id
+          required: true
+          schema:
+            type: string
+          example: opendes:dataset--File.Generic:8118591ee2
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetCreateUpdateDatasetRegistryResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+    post:
+      tags:
+        - dataset
+      summary: Get Dataset Registries
+      description: |-
+        Get Dataset Registries. 
+        **Required roles:  `service.storage.creator` or `service.storage.admin` or `service.storage.viewer`.
+      operationId: getDatasetRegistry
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDatasetRegistryRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetCreateUpdateDatasetRegistryResponse'
+        '400':
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /liveness_check:
+    get:
+      tags:
+        - health-check-api
+      summary: Liveness Check endpoint
+      description: For deployment available public `/liveness_check` endpoint verifies the operational status of the Dataset Service.
+      operationId: livenessCheck
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /info:
+    get:
+      tags:
+        - info
+      summary: Version info
+      description: For deployment available public `/info` endpoint, which provides build and git related information.
+      operationId: info
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionInfo'
+components:
+  schemas:
+    Acl:
+      type: object
+      properties:
+        viewers:
+          type: array
+          items:
+            type: string
+        owners:
+          type: array
+          items:
+            type: string
+    CreateDatasetRegistryRequest:
+      required:
+        - datasetRegistries
+      type: object
+      properties:
+        datasetRegistries:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            $ref: '#/components/schemas/Record'
+      description: Dataset registry ids
+    Legal:
+      required:
+        - otherRelevantDataCountries
+      type: object
+      properties:
+        legaltags:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        otherRelevantDataCountries:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+            - compliant
+            - incompliant
+    Record:
+      required:
+        - acl
+        - data
+      type: object
+      properties:
+        id:
+          pattern: ^[\w\-\.]+:[\w-\.]+:[\w\-\.\:\%]+$
+          type: string
+        version:
+          type: integer
+          format: int64
+        kind:
+          type: string
+        acl:
+          $ref: '#/components/schemas/Acl'
+        legal:
+          $ref: '#/components/schemas/Legal'
+        data:
+          type: object
+          additionalProperties:
+            type: object
+        ancestry:
+          $ref: '#/components/schemas/RecordAncestry'
+        meta:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+    RecordAncestry:
+      type: object
+      properties:
+        parents:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+    AppError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        message:
+          type: string
+    GetCreateUpdateDatasetRegistryResponse:
+      type: object
+      properties:
+        datasetRegistries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Record'
+    GetDatasetStorageInstructionsResponse:
+      type: object
+      properties:
+        storageLocation:
+          type: object
+          additionalProperties:
+            type: object
+        providerKey:
+          type: string
+    GetDatasetRegistryRequest:
+      required:
+        - datasetRegistryIds
+      type: object
+      properties:
+        datasetRegistryIds:
+          maxItems: 20
+          minItems: 1
+          type: array
+          items:
+            type: string
+      description: Dataset registry ids
+    DatasetRetrievalProperties:
+      type: object
+      properties:
+        datasetRegistryId:
+          type: string
+        retrievalProperties:
+          type: object
+          additionalProperties:
+            type: object
+        providerKey:
+          type: string
+    RetrievalInstructionsResponse:
+      type: object
+      properties:
+        datasets:
+          type: array
+          items:
+            $ref: '#/components/schemas/DatasetRetrievalProperties'
+    ConnectedOuterService:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+    VersionInfo:
+      type: object
+      properties:
+        groupId:
+          type: string
+        artifactId:
+          type: string
+        version:
+          type: string
+        buildTime:
+          type: string
+        branch:
+          type: string
+        commitId:
+          type: string
+        commitMessage:
+          type: string
+        connectedOuterServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedOuterService'
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+      bearerFormat: Authorization
