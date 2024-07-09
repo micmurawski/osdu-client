@@ -16,6 +16,8 @@ class StorageAPIError(OSDUAPIError):
 
 
 class StorageClient(BaseOSDUAPIClient):
+    service_path = "/api/storage/v2/"
+
     def update_records(
         self,
         *,
@@ -36,7 +38,7 @@ class StorageClient(BaseOSDUAPIClient):
         if skipdupes is not None:
             params["skipdupes"] = skipdupes
 
-        url = urljoin(self.base_url, "records")
+        url = urljoin(self.base_url, self.service_path, "records")
         response = requests.put(url, headers=headers, params=params)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -66,7 +68,7 @@ class StorageClient(BaseOSDUAPIClient):
 
         RecordBulkUpdateParam(**data)
 
-        url = urljoin(self.base_url, "records")
+        url = urljoin(self.base_url, self.service_path, "records")
         response = requests.patch(url, headers=headers, json=data)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -97,7 +99,7 @@ class StorageClient(BaseOSDUAPIClient):
 
         CopyRecordReferencesModel(**data)
 
-        url = urljoin(self.base_url, "records/copy")
+        url = urljoin(self.base_url, self.service_path, "records/copy")
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -119,7 +121,7 @@ class StorageClient(BaseOSDUAPIClient):
         if x_collaboration is not None:
             headers["x-collaboration"] = x_collaboration
 
-        url = urljoin(self.base_url, "records/%s:delete" % id)
+        url = urljoin(self.base_url, self.service_path, "records/%s:delete" % id)
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -140,7 +142,7 @@ class StorageClient(BaseOSDUAPIClient):
         if x_collaboration is not None:
             headers["x-collaboration"] = x_collaboration
 
-        url = urljoin(self.base_url, "records/delete")
+        url = urljoin(self.base_url, self.service_path, "records/delete")
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -172,7 +174,7 @@ class StorageClient(BaseOSDUAPIClient):
         if limit is not None:
             params["limit"] = limit
 
-        url = urljoin(self.base_url, "query/records")
+        url = urljoin(self.base_url, self.service_path, "query/records")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -203,7 +205,7 @@ class StorageClient(BaseOSDUAPIClient):
 
         MultiRecordIds(**data)
 
-        url = urljoin(self.base_url, "query/records")
+        url = urljoin(self.base_url, self.service_path, "query/records")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -237,7 +239,7 @@ class StorageClient(BaseOSDUAPIClient):
 
         MultiRecordRequest(**data)
 
-        url = urljoin(self.base_url, "query/records:batch")
+        url = urljoin(self.base_url, self.service_path, "query/records:batch")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -264,7 +266,7 @@ class StorageClient(BaseOSDUAPIClient):
         if attribute is not None:
             params["attribute"] = attribute
 
-        url = urljoin(self.base_url, "records/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "records/%s" % id)
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -286,7 +288,7 @@ class StorageClient(BaseOSDUAPIClient):
         if x_collaboration is not None:
             headers["x-collaboration"] = x_collaboration
 
-        url = urljoin(self.base_url, "records/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "records/%s" % id)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -314,7 +316,7 @@ class StorageClient(BaseOSDUAPIClient):
         if attribute is not None:
             params["attribute"] = attribute
 
-        url = urljoin(self.base_url, "records/%s/%s" % (id, version))
+        url = urljoin(self.base_url, self.service_path, "records/%s/%s" % (id, version))
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -336,7 +338,7 @@ class StorageClient(BaseOSDUAPIClient):
         if x_collaboration is not None:
             headers["x-collaboration"] = x_collaboration
 
-        url = urljoin(self.base_url, "records/versions/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "records/versions/%s" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -351,7 +353,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "liveness_check")
+        url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -366,7 +368,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -399,7 +401,7 @@ class StorageClient(BaseOSDUAPIClient):
         if _form is not None:
             params["from"] = _form
 
-        url = urljoin(self.base_url, "records/%s/versions" % id)
+        url = urljoin(self.base_url, self.service_path, "records/%s/versions" % id)
         response = requests.delete(url, headers=headers, params=params)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -418,7 +420,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "replay/status/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "replay/status/%s" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -446,7 +448,7 @@ class StorageClient(BaseOSDUAPIClient):
 
         ReplayRequest(**data)
 
-        url = urljoin(self.base_url, "replay")
+        url = urljoin(self.base_url, self.service_path, "replay")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -461,7 +463,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "whoami")
+        url = urljoin(self.base_url, self.service_path, "whoami")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -476,7 +478,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "whoami")
+        url = urljoin(self.base_url, self.service_path, "whoami")
         response = requests.put(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -491,7 +493,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "whoami")
+        url = urljoin(self.base_url, self.service_path, "whoami")
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -506,7 +508,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "whoami")
+        url = urljoin(self.base_url, self.service_path, "whoami")
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -521,7 +523,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "whoami")
+        url = urljoin(self.base_url, self.service_path, "whoami")
         response = requests.options(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -536,7 +538,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "whoami")
+        url = urljoin(self.base_url, self.service_path, "whoami")
         response = requests.head(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)
@@ -551,7 +553,7 @@ class StorageClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "whoami")
+        url = urljoin(self.base_url, self.service_path, "whoami")
         response = requests.patch(url, headers=headers)
         if not response.ok:
             raise StorageAPIError(response.text, response.status_code)

@@ -13,6 +13,8 @@ class PartitionAPIError(OSDUAPIError):
 
 
 class PartitionClient(BaseOSDUAPIClient):
+    service_path = "/api/partition/v1"
+
     def get_partition(
         self,
         *,
@@ -26,7 +28,7 @@ class PartitionClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "partitions/%s" % partition_id)
+        url = urljoin(self.base_url, self.service_path, "partitions/%s" % partition_id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PartitionAPIError(response.text, response.status_code)
@@ -52,7 +54,7 @@ class PartitionClient(BaseOSDUAPIClient):
 
         PartitionInfo(**data)
 
-        url = urljoin(self.base_url, "partitions/%s" % partition_id)
+        url = urljoin(self.base_url, self.service_path, "partitions/%s" % partition_id)
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise PartitionAPIError(response.text, response.status_code)
@@ -71,7 +73,7 @@ class PartitionClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "partitions/%s" % partition_id)
+        url = urljoin(self.base_url, self.service_path, "partitions/%s" % partition_id)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise PartitionAPIError(response.text, response.status_code)
@@ -97,7 +99,7 @@ class PartitionClient(BaseOSDUAPIClient):
 
         PartitionInfo(**data)
 
-        url = urljoin(self.base_url, "partitions/%s" % partition_id)
+        url = urljoin(self.base_url, self.service_path, "partitions/%s" % partition_id)
         response = requests.patch(url, headers=headers, json=data)
         if not response.ok:
             raise PartitionAPIError(response.text, response.status_code)
@@ -112,7 +114,7 @@ class PartitionClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "partitions")
+        url = urljoin(self.base_url, self.service_path, "partitions")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PartitionAPIError(response.text, response.status_code)
@@ -127,7 +129,7 @@ class PartitionClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "liveness_check")
+        url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PartitionAPIError(response.text, response.status_code)
@@ -142,7 +144,7 @@ class PartitionClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PartitionAPIError(response.text, response.status_code)

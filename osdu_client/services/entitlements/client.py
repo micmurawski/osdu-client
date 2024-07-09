@@ -9,6 +9,8 @@ class EntitlementsAPIError(OSDUAPIError):
 
 
 class EntitlementsClient(BaseOSDUAPIClient):
+    service_path = "/api/entitlements/v2"
+
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
@@ -18,7 +20,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "_ah/liveness_check")
+        url = urljoin(self.base_url, self.service_path, "_ah/liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -33,7 +35,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "_ah/readiness_check")
+        url = urljoin(self.base_url, self.service_path, "_ah/readiness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -59,7 +61,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if role_required is not None:
             params["roleRequired"] = role_required
 
-        url = urljoin(self.base_url, "groups")
+        url = urljoin(self.base_url, self.service_path, "groups")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -82,7 +84,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
             "groupInfoDto": group_info_dto,
         }
 
-        url = urljoin(self.base_url, "groups")
+        url = urljoin(self.base_url, self.service_path, "groups")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -105,7 +107,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if group_email is not None:
             params["groupEmail"] = group_email
 
-        url = urljoin(self.base_url, "groups/%s")
+        url = urljoin(self.base_url, self.service_path, "groups/%s")
         response = requests.delete(url, headers=headers, params=params)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -129,7 +131,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
             "updateGroupRequest": update_group_request,
         }
 
-        url = urljoin(self.base_url, "groups/%s" % group_email)
+        url = urljoin(self.base_url, self.service_path, "groups/%s" % group_email)
         response = requests.patch(url, headers=headers, json=data)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -156,7 +158,9 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if include_type is not None:
             params["includeType"] = include_type
 
-        url = urljoin(self.base_url, "groups/%s/members" % group_email)
+        url = urljoin(
+            self.base_url, self.service_path, "groups/%s/members" % group_email
+        )
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -180,7 +184,9 @@ class EntitlementsClient(BaseOSDUAPIClient):
             "addMemberDto": add_member_dto,
         }
 
-        url = urljoin(self.base_url, "groups/%s/members" % group_email)
+        url = urljoin(
+            self.base_url, self.service_path, "groups/%s/members" % group_email
+        )
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -201,7 +207,9 @@ class EntitlementsClient(BaseOSDUAPIClient):
             headers["tenant"] = tenant
 
         url = urljoin(
-            self.base_url, "groups/%s/members/%s" % (group_email, member_email)
+            self.base_url,
+            self.service_path,
+            "groups/%s/members/%s" % (group_email, member_email),
         )
         response = requests.delete(url, headers=headers)
         if not response.ok:
@@ -221,7 +229,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "members/%s" % member_email)
+        url = urljoin(self.base_url, self.service_path, "members/%s" % member_email)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -251,7 +259,9 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if role_required is not None:
             params["roleRequired"] = role_required
 
-        url = urljoin(self.base_url, "members/%s/groups" % member_email)
+        url = urljoin(
+            self.base_url, self.service_path, "members/%s/groups" % member_email
+        )
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -266,7 +276,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "tenant-provisioning")
+        url = urljoin(self.base_url, self.service_path, "tenant-provisioning")
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -295,7 +305,9 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if limit is not None:
             params["limit"] = limit
 
-        url = urljoin(self.base_url, "api/entitlements/v2/groups/all")
+        url = urljoin(
+            self.base_url, self.service_path, "api/entitlements/v2/groups/all"
+        )
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -310,7 +322,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
@@ -334,7 +346,9 @@ class EntitlementsClient(BaseOSDUAPIClient):
         if role is not None:
             params["role"] = role
 
-        url = urljoin(self.base_url, "groups/%s/membersCount" % group_email)
+        url = urljoin(
+            self.base_url, self.service_path, "groups/%s/membersCount" % group_email
+        )
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)

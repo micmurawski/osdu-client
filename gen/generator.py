@@ -145,7 +145,7 @@ def create_request_block(
         path: str, method: str, has_params: bool, name: str, has_body: bool
 ) -> str:
     requests_lines = [
-        "url = urljoin(self.base_url, %s)" % path,
+        "url = urljoin(self.base_url, self.service_path, %s)" % path,
         "response = requests.%s(url, headers=headers)" % method,
         "if not response.ok:",
         "%sraise %sAPIError(response.text, response.status_code)" % (INDENT, name),
@@ -267,6 +267,7 @@ def get_name_from_name_map(method: str, path: str):
     if result is None:
         return result
     return result[0]
+
 
 def create_method_name(method, path, name_parts, swagger=None) -> str:
     # try:
@@ -541,7 +542,6 @@ def create_imports(swagger: dict) -> str:
             try:
                 request_body = swagger["paths"][path][method].get("requestBody", None)
             except AttributeError as e:
-                print(path, method)
                 raise e
             if request_body is None:
                 continue
@@ -572,14 +572,34 @@ def create_imports(swagger: dict) -> str:
     return "\n".join(lines)
 
 
-def create_definition(name: str) -> str:
+def get_server_url(swagger: dict) -> str:
+    if "basePath" in swagger:
+        return swagger["basePath"]
+
+    if "servers" in swagger:
+        if swagger["servers"][0]["url"] == '#{SDMS_PREFIX}#':
+            return "/api/sdms/v1"
+        url = swagger["servers"][0]["url"]
+
+        if ".com" in url:
+            return url.split(".com")[-1]
+
+        return url
+    else:
+        return ""
+
+
+def create_definition(name: str, swagger: dict) -> str:
+
+    url = get_server_url(swagger)
     body = """
 class %sAPIError(OSDUAPIError):
     pass
 
 
 class %sClient(BaseOSDUAPIClient):
-""" % (name, name)
+    service_path = "%s"
+""" % (name, name, url)
     return body
 
 
@@ -607,7 +627,7 @@ def generate_clients(url, name, branch="master", dump_file="dump.py"):
     with open(dump_file, "w") as f:
         f.write(create_imports(swagger)+"\n\n")
         f.write(
-            create_definition(class_name),
+            create_definition(class_name, swagger),
         )
         f.write("\n")
         method_names = set()
@@ -637,16 +657,3 @@ def generate_clients(url, name, branch="master", dump_file="dump.py"):
                 for line in method_body.splitlines():
                     f.write(INDENT+line+"\n")
                 f.write("\n")
-
-
-if __name__ == "__main__":
-    # generate_clients(
-    #    url="https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements/-/raw/%s/docs/api/entitlements_openapi.yaml?ref_type=heads",
-    #    name="Entitlements",
-    #    dump_file="entitlements.py",
-    # )
-    generate_clients(
-        url="https://community.opengroup.org/osdu/platform/domain-data-mgmt-services/seismic/seismic-dms-suite/seismic-store-service/-/raw/%s/app/sdms/docs/api/openapi.osdu.yaml?ref_type=heads",
-        name="SDMS",
-        dump_file="sdms.py"
-    )

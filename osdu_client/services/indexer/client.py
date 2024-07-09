@@ -13,6 +13,8 @@ class IndexerAPIError(OSDUAPIError):
 
 
 class IndexerClient(BaseOSDUAPIClient):
+    service_path = "/api/indexer/v2"
+
     def provision_partition(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
@@ -22,7 +24,7 @@ class IndexerClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "partitions/provision")
+        url = urljoin(self.base_url, self.service_path, "partitions/provision")
         response = requests.put(url, headers=headers)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
@@ -55,7 +57,7 @@ class IndexerClient(BaseOSDUAPIClient):
 
         RecordReindexRequest(**data)
 
-        url = urljoin(self.base_url, "reindex")
+        url = urljoin(self.base_url, self.service_path, "reindex")
         response = requests.post(url, headers=headers, params=params, json=data)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
@@ -78,7 +80,7 @@ class IndexerClient(BaseOSDUAPIClient):
         if force_clean is not None:
             params["force_clean"] = force_clean
 
-        url = urljoin(self.base_url, "reindex")
+        url = urljoin(self.base_url, self.service_path, "reindex")
         response = requests.patch(url, headers=headers, params=params)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
@@ -103,7 +105,7 @@ class IndexerClient(BaseOSDUAPIClient):
 
         ReindexRecordsRequest(**data)
 
-        url = urljoin(self.base_url, "reindex/records")
+        url = urljoin(self.base_url, self.service_path, "reindex/records")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
@@ -118,7 +120,7 @@ class IndexerClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "readiness_check")
+        url = urljoin(self.base_url, self.service_path, "readiness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
@@ -133,7 +135,7 @@ class IndexerClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "liveness_check")
+        url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
@@ -148,7 +150,7 @@ class IndexerClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
@@ -171,7 +173,7 @@ class IndexerClient(BaseOSDUAPIClient):
             "kind": kind,
         }
 
-        url = urljoin(self.base_url, "index")
+        url = urljoin(self.base_url, self.service_path, "index")
         response = requests.delete(url, headers=headers, params=params)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)

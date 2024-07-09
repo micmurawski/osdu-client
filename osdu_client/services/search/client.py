@@ -13,6 +13,8 @@ class SearchAPIError(OSDUAPIError):
 
 
 class SearchClient(BaseOSDUAPIClient):
+    service_path = "/api/search/v2/"
+
     def query_with_cursor(
         self,
         *,
@@ -59,7 +61,7 @@ class SearchClient(BaseOSDUAPIClient):
 
         CursorQueryRequest(**data)
 
-        url = urljoin(self.base_url, "query_with_cursor")
+        url = urljoin(self.base_url, self.service_path, "query_with_cursor")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise SearchAPIError(response.text, response.status_code)
@@ -114,7 +116,7 @@ class SearchClient(BaseOSDUAPIClient):
 
         QueryRequest(**data)
 
-        url = urljoin(self.base_url, "query")
+        url = urljoin(self.base_url, self.service_path, "query")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise SearchAPIError(response.text, response.status_code)
@@ -129,7 +131,7 @@ class SearchClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "readiness_check")
+        url = urljoin(self.base_url, self.service_path, "readiness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SearchAPIError(response.text, response.status_code)
@@ -144,7 +146,7 @@ class SearchClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "liveness_check")
+        url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SearchAPIError(response.text, response.status_code)
@@ -159,7 +161,7 @@ class SearchClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SearchAPIError(response.text, response.status_code)

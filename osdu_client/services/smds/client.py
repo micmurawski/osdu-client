@@ -26,6 +26,8 @@ class SMDSAPIError(OSDUAPIError):
 
 
 class SMDSClient(BaseOSDUAPIClient):
+    service_path = "/api/sdms/v1"
+
     def get_svcstatus(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
@@ -35,7 +37,7 @@ class SMDSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "svcstatus")
+        url = urljoin(self.base_url, self.service_path, "svcstatus")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -50,7 +52,7 @@ class SMDSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "svcstatus/access")
+        url = urljoin(self.base_url, self.service_path, "svcstatus/access")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -65,7 +67,7 @@ class SMDSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -121,6 +123,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s"
             % (tenantid, subprojectid, datasetid),
         )
@@ -163,6 +166,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s"
             % (tenantid, subprojectid, datasetid),
         )
@@ -196,6 +200,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s"
             % (tenantid, subprojectid, datasetid),
         )
@@ -272,6 +277,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s"
             % (tenantid, subprojectid, datasetid),
         )
@@ -311,6 +317,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s/lock"
             % (tenantid, subprojectid, datasetid),
         )
@@ -344,6 +351,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s/unlock"
             % (tenantid, subprojectid, datasetid),
         )
@@ -377,6 +385,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s/permission"
             % (tenantid, subprojectid, datasetid),
         )
@@ -413,6 +422,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s/ctagcheck"
             % (tenantid, subprojectid, datasetid),
         )
@@ -449,6 +459,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s/gtags"
             % (tenantid, subprojectid, datasetid),
         )
@@ -482,6 +493,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/dataset/%s/size"
             % (tenantid, subprojectid, datasetid),
         )
@@ -517,6 +529,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/size" % (tenantid, subprojectid),
         )
         response = requests.get(url, headers=headers, params=params)
@@ -548,6 +561,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/readdsdirfulllist"
             % (tenantid, subprojectid),
         )
@@ -601,7 +615,9 @@ class SMDSClient(BaseOSDUAPIClient):
         DatasetListBody(**data)
 
         url = urljoin(
-            self.base_url, "dataset/tenant/%s/subproject/%s" % (tenantid, subprojectid)
+            self.base_url,
+            self.service_path,
+            "dataset/tenant/%s/subproject/%s" % (tenantid, subprojectid),
         )
         response = requests.post(url, headers=headers, params=params, json=data)
         if not response.ok:
@@ -634,6 +650,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/exist" % (tenantid, subprojectid),
         )
         response = requests.post(url, headers=headers, json=data)
@@ -667,6 +684,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "dataset/tenant/%s/subproject/%s/sizes" % (tenantid, subprojectid),
         )
         response = requests.post(url, headers=headers, json=data)
@@ -703,7 +721,7 @@ class SMDSClient(BaseOSDUAPIClient):
         if cursor is not None:
             params["cursor"] = cursor
 
-        url = urljoin(self.base_url, "utility/ls")
+        url = urljoin(self.base_url, self.service_path, "utility/ls")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -740,7 +758,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         DatasetLsBody(**data)
 
-        url = urljoin(self.base_url, "utility/ls")
+        url = urljoin(self.base_url, self.service_path, "utility/ls")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -755,7 +773,7 @@ class SMDSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "utility/storage-tiers")
+        url = urljoin(self.base_url, self.service_path, "utility/storage-tiers")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -786,7 +804,7 @@ class SMDSClient(BaseOSDUAPIClient):
         if lock is not None:
             params["lock"] = lock
 
-        url = urljoin(self.base_url, "utility/cp")
+        url = urljoin(self.base_url, self.service_path, "utility/cp")
         response = requests.post(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -815,7 +833,7 @@ class SMDSClient(BaseOSDUAPIClient):
         if readonly is not None:
             params["readonly"] = readonly
 
-        url = urljoin(self.base_url, "utility/gcs-access-token")
+        url = urljoin(self.base_url, self.service_path, "utility/gcs-access-token")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -841,7 +859,9 @@ class SMDSClient(BaseOSDUAPIClient):
             "sdpath": sdpath,
         }
 
-        url = urljoin(self.base_url, "utility/upload-connection-string")
+        url = urljoin(
+            self.base_url, self.service_path, "utility/upload-connection-string"
+        )
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -867,7 +887,9 @@ class SMDSClient(BaseOSDUAPIClient):
             "sdpath": sdpath,
         }
 
-        url = urljoin(self.base_url, "utility/download-connection-string")
+        url = urljoin(
+            self.base_url, self.service_path, "utility/download-connection-string"
+        )
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -896,7 +918,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         ImpTokenRequest(**data)
 
-        url = urljoin(self.base_url, "imptoken")
+        url = urljoin(self.base_url, self.service_path, "imptoken")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -921,7 +943,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         RefreshTokenRequest(**data)
 
-        url = urljoin(self.base_url, "imptoken")
+        url = urljoin(self.base_url, self.service_path, "imptoken")
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -948,7 +970,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         ImpTokenPatchRequest(**data)
 
-        url = urljoin(self.base_url, "imptoken")
+        url = urljoin(self.base_url, self.service_path, "imptoken")
         response = requests.patch(url, headers=headers, json=data)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -982,7 +1004,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         ImpersonationTokenRequest(**data)
 
-        url = urljoin(self.base_url, "impersonation-token")
+        url = urljoin(self.base_url, self.service_path, "impersonation-token")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1008,7 +1030,7 @@ class SMDSClient(BaseOSDUAPIClient):
             }
         )
 
-        url = urljoin(self.base_url, "impersonation-token")
+        url = urljoin(self.base_url, self.service_path, "impersonation-token")
         response = requests.put(url, headers=headers)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1052,6 +1074,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "subproject/tenant/%s/subproject/%s" % (subprojectid, tenantid),
         )
         response = requests.post(url, headers=headers, json=data)
@@ -1080,6 +1103,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "subproject/tenant/%s/subproject/%s" % (subprojectid, tenantid),
         )
         response = requests.get(url, headers=headers, params=params)
@@ -1103,6 +1127,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "subproject/tenant/%s/subproject/%s" % (subprojectid, tenantid),
         )
         response = requests.delete(url, headers=headers)
@@ -1147,6 +1172,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "subproject/tenant/%s/subproject/%s" % (tenantid, subprojectid),
         )
         response = requests.patch(url, headers=headers, params=params, json=data)
@@ -1167,7 +1193,9 @@ class SMDSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "subproject/tenant/%s" % tenantid)
+        url = urljoin(
+            self.base_url, self.service_path, "subproject/tenant/%s" % tenantid
+        )
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1197,7 +1225,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         TenantCreateBody(**data)
 
-        url = urljoin(self.base_url, "tenant/%s" % tenantid)
+        url = urljoin(self.base_url, self.service_path, "tenant/%s" % tenantid)
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1216,7 +1244,7 @@ class SMDSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "tenant/%s" % tenantid)
+        url = urljoin(self.base_url, self.service_path, "tenant/%s" % tenantid)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1239,7 +1267,7 @@ class SMDSClient(BaseOSDUAPIClient):
             "datapartition": datapartition,
         }
 
-        url = urljoin(self.base_url, "tenant/sdpath")
+        url = urljoin(self.base_url, self.service_path, "tenant/sdpath")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1268,7 +1296,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         UserAddRequest(**data)
 
-        url = urljoin(self.base_url, "user")
+        url = urljoin(self.base_url, self.service_path, "user")
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1291,7 +1319,7 @@ class SMDSClient(BaseOSDUAPIClient):
             "sdpath": sdpath,
         }
 
-        url = urljoin(self.base_url, "user")
+        url = urljoin(self.base_url, self.service_path, "user")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1316,7 +1344,7 @@ class SMDSClient(BaseOSDUAPIClient):
             "path": path,
         }
 
-        url = urljoin(self.base_url, "user")
+        url = urljoin(self.base_url, self.service_path, "user")
         response = requests.delete(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1339,7 +1367,7 @@ class SMDSClient(BaseOSDUAPIClient):
             "sdpath": sdpath,
         }
 
-        url = urljoin(self.base_url, "user/roles")
+        url = urljoin(self.base_url, self.service_path, "user/roles")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1364,7 +1392,7 @@ class SMDSClient(BaseOSDUAPIClient):
             "sdpath": sdpath,
         }
 
-        url = urljoin(self.base_url, "app")
+        url = urljoin(self.base_url, self.service_path, "app")
         response = requests.post(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1387,7 +1415,7 @@ class SMDSClient(BaseOSDUAPIClient):
             "sdpath": sdpath,
         }
 
-        url = urljoin(self.base_url, "app")
+        url = urljoin(self.base_url, self.service_path, "app")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1412,7 +1440,7 @@ class SMDSClient(BaseOSDUAPIClient):
             "sdpath": sdpath,
         }
 
-        url = urljoin(self.base_url, "app/trusted")
+        url = urljoin(self.base_url, self.service_path, "app/trusted")
         response = requests.post(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1435,7 +1463,7 @@ class SMDSClient(BaseOSDUAPIClient):
             "sdpath": sdpath,
         }
 
-        url = urljoin(self.base_url, "app/trusted")
+        url = urljoin(self.base_url, self.service_path, "app/trusted")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1465,7 +1493,7 @@ class SMDSClient(BaseOSDUAPIClient):
 
         DatasetBulkDeleteBody(**data)
 
-        url = urljoin(self.base_url, "operation/bulk-delete")
+        url = urljoin(self.base_url, self.service_path, "operation/bulk-delete")
         response = requests.put(url, headers=headers, params=params, json=data)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)
@@ -1484,7 +1512,9 @@ class SMDSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "operation/bulk-delete/%s" % operation_id)
+        url = urljoin(
+            self.base_url, self.service_path, "operation/bulk-delete/%s" % operation_id
+        )
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SMDSAPIError(response.text, response.status_code)

@@ -12,6 +12,8 @@ class PWSAPIError(OSDUAPIError):
 
 
 class PWSClient(BaseOSDUAPIClient):
+    service_path = "/api/pws/v1/"
+
     def list_projects(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
@@ -21,7 +23,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects")
+        url = urljoin(self.base_url, self.service_path, "projects")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -36,7 +38,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects")
+        url = urljoin(self.base_url, self.service_path, "projects")
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -62,7 +64,7 @@ class PWSClient(BaseOSDUAPIClient):
 
         StatusDto(**data)
 
-        url = urljoin(self.base_url, "projects/%s/status" % id)
+        url = urljoin(self.base_url, self.service_path, "projects/%s/status" % id)
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -81,7 +83,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects/%s/resources" % id)
+        url = urljoin(self.base_url, self.service_path, "projects/%s/resources" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -100,7 +102,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects/%s/resources" % id)
+        url = urljoin(self.base_url, self.service_path, "projects/%s/resources" % id)
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -119,7 +121,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects/%s/resources" % id)
+        url = urljoin(self.base_url, self.service_path, "projects/%s/resources" % id)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -138,7 +140,9 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects/%s/lifecycleevent" % id)
+        url = urljoin(
+            self.base_url, self.service_path, "projects/%s/lifecycleevent" % id
+        )
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -157,7 +161,9 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects/%s/lifecycleevent" % id)
+        url = urljoin(
+            self.base_url, self.service_path, "projects/%s/lifecycleevent" % id
+        )
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -176,7 +182,9 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects/%s/lifecycleevent" % id)
+        url = urljoin(
+            self.base_url, self.service_path, "projects/%s/lifecycleevent" % id
+        )
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -195,7 +203,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "projects/%s" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -214,7 +222,9 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "projects/%s/wip-resources" % id)
+        url = urljoin(
+            self.base_url, self.service_path, "projects/%s/wip-resources" % id
+        )
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -229,7 +239,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -244,7 +254,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "_ah/readiness_check")
+        url = urljoin(self.base_url, self.service_path, "_ah/readiness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)
@@ -259,7 +269,7 @@ class PWSClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "_ah/liveness_check")
+        url = urljoin(self.base_url, self.service_path, "_ah/liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PWSAPIError(response.text, response.status_code)

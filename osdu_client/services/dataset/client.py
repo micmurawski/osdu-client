@@ -14,6 +14,8 @@ class DatasetAPIError(OSDUAPIError):
 
 
 class DatasetClient(BaseOSDUAPIClient):
+    service_path = "/api/dataset/v1/"
+
     def update_register_dataset(
         self,
         *,
@@ -33,7 +35,7 @@ class DatasetClient(BaseOSDUAPIClient):
 
         CreateDatasetRegistryRequest(**data)
 
-        url = urljoin(self.base_url, "registerDataset")
+        url = urljoin(self.base_url, self.service_path, "registerDataset")
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)
@@ -59,7 +61,7 @@ class DatasetClient(BaseOSDUAPIClient):
         if expiry_time is not None:
             params["expiryTime"] = expiry_time
 
-        url = urljoin(self.base_url, "storageInstructions")
+        url = urljoin(self.base_url, self.service_path, "storageInstructions")
         response = requests.post(url, headers=headers, params=params)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)
@@ -82,7 +84,7 @@ class DatasetClient(BaseOSDUAPIClient):
             "kindSubType": kind_sub_type,
         }
 
-        url = urljoin(self.base_url, "revokeURL")
+        url = urljoin(self.base_url, self.service_path, "revokeURL")
         response = requests.post(url, headers=headers, params=params)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)
@@ -108,7 +110,7 @@ class DatasetClient(BaseOSDUAPIClient):
         if expiry_time is not None:
             params["expiryTime"] = expiry_time
 
-        url = urljoin(self.base_url, "retrievalInstructions")
+        url = urljoin(self.base_url, self.service_path, "retrievalInstructions")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)
@@ -138,7 +140,7 @@ class DatasetClient(BaseOSDUAPIClient):
 
         GetDatasetRegistryRequest(**data)
 
-        url = urljoin(self.base_url, "retrievalInstructions")
+        url = urljoin(self.base_url, self.service_path, "retrievalInstructions")
         response = requests.post(url, headers=headers, params=params, json=data)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)
@@ -161,7 +163,7 @@ class DatasetClient(BaseOSDUAPIClient):
             "id": id,
         }
 
-        url = urljoin(self.base_url, "getDatasetRegistry")
+        url = urljoin(self.base_url, self.service_path, "getDatasetRegistry")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)
@@ -186,7 +188,7 @@ class DatasetClient(BaseOSDUAPIClient):
 
         GetDatasetRegistryRequest(**data)
 
-        url = urljoin(self.base_url, "getDatasetRegistry")
+        url = urljoin(self.base_url, self.service_path, "getDatasetRegistry")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)
@@ -201,7 +203,7 @@ class DatasetClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "liveness_check")
+        url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)
@@ -216,7 +218,7 @@ class DatasetClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise DatasetAPIError(response.text, response.status_code)

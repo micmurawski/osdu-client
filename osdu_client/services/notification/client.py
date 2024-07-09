@@ -9,6 +9,8 @@ class NotificationAPIError(OSDUAPIError):
 
 
 class NotificationClient(BaseOSDUAPIClient):
+    service_path = "/api/notification/v1"
+
     def record_changed(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
@@ -18,7 +20,7 @@ class NotificationClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "push-handlers/records-changed")
+        url = urljoin(self.base_url, self.service_path, "push-handlers/records-changed")
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise NotificationAPIError(response.text, response.status_code)
@@ -33,7 +35,7 @@ class NotificationClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise NotificationAPIError(response.text, response.status_code)

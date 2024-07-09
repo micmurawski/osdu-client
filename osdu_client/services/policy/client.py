@@ -12,6 +12,8 @@ class PolicyAPIError(OSDUAPIError):
 
 
 class PolicyClient(BaseOSDUAPIClient):
+    service_path = ""
+
     def home_page(
         self,
         *,
@@ -30,7 +32,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if user_agent is not None:
             headers["user-agent"] = user_agent
 
-        url = urljoin(self.base_url, "")
+        url = urljoin(self.base_url, self.service_path, "")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -57,7 +59,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if x_user_id is not None:
             headers["x-user-id"] = x_user_id
 
-        url = urljoin(self.base_url, "api/policy/v1/policies")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/policies")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -85,7 +87,9 @@ class PolicyClient(BaseOSDUAPIClient):
         if x_user_id is not None:
             headers["x-user-id"] = x_user_id
 
-        url = urljoin(self.base_url, "api/policy/v1/policies/%s" % policy_id)
+        url = urljoin(
+            self.base_url, self.service_path, "api/policy/v1/policies/%s" % policy_id
+        )
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -114,7 +118,9 @@ class PolicyClient(BaseOSDUAPIClient):
             headers["x-user-id"] = x_user_id
 
         url = urljoin(
-            self.base_url, "api/policy/v1/policies/osdu/instance/%s" % policy_id
+            self.base_url,
+            self.service_path,
+            "api/policy/v1/policies/osdu/instance/%s" % policy_id,
         )
         response = requests.get(url, headers=headers)
         if not response.ok:
@@ -146,6 +152,7 @@ class PolicyClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "api/policy/v1/policies/osdu/partition/%s/%s" % (policy_id, data_partition),
         )
         response = requests.get(url, headers=headers)
@@ -178,6 +185,7 @@ class PolicyClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "api/policy/v1/policies/osdu/partition/%s/%s" % (policy_id, data_partition),
         )
         response = requests.delete(url, headers=headers)
@@ -210,6 +218,7 @@ class PolicyClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url,
+            self.service_path,
             "api/policy/v1/policies/osdu/partition/%s/%s" % (policy_id, data_partition),
         )
         response = requests.put(url, headers=headers)
@@ -246,7 +255,9 @@ class PolicyClient(BaseOSDUAPIClient):
         if include_auth is not None:
             params["include_auth"] = include_auth
 
-        url = urljoin(self.base_url, "api/policy/v1/evaluations/query")
+        url = urljoin(
+            self.base_url, self.service_path, "api/policy/v1/evaluations/query"
+        )
         response = requests.post(url, headers=headers, params=params)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -284,7 +295,7 @@ class PolicyClient(BaseOSDUAPIClient):
 
         TranslateItem(**data)
 
-        url = urljoin(self.base_url, "api/policy/v1/translate")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/translate")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -308,7 +319,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if user_agent is not None:
             headers["user-agent"] = user_agent
 
-        url = urljoin(self.base_url, "api/policy/v1/info")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -343,7 +354,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if instrument is not None:
             params["instrument"] = instrument
 
-        url = urljoin(self.base_url, "api/policy/v1/compile")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/compile")
         response = requests.post(url, headers=headers, params=params)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -375,7 +386,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if all_data is not None:
             params["all_data"] = all_data
 
-        url = urljoin(self.base_url, "api/policy/v1/tenant")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/tenant")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -413,7 +424,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if polling_max_delay_seconds is not None:
             params["polling_max_delay_seconds"] = polling_max_delay_seconds
 
-        url = urljoin(self.base_url, "api/policy/v1/tenant")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/tenant")
         response = requests.put(url, headers=headers, params=params)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -440,7 +451,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if x_user_id is not None:
             headers["x-user-id"] = x_user_id
 
-        url = urljoin(self.base_url, "api/policy/v1/tenant")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/tenant")
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -464,7 +475,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if user_agent is not None:
             headers["user-agent"] = user_agent
 
-        url = urljoin(self.base_url, "api/policy/v1/health")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/health")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -488,7 +499,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if user_agent is not None:
             headers["user-agent"] = user_agent
 
-        url = urljoin(self.base_url, "api/policy/v1/ready")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/ready")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -521,7 +532,9 @@ class PolicyClient(BaseOSDUAPIClient):
         if template is not None:
             params["template"] = template
 
-        url = urljoin(self.base_url, "api/policy/v1/validate/%s" % policy_id)
+        url = urljoin(
+            self.base_url, self.service_path, "api/policy/v1/validate/%s" % policy_id
+        )
         response = requests.put(url, headers=headers, params=params)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -548,7 +561,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if x_user_id is not None:
             headers["x-user-id"] = x_user_id
 
-        url = urljoin(self.base_url, "api/policy/v1/backup")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/backup")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -580,7 +593,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if force is not None:
             params["force"] = force
 
-        url = urljoin(self.base_url, "api/policy/v1/bootstrap")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/bootstrap")
         response = requests.post(url, headers=headers, params=params)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
@@ -607,7 +620,7 @@ class PolicyClient(BaseOSDUAPIClient):
         if x_user_id is not None:
             headers["x-user-id"] = x_user_id
 
-        url = urljoin(self.base_url, "api/policy/v1/config")
+        url = urljoin(self.base_url, self.service_path, "api/policy/v1/config")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)

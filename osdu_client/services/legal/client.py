@@ -16,6 +16,8 @@ class LegalAPIError(OSDUAPIError):
 
 
 class LegalClient(BaseOSDUAPIClient):
+    service_path = "/api/legal/v1/"
+
     def list_legaltags(
         self,
         *,
@@ -33,7 +35,7 @@ class LegalClient(BaseOSDUAPIClient):
         if valid is not None:
             params["valid"] = valid
 
-        url = urljoin(self.base_url, "legaltags")
+        url = urljoin(self.base_url, self.service_path, "legaltags")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -70,7 +72,7 @@ class LegalClient(BaseOSDUAPIClient):
 
         UpdateLegalTag(**data)
 
-        url = urljoin(self.base_url, "legaltags")
+        url = urljoin(self.base_url, self.service_path, "legaltags")
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -101,7 +103,7 @@ class LegalClient(BaseOSDUAPIClient):
 
         LegalTagDto(**data)
 
-        url = urljoin(self.base_url, "legaltags")
+        url = urljoin(self.base_url, self.service_path, "legaltags")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -126,7 +128,7 @@ class LegalClient(BaseOSDUAPIClient):
 
         RequestLegalTags(**data)
 
-        url = urljoin(self.base_url, "legaltags:validate")
+        url = urljoin(self.base_url, self.service_path, "legaltags:validate")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -168,7 +170,7 @@ class LegalClient(BaseOSDUAPIClient):
 
         SearchLegalTag(**data)
 
-        url = urljoin(self.base_url, "legaltags:query")
+        url = urljoin(self.base_url, self.service_path, "legaltags:query")
         response = requests.post(url, headers=headers, params=params, json=data)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -193,7 +195,7 @@ class LegalClient(BaseOSDUAPIClient):
 
         RequestLegalTags(**data)
 
-        url = urljoin(self.base_url, "legaltags:batchRetrieve")
+        url = urljoin(self.base_url, self.service_path, "legaltags:batchRetrieve")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -208,7 +210,7 @@ class LegalClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "legaltags:properties")
+        url = urljoin(self.base_url, self.service_path, "legaltags:properties")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -227,7 +229,7 @@ class LegalClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "legaltags/%s" % name)
+        url = urljoin(self.base_url, self.service_path, "legaltags/%s" % name)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -246,7 +248,7 @@ class LegalClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "legaltags/%s" % name)
+        url = urljoin(self.base_url, self.service_path, "legaltags/%s" % name)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -261,7 +263,7 @@ class LegalClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "jobs/updateLegalTagStatus")
+        url = urljoin(self.base_url, self.service_path, "jobs/updateLegalTagStatus")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -276,7 +278,7 @@ class LegalClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -291,7 +293,7 @@ class LegalClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "_ah/readiness_check")
+        url = urljoin(self.base_url, self.service_path, "_ah/readiness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)
@@ -306,7 +308,7 @@ class LegalClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "_ah/liveness_check")
+        url = urljoin(self.base_url, self.service_path, "_ah/liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise LegalAPIError(response.text, response.status_code)

@@ -17,6 +17,8 @@ class RegisterAPIError(OSDUAPIError):
 
 
 class RegisterClient(BaseOSDUAPIClient):
+    service_path = "/api/register/v1"
+
     def get_ddms(
         self,
         *,
@@ -30,7 +32,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "ddms/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "ddms/%s" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -49,7 +51,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "ddms/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "ddms/%s" % id)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -86,7 +88,7 @@ class RegisterClient(BaseOSDUAPIClient):
 
         ddms(**data)
 
-        url = urljoin(self.base_url, "ddms")
+        url = urljoin(self.base_url, self.service_path, "ddms")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -109,7 +111,7 @@ class RegisterClient(BaseOSDUAPIClient):
             "type": type,
         }
 
-        url = urljoin(self.base_url, "ddms")
+        url = urljoin(self.base_url, self.service_path, "ddms")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -130,7 +132,9 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "ddms/%s/%s/%s" % (id, type, localid))
+        url = urljoin(
+            self.base_url, self.service_path, "ddms/%s/%s/%s" % (id, type, localid)
+        )
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -149,7 +153,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "action/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "action/%s" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -168,7 +172,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "action/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "action/%s" % id)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -211,7 +215,7 @@ class RegisterClient(BaseOSDUAPIClient):
 
         createAction(**data)
 
-        url = urljoin(self.base_url, "action")
+        url = urljoin(self.base_url, self.service_path, "action")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -239,7 +243,7 @@ class RegisterClient(BaseOSDUAPIClient):
 
         testAction(**data)
 
-        url = urljoin(self.base_url, "action:test")
+        url = urljoin(self.base_url, self.service_path, "action:test")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -276,7 +280,7 @@ class RegisterClient(BaseOSDUAPIClient):
 
         record(**data)
 
-        url = urljoin(self.base_url, "action:retrieve")
+        url = urljoin(self.base_url, self.service_path, "action:retrieve")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -313,7 +317,7 @@ class RegisterClient(BaseOSDUAPIClient):
 
         subscription(**data)
 
-        url = urljoin(self.base_url, "subscription")
+        url = urljoin(self.base_url, self.service_path, "subscription")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -332,7 +336,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "subscription/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "subscription/%s" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -351,7 +355,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "subscription/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "subscription/%s" % id)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -380,7 +384,7 @@ class RegisterClient(BaseOSDUAPIClient):
 
         secret(**data)
 
-        url = urljoin(self.base_url, "subscription/%s/secret" % id)
+        url = urljoin(self.base_url, self.service_path, "subscription/%s/secret" % id)
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -395,7 +399,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "topics")
+        url = urljoin(self.base_url, self.service_path, "topics")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
@@ -410,7 +414,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)

@@ -16,6 +16,8 @@ class FileAPIError(OSDUAPIError):
 
 
 class FileClient(BaseOSDUAPIClient):
+    service_path = "VALID_FILE_SERVICE_BASE_URL"
+
     def create_v2_get_location(
         self,
         *,
@@ -35,7 +37,7 @@ class FileClient(BaseOSDUAPIClient):
 
         LocationRequest(**data)
 
-        url = urljoin(self.base_url, "v2/getLocation")
+        url = urljoin(self.base_url, self.service_path, "v2/getLocation")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -50,7 +52,7 @@ class FileClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "v2/files/uploadURL")
+        url = urljoin(self.base_url, self.service_path, "v2/files/uploadURL")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -87,7 +89,7 @@ class FileClient(BaseOSDUAPIClient):
 
         Record(**data)
 
-        url = urljoin(self.base_url, "v2/files/metadata")
+        url = urljoin(self.base_url, self.service_path, "v2/files/metadata")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -106,7 +108,7 @@ class FileClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "v2/files/%s/metadata" % id)
+        url = urljoin(self.base_url, self.service_path, "v2/files/%s/metadata" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -125,7 +127,7 @@ class FileClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "v2/files/%s/metadata" % id)
+        url = urljoin(self.base_url, self.service_path, "v2/files/%s/metadata" % id)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -149,7 +151,7 @@ class FileClient(BaseOSDUAPIClient):
         if expiry_time is not None:
             params["expiryTime"] = expiry_time
 
-        url = urljoin(self.base_url, "v2/files/%s/downloadURL" % id)
+        url = urljoin(self.base_url, self.service_path, "v2/files/%s/downloadURL" % id)
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -174,7 +176,7 @@ class FileClient(BaseOSDUAPIClient):
 
         FileLocationRequest(**data)
 
-        url = urljoin(self.base_url, "v2/getFileLocation")
+        url = urljoin(self.base_url, self.service_path, "v2/getFileLocation")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -199,7 +201,7 @@ class FileClient(BaseOSDUAPIClient):
 
         deliveryGetFileSignedURLRequest(**data)
 
-        url = urljoin(self.base_url, "v2/delivery/getFileSignedUrl")
+        url = urljoin(self.base_url, self.service_path, "v2/delivery/getFileSignedUrl")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -236,7 +238,7 @@ class FileClient(BaseOSDUAPIClient):
 
         FileListRequest(**data)
 
-        url = urljoin(self.base_url, "v2/getFileList")
+        url = urljoin(self.base_url, self.service_path, "v2/getFileList")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -251,7 +253,7 @@ class FileClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "v2/info")
+        url = urljoin(self.base_url, self.service_path, "v2/info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -266,7 +268,9 @@ class FileClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "v2/file-collections/storageInstructions")
+        url = urljoin(
+            self.base_url, self.service_path, "v2/file-collections/storageInstructions"
+        )
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -281,7 +285,11 @@ class FileClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "v2/file-collections/retrievalInstructions")
+        url = urljoin(
+            self.base_url,
+            self.service_path,
+            "v2/file-collections/retrievalInstructions",
+        )
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
@@ -296,7 +304,7 @@ class FileClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "v2/file-collections/copy")
+        url = urljoin(self.base_url, self.service_path, "v2/file-collections/copy")
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)

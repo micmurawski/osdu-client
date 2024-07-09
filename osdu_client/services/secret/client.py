@@ -13,6 +13,8 @@ class SecretAPIError(OSDUAPIError):
 
 
 class SecretClient(BaseOSDUAPIClient):
+    service_path = "http://localhost:8080/api/secret/v1"
+
     def get_secret(
         self,
         *,
@@ -26,7 +28,7 @@ class SecretClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "secrets/%s" % secret_name)
+        url = urljoin(self.base_url, self.service_path, "secrets/%s" % secret_name)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -64,7 +66,7 @@ class SecretClient(BaseOSDUAPIClient):
 
         Secret(**data)
 
-        url = urljoin(self.base_url, "secrets/%s" % secret_name)
+        url = urljoin(self.base_url, self.service_path, "secrets/%s" % secret_name)
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -83,7 +85,7 @@ class SecretClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "secrets/%s" % secret_name)
+        url = urljoin(self.base_url, self.service_path, "secrets/%s" % secret_name)
         response = requests.delete(url, headers=headers)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -98,7 +100,7 @@ class SecretClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "secrets")
+        url = urljoin(self.base_url, self.service_path, "secrets")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -135,7 +137,7 @@ class SecretClient(BaseOSDUAPIClient):
 
         Secret(**data)
 
-        url = urljoin(self.base_url, "secrets")
+        url = urljoin(self.base_url, self.service_path, "secrets")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -150,7 +152,7 @@ class SecretClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "secrets:retrieve")
+        url = urljoin(self.base_url, self.service_path, "secrets:retrieve")
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -169,7 +171,9 @@ class SecretClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "secrets/recover/%s" % secret_name)
+        url = urljoin(
+            self.base_url, self.service_path, "secrets/recover/%s" % secret_name
+        )
         response = requests.post(url, headers=headers)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -188,7 +192,9 @@ class SecretClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "secrets/deleted/%s" % secret_name)
+        url = urljoin(
+            self.base_url, self.service_path, "secrets/deleted/%s" % secret_name
+        )
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -203,7 +209,7 @@ class SecretClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)
@@ -218,7 +224,7 @@ class SecretClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "health")
+        url = urljoin(self.base_url, self.service_path, "health")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SecretAPIError(response.text, response.status_code)

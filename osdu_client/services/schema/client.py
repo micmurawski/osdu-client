@@ -14,6 +14,8 @@ class SchemaAPIError(OSDUAPIError):
 
 
 class SchemaClient(BaseOSDUAPIClient):
+    service_path = "/api/schema-service/v1"
+
     def put_schemas_system(
         self,
         *,
@@ -35,7 +37,7 @@ class SchemaClient(BaseOSDUAPIClient):
 
         SchemaRequest(**data)
 
-        url = urljoin(self.base_url, "schemas/system")
+        url = urljoin(self.base_url, self.service_path, "schemas/system")
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
@@ -88,7 +90,7 @@ class SchemaClient(BaseOSDUAPIClient):
         if offset is not None:
             params["offset"] = offset
 
-        url = urljoin(self.base_url, "schema")
+        url = urljoin(self.base_url, self.service_path, "schema")
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
@@ -115,7 +117,7 @@ class SchemaClient(BaseOSDUAPIClient):
 
         SchemaRequest(**data)
 
-        url = urljoin(self.base_url, "schema")
+        url = urljoin(self.base_url, self.service_path, "schema")
         response = requests.put(url, headers=headers, json=data)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
@@ -142,7 +144,7 @@ class SchemaClient(BaseOSDUAPIClient):
 
         SchemaRequest(**data)
 
-        url = urljoin(self.base_url, "schema")
+        url = urljoin(self.base_url, self.service_path, "schema")
         response = requests.post(url, headers=headers, json=data)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
@@ -161,7 +163,7 @@ class SchemaClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "schema/%s" % id)
+        url = urljoin(self.base_url, self.service_path, "schema/%s" % id)
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
@@ -176,7 +178,7 @@ class SchemaClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "liveness_check")
+        url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
@@ -191,7 +193,7 @@ class SchemaClient(BaseOSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        url = urljoin(self.base_url, "info")
+        url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
