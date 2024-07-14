@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     CursorQueryRequest,
     QueryRequest,
@@ -12,7 +17,7 @@ class SearchAPIError(OSDUAPIError):
     pass
 
 
-class SearchClient(BaseOSDUAPIClient):
+class SearchClient(OSDUAPIClient):
     service_path = "/api/search/v2/"
 
     def query_with_cursor(
@@ -31,7 +36,7 @@ class SearchClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -59,7 +64,7 @@ class SearchClient(BaseOSDUAPIClient):
         if cursor is not None:
             data["cursor"] = cursor
 
-        CursorQueryRequest(**data)
+        validate_data(data, CursorQueryRequest, SearchAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query_with_cursor")
         response = requests.post(url, headers=headers, json=data)
@@ -84,7 +89,7 @@ class SearchClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -114,7 +119,7 @@ class SearchClient(BaseOSDUAPIClient):
         if offset is not None:
             data["offset"] = offset
 
-        QueryRequest(**data)
+        validate_data(data, QueryRequest, SearchAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query")
         response = requests.post(url, headers=headers, json=data)
@@ -125,7 +130,7 @@ class SearchClient(BaseOSDUAPIClient):
     def get_readiness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -140,7 +145,7 @@ class SearchClient(BaseOSDUAPIClient):
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -155,7 +160,7 @@ class SearchClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

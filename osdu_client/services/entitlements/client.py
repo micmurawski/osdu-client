@@ -1,20 +1,23 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
 
 
 class EntitlementsAPIError(OSDUAPIError):
     pass
 
 
-class EntitlementsClient(BaseOSDUAPIClient):
+class EntitlementsClient(OSDUAPIClient):
     service_path = "/api/entitlements/v2"
 
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -29,7 +32,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
     def get_readiness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -41,7 +44,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
-    def list_groups(
+    def get_groups(
         self,
         *,
         on_behalf_of: str | None = None,
@@ -49,7 +52,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -74,7 +77,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -97,7 +100,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -113,15 +116,15 @@ class EntitlementsClient(BaseOSDUAPIClient):
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
-    def patch_groups(
+    def update_groups(
         self,
         *,
-        update_group_request: dict,
+        update_group_request: list[dict],
         group_email: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -137,7 +140,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
-    def list_group_members(
+    def get_groups_members(
         self,
         *,
         group_email: str,
@@ -146,7 +149,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -174,7 +177,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -200,7 +203,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -223,7 +226,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -235,7 +238,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
-    def list_member_groups(
+    def get_members_groups(
         self,
         *,
         member_email: str,
@@ -245,7 +248,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -270,7 +273,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
     def initiate_tenant(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -282,41 +285,10 @@ class EntitlementsClient(BaseOSDUAPIClient):
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
-    def list_partition_groups(
-        self,
-        *,
-        type: str,
-        cursor: str | None = None,
-        limit: str | None = None,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
-    ) -> dict:
-        headers = self.auth.headers
-        if data_partition_id:
-            headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
-
-        params = {
-            "type": type,
-        }
-        if cursor is not None:
-            params["cursor"] = cursor
-        if limit is not None:
-            params["limit"] = limit
-
-        url = urljoin(
-            self.base_url, self.service_path, "api/entitlements/v2/groups/all"
-        )
-        response = requests.get(url, headers=headers, params=params)
-        if not response.ok:
-            raise EntitlementsAPIError(response.text, response.status_code)
-        return response.json()
-
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -336,7 +308,7 @@ class EntitlementsClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -348,6 +320,37 @@ class EntitlementsClient(BaseOSDUAPIClient):
 
         url = urljoin(
             self.base_url, self.service_path, "groups/%s/membersCount" % group_email
+        )
+        response = requests.get(url, headers=headers, params=params)
+        if not response.ok:
+            raise EntitlementsAPIError(response.text, response.status_code)
+        return response.json()
+
+    def list_partition_groups(
+        self,
+        *,
+        type: str,
+        cursor: str | None = None,
+        limit: str | None = None,
+        data_partition_id: str | None = None,
+        tenant: str | None = None,
+    ) -> dict:
+        headers = self.auth.get_headers()
+        if data_partition_id:
+            headers["data-partition-id"] = data_partition_id
+        if tenant:
+            headers["tenant"] = tenant
+
+        params = {
+            "type": type,
+        }
+        if cursor is not None:
+            params["cursor"] = cursor
+        if limit is not None:
+            params["limit"] = limit
+
+        url = urljoin(
+            self.base_url, self.service_path, "api/entitlements/v2/groups/all"
         )
         response = requests.get(url, headers=headers, params=params)
         if not response.ok:

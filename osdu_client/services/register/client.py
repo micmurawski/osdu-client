@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     ddms,
     createAction,
@@ -16,7 +21,7 @@ class RegisterAPIError(OSDUAPIError):
     pass
 
 
-class RegisterClient(BaseOSDUAPIClient):
+class RegisterClient(OSDUAPIClient):
     service_path = "/api/register/v1"
 
     def get_ddms(
@@ -26,7 +31,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -45,7 +50,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -68,7 +73,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -86,7 +91,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if interfaces is not None:
             data["interfaces"] = interfaces
 
-        ddms(**data)
+        validate_data(data, ddms, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "ddms")
         response = requests.post(url, headers=headers, json=data)
@@ -101,7 +106,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -126,7 +131,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -147,7 +152,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -166,7 +171,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -191,7 +196,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -213,7 +218,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if filter is not None:
             data["filter"] = filter
 
-        createAction(**data)
+        validate_data(data, createAction, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action")
         response = requests.post(url, headers=headers, json=data)
@@ -229,7 +234,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -241,7 +246,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if test_payload is not None:
             data["testPayload"] = test_payload
 
-        testAction(**data)
+        validate_data(data, testAction, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action:test")
         response = requests.post(url, headers=headers, json=data)
@@ -260,7 +265,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -278,7 +283,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if data is not None:
             data["data"] = data
 
-        record(**data)
+        validate_data(data, record, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action:retrieve")
         response = requests.post(url, headers=headers, json=data)
@@ -297,7 +302,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -315,7 +320,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if secret is not None:
             data["secret"] = secret
 
-        subscription(**data)
+        validate_data(data, subscription, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "subscription")
         response = requests.post(url, headers=headers, json=data)
@@ -330,7 +335,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -349,7 +354,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -370,7 +375,7 @@ class RegisterClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -382,7 +387,7 @@ class RegisterClient(BaseOSDUAPIClient):
         if value is not None:
             data["value"] = value
 
-        secret(**data)
+        validate_data(data, secret, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "subscription/%s/secret" % id)
         response = requests.put(url, headers=headers, json=data)
@@ -390,10 +395,10 @@ class RegisterClient(BaseOSDUAPIClient):
             raise RegisterAPIError(response.text, response.status_code)
         return response.json()
 
-    def list_topics(
+    def get_topics(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -408,7 +413,7 @@ class RegisterClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

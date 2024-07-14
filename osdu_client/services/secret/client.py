@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     Secret,
     Secret,
@@ -12,7 +17,7 @@ class SecretAPIError(OSDUAPIError):
     pass
 
 
-class SecretClient(BaseOSDUAPIClient):
+class SecretClient(OSDUAPIClient):
     service_path = "http://localhost:8080/api/secret/v1"
 
     def get_secret(
@@ -22,7 +27,7 @@ class SecretClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -46,7 +51,7 @@ class SecretClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -64,7 +69,7 @@ class SecretClient(BaseOSDUAPIClient):
         if enabled is not None:
             data["enabled"] = enabled
 
-        Secret(**data)
+        validate_data(data, Secret, SecretAPIError)
 
         url = urljoin(self.base_url, self.service_path, "secrets/%s" % secret_name)
         response = requests.put(url, headers=headers, json=data)
@@ -79,7 +84,7 @@ class SecretClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -94,7 +99,7 @@ class SecretClient(BaseOSDUAPIClient):
     def list_secrets(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -117,7 +122,7 @@ class SecretClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -135,7 +140,7 @@ class SecretClient(BaseOSDUAPIClient):
         if enabled is not None:
             data["enabled"] = enabled
 
-        Secret(**data)
+        validate_data(data, Secret, SecretAPIError)
 
         url = urljoin(self.base_url, self.service_path, "secrets")
         response = requests.post(url, headers=headers, json=data)
@@ -143,10 +148,10 @@ class SecretClient(BaseOSDUAPIClient):
             raise SecretAPIError(response.text, response.status_code)
         return response.json()
 
-    def retrieve_secrets(
+    def create_secrets_get(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -158,14 +163,14 @@ class SecretClient(BaseOSDUAPIClient):
             raise SecretAPIError(response.text, response.status_code)
         return response.json()
 
-    def recover_secret(
+    def create_secrets_recover(
         self,
         *,
         secret_name: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -179,14 +184,14 @@ class SecretClient(BaseOSDUAPIClient):
             raise SecretAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_deleted_secrets(
+    def get_secrets_deleted(
         self,
         *,
         secret_name: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -203,7 +208,7 @@ class SecretClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -218,7 +223,7 @@ class SecretClient(BaseOSDUAPIClient):
     def get_health(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

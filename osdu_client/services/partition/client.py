@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     PartitionInfo,
     PartitionInfo,
@@ -12,7 +17,7 @@ class PartitionAPIError(OSDUAPIError):
     pass
 
 
-class PartitionClient(BaseOSDUAPIClient):
+class PartitionClient(OSDUAPIClient):
     service_path = "/api/partition/v1"
 
     def get_partition(
@@ -22,7 +27,7 @@ class PartitionClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -34,7 +39,7 @@ class PartitionClient(BaseOSDUAPIClient):
             raise PartitionAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_partition(
+    def create_partitions(
         self,
         *,
         properties: dict,
@@ -42,7 +47,7 @@ class PartitionClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -52,7 +57,7 @@ class PartitionClient(BaseOSDUAPIClient):
             "properties": properties,
         }
 
-        PartitionInfo(**data)
+        validate_data(data, PartitionInfo, PartitionAPIError)
 
         url = urljoin(self.base_url, self.service_path, "partitions/%s" % partition_id)
         response = requests.post(url, headers=headers, json=data)
@@ -67,7 +72,7 @@ class PartitionClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -79,7 +84,7 @@ class PartitionClient(BaseOSDUAPIClient):
             raise PartitionAPIError(response.text, response.status_code)
         return response.json()
 
-    def patch_partition(
+    def update_partitions(
         self,
         *,
         properties: dict,
@@ -87,7 +92,7 @@ class PartitionClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -97,7 +102,7 @@ class PartitionClient(BaseOSDUAPIClient):
             "properties": properties,
         }
 
-        PartitionInfo(**data)
+        validate_data(data, PartitionInfo, PartitionAPIError)
 
         url = urljoin(self.base_url, self.service_path, "partitions/%s" % partition_id)
         response = requests.patch(url, headers=headers, json=data)
@@ -108,7 +113,7 @@ class PartitionClient(BaseOSDUAPIClient):
     def list_partitions(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -123,7 +128,7 @@ class PartitionClient(BaseOSDUAPIClient):
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -138,7 +143,7 @@ class PartitionClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

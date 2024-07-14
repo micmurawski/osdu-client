@@ -1,0 +1,507 @@
+openapi: 3.0.1
+info:
+  title: Search Service
+  description: Search service that provides a set of APIs to search records against Elasticsearch
+  contact:
+    name: OSDU Data Platform Team
+    email: dps@OSDU.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: '2.0'
+servers:
+  - url: /api/search/v2/
+security:
+  - Authorization: []
+tags:
+  - name: search-api
+    description: Service endpoints to search data in datalake
+  - name: health-check-api
+    description: Health Check API
+  - name: info
+    description: Version info endpoint
+paths:
+  /query_with_cursor:
+    post:
+      tags:
+        - search-api
+      summary: Queries the index using cursor for the input request criteria.
+      description: |-
+        The API supports full text search on string fields, range queries on date, numeric or string fields, along with geo-spatial search. 
+        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins` or `users.datalake.ops`. In addition, users must be a member of data groups to access the data. 
+        It can be used to retrieve large numbers of results (or even all results) from a single search request, in much the same way as you would use a cursor on a traditional database.
+      operationId: queryWithCursor
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CursorQueryRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CursorQueryResponse'
+        '400':
+          description: Invalid parameters were given on request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Search service scale-up is taking longer than expected. Wait 10 seconds and retry.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /query:
+    post:
+      tags:
+        - search-api
+      summary: Queries the index for the input request criteria.
+      description: |-
+        The API supports full text search on string fields, range queries on date, numeric or string fields, along with geo-spatial search. 
+         Required roles: `users.datalake.viewers` or  `users.datalake.editors` or `users.datalake.admins` or `users.datalake.ops`. In addition, users must be a member of data groups to access the data.
+      operationId: queryRecords
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QueryRequest'
+        required: true
+      responses:
+        '200':
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/QueryResponse'
+        '400':
+          description: Invalid parameters were given on request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '401':
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '403':
+          description: User not authorized to perform the action
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '404':
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '500':
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '502':
+          description: Search service scale-up is taking longer than expected. Wait 10 seconds and retry.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+      security:
+        - Authorization: []
+  /readiness_check:
+    get:
+      tags:
+        - health-check-api
+      summary: Readiness Check endpoint
+      description: For deployment available public `/readiness_check` endpoint.
+      operationId: readinessCheck
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /liveness_check:
+    get:
+      tags:
+        - health-check-api
+      summary: Liveness Check endpoint
+      description: ${healthCheckApi.livenessCheck.description}
+      operationId: livenessCheck
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        '502':
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        '503':
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /info:
+    get:
+      tags:
+        - info
+      summary: Version info
+      description: For deployment available public `/info` endpoint, which provides build and git related information.
+      operationId: info
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Version info.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionInfo'
+components:
+  schemas:
+    ByBoundingBox:
+      required:
+        - bottomRight
+        - topLeft
+      type: object
+      properties:
+        topLeft:
+          $ref: '#/components/schemas/Point'
+        bottomRight:
+          $ref: '#/components/schemas/Point'
+    ByDistance:
+      required:
+        - point
+      type: object
+      properties:
+        distance:
+          maximum: 9223372036854776000
+          type: number
+          format: double
+        point:
+          $ref: '#/components/schemas/Point'
+    ByGeoPolygon:
+      required:
+        - points
+      type: object
+      properties:
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+    ByIntersection:
+      required:
+        - polygons
+      type: object
+      properties:
+        polygons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Polygon'
+    ByWithinPolygon:
+      required:
+        - points
+      type: object
+      properties:
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+    CursorQueryRequest:
+      required:
+        - kind
+      type: object
+      properties:
+        kind:
+          type: object
+        limit:
+          minimum: 0
+          type: integer
+          format: int32
+        query:
+          type: string
+        highlightedFields:
+          type: array
+          items:
+            type: string
+        returnedFields:
+          type: array
+          items:
+            type: string
+        sort:
+          $ref: '#/components/schemas/SortQuery'
+        queryAsOwner:
+          type: boolean
+        trackTotalCount:
+          type: boolean
+        spatialFilter:
+          $ref: '#/components/schemas/SpatialFilter'
+        cursor:
+          type: string
+    Point:
+      type: object
+      properties:
+        latitude:
+          maximum: 90
+          minimum: -90
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+    Polygon:
+      type: object
+      properties:
+        points:
+          type: array
+          items:
+            $ref: '#/components/schemas/Point'
+    SortQuery:
+      type: object
+      properties:
+        field:
+          type: array
+          items:
+            type: string
+        order:
+          type: array
+          items:
+            type: string
+            enum:
+              - ASC
+              - DESC
+        filter:
+          type: array
+          items:
+            type: string
+    SpatialFilter:
+      required:
+        - field
+      type: object
+      properties:
+        field:
+          type: string
+        byBoundingBox:
+          $ref: '#/components/schemas/ByBoundingBox'
+        byDistance:
+          $ref: '#/components/schemas/ByDistance'
+        byGeoPolygon:
+          $ref: '#/components/schemas/ByGeoPolygon'
+        byIntersection:
+          $ref: '#/components/schemas/ByIntersection'
+        byWithinPolygon:
+          $ref: '#/components/schemas/ByWithinPolygon'
+    CursorQueryResponse:
+      type: object
+      properties:
+        cursor:
+          type: string
+        results:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        totalCount:
+          type: integer
+          format: int64
+    AppError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        message:
+          type: string
+    QueryRequest:
+      required:
+        - kind
+      type: object
+      properties:
+        kind:
+          type: object
+        limit:
+          minimum: 0
+          type: integer
+          format: int32
+        query:
+          type: string
+        highlightedFields:
+          type: array
+          items:
+            type: string
+        returnedFields:
+          type: array
+          items:
+            type: string
+        sort:
+          $ref: '#/components/schemas/SortQuery'
+        queryAsOwner:
+          type: boolean
+        trackTotalCount:
+          type: boolean
+        spatialFilter:
+          $ref: '#/components/schemas/SpatialFilter'
+        aggregateBy:
+          type: string
+        offset:
+          minimum: 0
+          type: integer
+          format: int32
+    AggregationResponse:
+      type: object
+      properties:
+        key:
+          type: string
+        count:
+          type: integer
+          format: int64
+    QueryResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
+        aggregations:
+          type: array
+          items:
+            $ref: '#/components/schemas/AggregationResponse'
+        totalCount:
+          type: integer
+          format: int64
+    ConnectedOuterService:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+    VersionInfo:
+      type: object
+      properties:
+        groupId:
+          type: string
+        artifactId:
+          type: string
+        version:
+          type: string
+        buildTime:
+          type: string
+        branch:
+          type: string
+        commitId:
+          type: string
+        commitMessage:
+          type: string
+        connectedOuterServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedOuterService'
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+      bearerFormat: Authorization

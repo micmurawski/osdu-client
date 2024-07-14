@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     StatusDto,
 )
@@ -11,13 +16,13 @@ class PWSAPIError(OSDUAPIError):
     pass
 
 
-class PWSClient(BaseOSDUAPIClient):
+class PWSClient(OSDUAPIClient):
     service_path = "/api/pws/v1/"
 
-    def list_projects(
+    def get_projects(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -29,10 +34,10 @@ class PWSClient(BaseOSDUAPIClient):
             raise PWSAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_projects(
+    def create_project(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -44,7 +49,7 @@ class PWSClient(BaseOSDUAPIClient):
             raise PWSAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_projects_status(
+    def change_projects_status(
         self,
         *,
         status: str | None = None,
@@ -52,7 +57,7 @@ class PWSClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -62,7 +67,7 @@ class PWSClient(BaseOSDUAPIClient):
         if status is not None:
             data["status"] = status
 
-        StatusDto(**data)
+        validate_data(data, StatusDto, PWSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "projects/%s/status" % id)
         response = requests.post(url, headers=headers, json=data)
@@ -70,14 +75,14 @@ class PWSClient(BaseOSDUAPIClient):
             raise PWSAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_projects_resources(
+    def get_project_resources(
         self,
         *,
         id: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -89,14 +94,14 @@ class PWSClient(BaseOSDUAPIClient):
             raise PWSAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_projects_resources(
+    def assign_projects_resources(
         self,
         *,
         id: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -115,7 +120,7 @@ class PWSClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -134,7 +139,7 @@ class PWSClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -148,14 +153,14 @@ class PWSClient(BaseOSDUAPIClient):
             raise PWSAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_projects_lifecycleevent(
+    def assign_projects_lifecycleevent(
         self,
         *,
         id: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -176,7 +181,7 @@ class PWSClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -197,7 +202,7 @@ class PWSClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -216,7 +221,7 @@ class PWSClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -233,7 +238,7 @@ class PWSClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -248,7 +253,7 @@ class PWSClient(BaseOSDUAPIClient):
     def get_readiness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -263,7 +268,7 @@ class PWSClient(BaseOSDUAPIClient):
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

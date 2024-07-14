@@ -1,0 +1,1032 @@
+{
+    "get:/api/rafs-ddms/v1/rocksampleanalyses/{record_id}/rca/data/{dataset_id}": [
+        "get_rock_sample_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `RockSampleAnalysis` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/rocksampleanalyses/{record_id}/rca/data": [
+        "upload_rock_sample_analysis_data",
+        "Post Data",
+        "Upload the bulk data for a given `RockSampleAnalysis` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rocksampleanalyses/{record_id}/rca/source": [
+        "get_rock_sample_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/rocksampleanalyses/{record_id}": [
+        "get_rock_sample_analysis_record",
+        "Get Record",
+        "Get the latest version of `RockSampleAnalysis` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/rocksampleanalyses/{record_id}": [
+        "soft_delete_rock_sample_analysis_record",
+        "Soft Delete Record",
+        "Delete the `RockSampleAnalysis` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rocksampleanalyses/{record_id}/versions": [
+        "get_record_rock_sample_analysis_versions",
+        "Get Record Versions",
+        "Get a list of `RockSampleAnalysis` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rocksampleanalyses/{record_id}/versions/{version}": [
+        "get_record_rock_sample_analysis_version",
+        "Get Record Specific Version",
+        "Get the given version of `RockSampleAnalysis` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/rocksampleanalyses": [
+        "create_rock_sample_analysis_record",
+        "Post Records",
+        "Create or update `RockSampleAnalysis` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/coringreports/{record_id}": [
+        "get_coring_record",
+        "Get Record",
+        "Get the latest version of `Coring` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/coringreports/{record_id}": [
+        "soft_delete_coring_record",
+        "Soft Delete Record",
+        "Delete the `Coring` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/coringreports/{record_id}/versions": [
+        "get_record_coring_versions",
+        "Get Record Versions",
+        "Get a list of `Coring` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/coringreports/{record_id}/versions/{version}": [
+        "get_record_coring_version",
+        "Get Record Specific Version",
+        "Get the given version of `Coring` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/coringreports": [
+        "create_or_update_coring_records",
+        "Post Records",
+        "Create or update `Coring` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rocksamples/{record_id}": [
+        "get_rock_sample_record",
+        "Get Record",
+        "Get the latest version of `RockSample` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/rocksamples/{record_id}": [
+        "soft_delete_rock_sample_record",
+        "Soft Delete Record",
+        "Delete the `RockSample` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rocksamples/{record_id}/versions": [
+        "get_rock_sample_record_versions",
+        "Get Record Versions",
+        "Get a list of `RockSample` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rocksamples/{record_id}/versions/{version}": [
+        "get_rock_sample_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `RockSample` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/rocksamples": [
+        "create_or_update_rock_sample_records",
+        "Post Records",
+        "Create or update `RockSample` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/pvtreports/{record_id}": [
+        "get_pvt_record",
+        "Get Record",
+        "Get the latest version of `PVT` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/pvtreports/{record_id}": [
+        "soft_delete_pvt_record",
+        "Soft Delete Record",
+        "Delete the `PVT` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/pvtreports/{record_id}/versions": [
+        "get_pvt_record_versions",
+        "Get Record Versions",
+        "Get a list of `PVT` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/pvtreports/{record_id}/versions/{version}": [
+        "get_pvt_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `PVT` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/pvtreports": [
+        "create_or_update_pvt_records",
+        "Post Records",
+        "Create or update `PVT` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/pvtreports/{record_id}/source": [
+        "get_pvt_record_source_data",
+        "Get Source Data",
+        ""
+    ],
+    "get:/api/rafs-ddms/v1/ccereports/{record_id}/data/{dataset_id}": [
+        "get_cce_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `ConstantCompositionExpansionTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/ccereports/{record_id}/data": [
+        "upload_cce_data",
+        "Post Data",
+        "Upload the bulk data for a given `ConstantCompositionExpansionTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/ccereports/{record_id}/source": [
+        "get_cce_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/ccereports/{record_id}": [
+        "get_cce_record",
+        "Get Record",
+        "Get the latest version of `ConstantCompositionExpansionTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/ccereports/{record_id}": [
+        "soft_delete_cce_record",
+        "Soft Delete Record",
+        "Delete the `ConstantCompositionExpansionTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/ccereports/{record_id}/versions": [
+        "get_cce_record_versions",
+        "Get Record Versions",
+        "Get a list of `ConstantCompositionExpansionTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/ccereports/{record_id}/versions/{version}": [
+        "get_cce_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `ConstantCompositionExpansionTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/ccereports": [
+        "create_or_update_cce_records",
+        "Post Records",
+        "Create or update `ConstantCompositionExpansionTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/difflibreports/{record_id}/data/{dataset_id}": [
+        "get_difflib_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `DifferentialLiberationTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/difflibreports/{record_id}/data": [
+        "upload_difflib_data",
+        "Post Data",
+        "Upload the bulk data for a given `DifferentialLiberationTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/difflibreports/{record_id}/source": [
+        "get_difflib_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/difflibreports/{record_id}": [
+        "get_difflib_record",
+        "Get Record",
+        "Get the latest version of `DifferentialLiberationTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/difflibreports/{record_id}": [
+        "soft_delete_difflib_record",
+        "Soft Delete Record",
+        "Delete the `DifferentialLiberationTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/difflibreports/{record_id}/versions": [
+        "get_difflib_record_versions",
+        "Get Record Versions",
+        "Get a list of `DifferentialLiberationTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/difflibreports/{record_id}/versions/{version}": [
+        "get_difflib_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `DifferentialLiberationTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/difflibreports": [
+        "create_or_update_difflib_records",
+        "Post Records",
+        "Create or update `DifferentialLiberationTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/transporttests/{record_id}/data/{dataset_id}": [
+        "get_transporttest_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `TransportTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/transporttests/{record_id}/data": [
+        "upload_transporttest_data",
+        "Post Data",
+        "Upload the bulk data for a given `TransportTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/transporttests/{record_id}/source": [
+        "get_transporttest_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/transporttests/{record_id}": [
+        "get_transporttest_record",
+        "Get Record",
+        "Get the latest version of `TransportTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/transporttests/{record_id}": [
+        "soft_delete_transporttest_record",
+        "Soft Delete Record",
+        "Delete the `TransportTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/transporttests/{record_id}/versions": [
+        "get_transporttest_record_versions",
+        "Get Record Versions",
+        "Get a list of `TransportTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/transporttests/{record_id}/versions/{version}": [
+        "get_transporttest_record_specific_version",
+        "Get Record Specific Version",
+        "Get the given version of `TransportTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/transporttests": [
+        "create_or_update_transporttest_records",
+        "Post Records",
+        "Create or update `TransportTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/compositionalanalysisreports/{record_id}/data/{dataset_id}": [
+        "get_compositionalanalysis_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `CompositionAnalysisTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/compositionalanalysisreports/{record_id}/data": [
+        "upload_compositionalanalysis_data",
+        "Post Data",
+        "Upload the bulk data for a given `CompositionAnalysisTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/compositionalanalysisreports/{record_id}/source": [
+        "get_compositionalanalysis_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/compositionalanalysisreports/{record_id}": [
+        "get_compositionalanalysis_record",
+        "Get Record",
+        "Get the latest version of `CompositionAnalysisTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/compositionalanalysisreports/{record_id}": [
+        "soft_delete_compositionalanalysis_record",
+        "Soft Delete Record",
+        "Delete the `CompositionAnalysisTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/compositionalanalysisreports/{record_id}/versions": [
+        "get_compositionalanalysis_record_versions",
+        "Get Record Versions",
+        "Get a list of `CompositionAnalysisTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/compositionalanalysisreports/{record_id}/versions/{version}": [
+        "get_compositionalanalysis_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `CompositionAnalysisTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/compositionalanalysisreports": [
+        "create_or_update_compositionalanalysis_records",
+        "Post Records",
+        "Create or update `CompositionAnalysisTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/multistageseparatortests/{record_id}/data/{dataset_id}": [
+        "get_multistageseparatortests_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `MultiStageSeparatorTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/multistageseparatortests/{record_id}/data": [
+        "upload_multistageseparatortests_data",
+        "Post Data",
+        "Upload the bulk data for a given `MultiStageSeparatorTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/multistageseparatortests/{record_id}/source": [
+        "get_multistageseparatortests_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/multistageseparatortests/{record_id}": [
+        "get_multistageseparatortests_record",
+        "Get Record",
+        "Get the latest version of `MultiStageSeparatorTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/multistageseparatortests/{record_id}": [
+        "soft_delete_multistageseparatortests_record",
+        "Soft Delete Record",
+        "Delete the `MultiStageSeparatorTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/multistageseparatortests/{record_id}/versions": [
+        "get_multistageseparatortests_record_versions",
+        "Get Record Versions",
+        "Get a list of `MultiStageSeparatorTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/multistageseparatortests/{record_id}/versions/{version}": [
+        "get_multistageseparatortests_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `MultiStageSeparatorTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/multistageseparatortests": [
+        "post_multistageseparatortests_records",
+        "Post Records",
+        "Create or update `MultiStageSeparatorTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/swellingtests/{record_id}/data/{dataset_id}": [
+        "get_swellingtests_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `SwellingTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/swellingtests/{record_id}/data": [
+        "upload_swellingtests_data",
+        "Post Data",
+        "Upload the bulk data for a given `SwellingTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/swellingtests/{record_id}/source": [
+        "get_swellingtests_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/swellingtests/{record_id}": [
+        "get_swellingtests_record",
+        "Get Record",
+        "Get the latest version of `SwellingTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/swellingtests/{record_id}": [
+        "soft_delete_swellingtests_record",
+        "Soft Delete Record",
+        "Delete the `SwellingTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/swellingtests/{record_id}/versions": [
+        "get_swellingtests_record_versions",
+        "Get Record Versions",
+        "Get a list of `SwellingTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/swellingtests/{record_id}/versions/{version}": [
+        "get_swellingtests_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `SwellingTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/swellingtests": [
+        "create_or_update_swellingtests_records",
+        "Post Records",
+        "Create or update `SwellingTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/constantvolumedepletiontests/{record_id}/data/{dataset_id}": [
+        "get_cvdt_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `ConstantVolumeDepletionTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/constantvolumedepletiontests/{record_id}/data": [
+        "upload_cvdt_data",
+        "Post Data",
+        "Upload the bulk data for a given `ConstantVolumeDepletionTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/constantvolumedepletiontests/{record_id}/source": [
+        "get_cvdt_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/constantvolumedepletiontests/{record_id}": [
+        "get_cvdt_record",
+        "Get Record",
+        "Get the latest version of `ConstantVolumeDepletionTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/constantvolumedepletiontests/{record_id}": [
+        "soft_delete_cvdt_record",
+        "Soft Delete Record",
+        "Delete the `ConstantVolumeDepletionTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/constantvolumedepletiontests/{record_id}/versions": [
+        "get_cvdt_record_versions",
+        "Get Record Versions",
+        "Get a list of `ConstantVolumeDepletionTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/constantvolumedepletiontests/{record_id}/versions/{version}": [
+        "get_cvdt_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `ConstantVolumeDepletionTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/constantvolumedepletiontests": [
+        "create_or_update_cvdt_records",
+        "Post Records",
+        "Create or update `ConstantVolumeDepletionTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/wateranalysisreports/{record_id}/data/{dataset_id}": [
+        "get_wat_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `WaterAnalysisTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/wateranalysisreports/{record_id}/data": [
+        "upload_wat_data",
+        "Post Data",
+        "Upload the bulk data for a given `WaterAnalysisTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/wateranalysisreports/{record_id}/source": [
+        "get_wat_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/wateranalysisreports/{record_id}": [
+        "get_wat_record",
+        "Get Record",
+        "Get the latest version of `WaterAnalysisTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/wateranalysisreports/{record_id}": [
+        "soft_delete_wat_record",
+        "Soft Delete Record",
+        "Delete the `WaterAnalysisTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/wateranalysisreports/{record_id}/versions": [
+        "get_wat_record_versions",
+        "Get Record Versions",
+        "Get a list of `WaterAnalysisTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/wateranalysisreports/{record_id}/versions/{version}": [
+        "get_wat_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `WaterAnalysisTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/wateranalysisreports": [
+        "create_or_update_wat_records",
+        "Post Records",
+        "Create or update `WaterAnalysisTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/stocktankoilanalysisreports/{record_id}/data/{dataset_id}": [
+        "get_stoat_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `StockTankOilAnalysisTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/stocktankoilanalysisreports/{record_id}/data": [
+        "upload_stoat_data",
+        "Post Data",
+        "Upload the bulk data for a given `StockTankOilAnalysisTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/stocktankoilanalysisreports/{record_id}/source": [
+        "get_stoat_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/stocktankoilanalysisreports/{record_id}": [
+        "get_stoat_record",
+        "Get Record",
+        "Get the latest version of `StockTankOilAnalysisTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/stocktankoilanalysisreports/{record_id}": [
+        "soft_delete_stoat_record",
+        "Soft Delete Record",
+        "Delete the `StockTankOilAnalysisTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/stocktankoilanalysisreports/{record_id}/versions": [
+        "get_record_stoat_versions",
+        "Get Record Versions",
+        "Get a list of `StockTankOilAnalysisTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/stocktankoilanalysisreports/{record_id}/versions/{version}": [
+        "get_stoat_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `StockTankOilAnalysisTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/stocktankoilanalysisreports": [
+        "create_or_update_stoat_records",
+        "Post Records",
+        "Create or update `StockTankOilAnalysisTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/interfacialtensiontests/{record_id}/data/{dataset_id}": [
+        "get_itt_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `InterfacialTensionTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/interfacialtensiontests/{record_id}/data": [
+        "upload_itt_data",
+        "Post Data",
+        "Upload the bulk data for a given `InterfacialTensionTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/interfacialtensiontests/{record_id}/source": [
+        "get_itt_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/interfacialtensiontests/{record_id}": [
+        "get_itt_record",
+        "Get Record",
+        "Get the latest version of `InterfacialTensionTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/interfacialtensiontests/{record_id}": [
+        "soft_delete_itt_record",
+        "Soft Delete Record",
+        "Delete the `InterfacialTensionTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/interfacialtensiontests/{record_id}/versions": [
+        "get_itt_record_versions",
+        "Get Record Versions",
+        "Get a list of `InterfacialTensionTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/interfacialtensiontests/{record_id}/versions/{version}": [
+        "get_itt_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `InterfacialTensionTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/interfacialtensiontests": [
+        "create_or_update_itt_records",
+        "Post Records",
+        "Create or update `InterfacialTensionTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/vaporliquidequilibriumtests/{record_id}/data/{dataset_id}": [
+        "get_vlet_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `VaporLiquidEquilibriumTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/vaporliquidequilibriumtests/{record_id}/data": [
+        "upload_vlet_data",
+        "Post Data",
+        "Upload the bulk data for a given `VaporLiquidEquilibriumTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/vaporliquidequilibriumtests/{record_id}/source": [
+        "get_vlet_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/vaporliquidequilibriumtests/{record_id}": [
+        "get_vlet_record",
+        "Get Record",
+        "Get the latest version of `VaporLiquidEquilibriumTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/vaporliquidequilibriumtests/{record_id}": [
+        "soft_delete_vlet_record",
+        "Soft Delete Record",
+        "Delete the `VaporLiquidEquilibriumTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/vaporliquidequilibriumtests/{record_id}/versions": [
+        "get_vlet_record_versions",
+        "Get Record Versions",
+        "Get a list of `VaporLiquidEquilibriumTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/vaporliquidequilibriumtests/{record_id}/versions/{version}": [
+        "get_vlet_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `VaporLiquidEquilibriumTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/vaporliquidequilibriumtests": [
+        "create_or_update_vlet_records",
+        "Post Records",
+        "Create or update `VaporLiquidEquilibriumTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/multiplecontactmiscibilitytests/{record_id}/data/{dataset_id}": [
+        "get_mcmt_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `MultipleContactMiscibilityTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/multiplecontactmiscibilitytests/{record_id}/data": [
+        "upload_mcmt_data",
+        "Post Data",
+        "Upload the bulk data for a given `MultipleContactMiscibilityTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/multiplecontactmiscibilitytests/{record_id}/source": [
+        "get_mcmt_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/multiplecontactmiscibilitytests/{record_id}": [
+        "get_mcmt_record",
+        "Get Record",
+        "Get the latest version of `MultipleContactMiscibilityTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/multiplecontactmiscibilitytests/{record_id}": [
+        "soft_delete_mcmt_record",
+        "Soft Delete Record",
+        "Delete the `MultipleContactMiscibilityTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/multiplecontactmiscibilitytests/{record_id}/versions": [
+        "get_mcmt_record_versions",
+        "Get Record Versions",
+        "Get a list of `MultipleContactMiscibilityTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/multiplecontactmiscibilitytests/{record_id}/versions/{version}": [
+        "get_mcmt_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `MultipleContactMiscibilityTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/multiplecontactmiscibilitytests": [
+        "create_or_update_mcmt_records",
+        "Post Records",
+        "Create or update `MultipleContactMiscibilityTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/slimtubetests/{record_id}/data/{dataset_id}": [
+        "get_stt_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `SlimTubeTest` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/slimtubetests/{record_id}/data": [
+        "upload_stt_data",
+        "Post Data",
+        "Upload the bulk data for a given `SlimTubeTest` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/slimtubetests/{record_id}/source": [
+        "get_stt_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/slimtubetests/{record_id}": [
+        "get_stt_record",
+        "Get Record",
+        "Get the latest version of `SlimTubeTest` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/slimtubetests/{record_id}": [
+        "soft_delete_stt_record",
+        "Soft Delete Record",
+        "Delete the `SlimTubeTest` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/slimtubetests/{record_id}/versions": [
+        "get_stt_record_versions",
+        "Get Record Versions",
+        "Get a list of `SlimTubeTest` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/slimtubetests/{record_id}/versions/{version}": [
+        "get_stt_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `SlimTubeTest` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/slimtubetests": [
+        "create_or_update_stt_records",
+        "Post Records",
+        "Create or update `SlimTubeTest` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/samplesanalysesreport/{record_id}": [
+        "get_sar_record",
+        "Get Record",
+        "Get the latest version of `SamplesAnalysesReport` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/samplesanalysesreport/{record_id}": [
+        "soft_delete_sar_record",
+        "Soft Delete Record",
+        "Delete the `SamplesAnalysesReport` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/samplesanalysesreport/{record_id}/versions": [
+        "get_record_sar_versions",
+        "Get Record Versions",
+        "Get a list of `SamplesAnalysesReport` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/samplesanalysesreport/{record_id}/versions/{version}": [
+        "get_sar_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `SamplesAnalysesReport` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/samplesanalysesreport": [
+        "create_or_update_sar_records",
+        "Post Records",
+        "Create or update `SamplesAnalysesReport` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/samplesanalysesreport/{record_id}/source": [
+        "get_sar_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/capillarypressuretests/{record_id}/data/{dataset_id}": [
+        "get_cp_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `CapPressure` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/capillarypressuretests/{record_id}/data": [
+        "upload_cp_data",
+        "Post Data",
+        "Upload the bulk data for a given `CapPressure` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/capillarypressuretests/{record_id}/source": [
+        "get_cp_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/capillarypressuretests/{record_id}": [
+        "get_cp_record",
+        "Get Record",
+        "Get the latest version of `CapPressure` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/capillarypressuretests/{record_id}": [
+        "soft_delete_cp_record",
+        "Soft Delete Record",
+        "Delete the `CapPressure` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/capillarypressuretests/{record_id}/versions": [
+        "get_cp_record_versions",
+        "Get Record Versions",
+        "Get a list of `CapPressure` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/capillarypressuretests/{record_id}/versions/{version}": [
+        "get_cp_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `CapPressure` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/capillarypressuretests": [
+        "create_or_update_cp_records",
+        "Post Records",
+        "Create or update `CapPressure` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/relativepermeabilitytests/{record_id}": [
+        "get_rp_record",
+        "Get Record",
+        "Get the latest version of `RelativePermeability` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/relativepermeabilitytests/{record_id}": [
+        "soft_delete_rp_record",
+        "Soft Delete Record",
+        "Delete the `RelativePermeability` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/relativepermeabilitytests/{record_id}/versions": [
+        "get_rp_record_versions",
+        "Get Record Versions",
+        "Get a list of `RelativePermeability` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/relativepermeabilitytests/{record_id}/versions/{version}": [
+        "get_rp_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `RelativePermeability` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/relativepermeabilitytests": [
+        "create_or_update_rp_records",
+        "Post Records",
+        "Create or update `RelativePermeability` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/relativepermeabilitytests/{record_id}/data/{dataset_id}": [
+        "get_rp_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `RelativePermeability` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/relativepermeabilitytests/{record_id}/data": [
+        "upload_rp_data",
+        "Post Data",
+        "Upload the bulk data for a given `RelativePermeability` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/relativepermeabilitytests/{record_id}/source": [
+        "get_rp_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/fractionationtests/{record_id}": [
+        "get_ft_record",
+        "Get Record",
+        "Get the latest version of `Fractionation` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/fractionationtests/{record_id}": [
+        "soft_delete_ft_record",
+        "Soft Delete Record",
+        "Delete the `Fractionation` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/fractionationtests/{record_id}/versions": [
+        "get_ft_record_versions",
+        "Get Record Versions",
+        "Get a list of `Fractionation` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/fractionationtests/{record_id}/versions/{version}": [
+        "get_ft_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `Fractionation` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/fractionationtests": [
+        "create_or_update_ft_records",
+        "Post Records",
+        "Create or update `Fractionation` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/fractionationtests/{record_id}/data/{dataset_id}": [
+        "get_ft_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `Fractionation` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/fractionationtests/{record_id}/data": [
+        "upload_ft_data",
+        "Post Data",
+        "Upload the bulk data for a given `Fractionation` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/fractionationtests/{record_id}/source": [
+        "get_ft_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/extractiontests/{record_id}": [
+        "get_et_record",
+        "Get Record",
+        "Get the latest version of `Extraction` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/extractiontests/{record_id}": [
+        "soft_delete_et_record",
+        "Soft Delete Record",
+        "Delete the `Extraction` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/extractiontests/{record_id}/versions": [
+        "get_et_record_versions",
+        "Get Record Versions",
+        "Get a list of `Extraction` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/extractiontests/{record_id}/versions/{version}": [
+        "get_et_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `Extraction` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/extractiontests": [
+        "create_or_update_er_records",
+        "Post Records",
+        "Create or update `Extraction` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/extractiontests/{record_id}/data/{dataset_id}": [
+        "get_et_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `Extraction` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/extractiontests/{record_id}/data": [
+        "upload_et_data",
+        "Post Data",
+        "Upload the bulk data for a given `Extraction` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/extractiontests/{record_id}/source": [
+        "get_et_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/physicalchemistrytests/{record_id}": [
+        "get_physchem_record",
+        "Get Record",
+        "Get the latest version of `PhysChem` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/physicalchemistrytests/{record_id}": [
+        "soft_delete_physchem_record",
+        "Soft Delete Record",
+        "Delete the `PhysChem` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/physicalchemistrytests/{record_id}/versions": [
+        "get_record_physchem_versions",
+        "Get Record Versions",
+        "Get a list of `PhysChem` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/physicalchemistrytests/{record_id}/versions/{version}": [
+        "get_physchem_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `PhysChem` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/physicalchemistrytests": [
+        "create_or_update_physchem_records",
+        "Post Records",
+        "Create or update `PhysChem` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/physicalchemistrytests/{record_id}/data/{dataset_id}": [
+        "get_physchem_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `PhysChem` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/physicalchemistrytests/{record_id}/data": [
+        "upload_physchem_data",
+        "Post Data",
+        "Upload the bulk data for a given `PhysChem` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/physicalchemistrytests/{record_id}/source": [
+        "get_physchem_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/electricalproperties/{record_id}": [
+        "get_ep_record",
+        "Get Record",
+        "Get the latest version of `ElectricalProperties` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/electricalproperties/{record_id}": [
+        "soft_delete_ep_record",
+        "Soft Delete Record",
+        "Delete the `ElectricalProperties` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/electricalproperties/{record_id}/versions": [
+        "get_ep_record_versions",
+        "Get Record Versions",
+        "Get a list of `ElectricalProperties` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/electricalproperties/{record_id}/versions/{version}": [
+        "get_ep_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `ElectricalProperties` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/electricalproperties": [
+        "create_or_update_ep_records",
+        "Post Records",
+        "Create or update `ElectricalProperties` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/electricalproperties/{record_id}/data/{dataset_id}": [
+        "get_ep_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `ElectricalProperties` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/electricalproperties/{record_id}/data": [
+        "upload_ep_data",
+        "Post Data",
+        "Upload the bulk data for a given `ElectricalProperties` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/electricalproperties/{record_id}/source": [
+        "get_ep_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/rockcompressibilities/{record_id}": [
+        "get_rc_record",
+        "Get Record",
+        "Get the latest version of `RockCompressibility` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/rockcompressibilities/{record_id}": [
+        "soft_delete_rc_record",
+        "Soft Delete Record",
+        "Delete the `RockCompressibility` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rockcompressibilities/{record_id}/versions": [
+        "get_record_rc_versions",
+        "Get Record Versions",
+        "Get a list of `RockCompressibility` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rockcompressibilities/{record_id}/versions/{version}": [
+        "get_rc_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `RockCompressibility` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/rockcompressibilities": [
+        "create_or_update_rc_records",
+        "Post Records",
+        "Create or update `RockCompressibility` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rockcompressibilities/{record_id}/data/{dataset_id}": [
+        "get_rc_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `RockCompressibility` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/rockcompressibilities/{record_id}/data": [
+        "upload_rc_data",
+        "Post Data",
+        "Upload the bulk data for a given `RockCompressibility` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/rockcompressibilities/{record_id}/source": [
+        "get_rc_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/watergasrelativepermeabilities/{record_id}": [
+        "get_wgrp_record",
+        "Get Record",
+        "Get the latest version of `WaterGasRelativePermeability` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/watergasrelativepermeabilities/{record_id}": [
+        "soft_delete_wgrp_record",
+        "Soft Delete Record",
+        "Delete the `WaterGasRelativePermeability` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/watergasrelativepermeabilities/{record_id}/versions": [
+        "get_wgrp_record_versions",
+        "Get Record Versions",
+        "Get a list of `WaterGasRelativePermeability` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/watergasrelativepermeabilities/{record_id}/versions/{version}": [
+        "get_wgrp_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `WaterGasRelativePermeability` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/watergasrelativepermeabilities": [
+        "create_or_update_wgrp_records",
+        "Post Records",
+        "Create or update `WaterGasRelativePermeability` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/watergasrelativepermeabilities/{record_id}/data/{dataset_id}": [
+        "get_wgrp_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `WaterGasRelativePermeability` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/watergasrelativepermeabilities/{record_id}/data": [
+        "upload_wgrp_data",
+        "Post Data",
+        "Upload the bulk data for a given `WaterGasRelativePermeability` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/watergasrelativepermeabilities/{record_id}/source": [
+        "get_wgrp_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v1/formationresistivityindexes/{record_id}": [
+        "get_fri_record",
+        "Get Record",
+        "Get the latest version of `FormationResistivityIndex` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v1/formationresistivityindexes/{record_id}": [
+        "soft_delete_fri_record",
+        "Soft Delete Record",
+        "Delete the `FormationResistivityIndex` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/formationresistivityindexes/{record_id}/versions": [
+        "get_fri_record_versions",
+        "Get Record Versions",
+        "Get a list of `FormationResistivityIndex` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/formationresistivityindexes/{record_id}/versions/{version}": [
+        "get_fri_record_version",
+        "Get Record Specific Version",
+        "Get the given version of `FormationResistivityIndex` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/formationresistivityindexes": [
+        "create_or_update_fri_records",
+        "Post Records",
+        "Create or update `FormationResistivityIndex` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/formationresistivityindexes/{record_id}/data/{dataset_id}": [
+        "get_fri_data",
+        "Get Data",
+        "Get the (`latest version`) bulk data for a given `FormationResistivityIndex` object by record id. <br><br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>            The  `columns_filter`, `rows_filter`, and  `columns_aggregation`                 query parameters can be used to manage data in response.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v1/formationresistivityindexes/{record_id}/data": [
+        "upload_fri_data",
+        "Post Data",
+        "Upload the bulk data for a given `FormationResistivityIndex` object by record id.<br>            It creates a new version of the record. <br>            The previous meta-data with bulk data is available by their `versions`. <br> <br>            Use the `Content-Type` request header to specify payload and response formats                 (`application/json` and `application/parquet` are supported).<br>            Use the `Accept` request header to specify content schema version                 (example header `Accept: */*;version=1.0.0` is supported).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v1/formationresistivityindexes/{record_id}/source": [
+        "get_fri_source_data",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ]
+}

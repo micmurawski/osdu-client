@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     RecordBulkUpdateParam,
     CopyRecordReferencesModel,
@@ -15,18 +20,18 @@ class StorageAPIError(OSDUAPIError):
     pass
 
 
-class StorageClient(BaseOSDUAPIClient):
+class StorageClient(OSDUAPIClient):
     service_path = "/api/storage/v2/"
 
     def update_records(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         skipdupes: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -49,11 +54,11 @@ class StorageClient(BaseOSDUAPIClient):
         *,
         query: dict,
         ops: list[dict],
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -66,7 +71,7 @@ class StorageClient(BaseOSDUAPIClient):
             "ops": ops,
         }
 
-        RecordBulkUpdateParam(**data)
+        validate_data(data, RecordBulkUpdateParam, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "records")
         response = requests.patch(url, headers=headers, json=data)
@@ -74,16 +79,16 @@ class StorageClient(BaseOSDUAPIClient):
             raise StorageAPIError(response.text, response.status_code)
         return response.json()
 
-    def copy_records_references(
+    def update_records_copy(
         self,
         *,
         target: str | None = None,
         records: list[dict] | None = None,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -97,7 +102,7 @@ class StorageClient(BaseOSDUAPIClient):
         if records is not None:
             data["records"] = records
 
-        CopyRecordReferencesModel(**data)
+        validate_data(data, CopyRecordReferencesModel, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "records/copy")
         response = requests.put(url, headers=headers, json=data)
@@ -108,12 +113,12 @@ class StorageClient(BaseOSDUAPIClient):
     def delete_record(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         id: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -130,11 +135,11 @@ class StorageClient(BaseOSDUAPIClient):
     def create_records_delete(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -151,14 +156,14 @@ class StorageClient(BaseOSDUAPIClient):
     def query_records_from_kind(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         cursor: str | None = None,
         limit: str | None = None,
         kind: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -185,11 +190,11 @@ class StorageClient(BaseOSDUAPIClient):
         *,
         records: list[str],
         attributes: list[str] | None = None,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -203,7 +208,7 @@ class StorageClient(BaseOSDUAPIClient):
         if attributes is not None:
             data["attributes"] = attributes
 
-        MultiRecordIds(**data)
+        validate_data(data, MultiRecordIds, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query/records")
         response = requests.post(url, headers=headers, json=data)
@@ -211,16 +216,16 @@ class StorageClient(BaseOSDUAPIClient):
             raise StorageAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_records_batch(
+    def query_records_batch(
         self,
         *,
         records: list[str],
-        x_collaboration: dict | None = None,
-        frame_of_reference: dict,
+        x_collaboration: str | None = None,
+        frame_of_reference: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -237,7 +242,7 @@ class StorageClient(BaseOSDUAPIClient):
             "records": records,
         }
 
-        MultiRecordRequest(**data)
+        validate_data(data, MultiRecordRequest, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query/records:batch")
         response = requests.post(url, headers=headers, json=data)
@@ -248,13 +253,13 @@ class StorageClient(BaseOSDUAPIClient):
     def get_record(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         id: str,
         attribute: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -275,12 +280,12 @@ class StorageClient(BaseOSDUAPIClient):
     def purge_record(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         id: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -297,14 +302,14 @@ class StorageClient(BaseOSDUAPIClient):
     def get_record_version(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         id: str,
         version: str,
         attribute: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -325,12 +330,12 @@ class StorageClient(BaseOSDUAPIClient):
     def get_record_versions(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         id: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -347,7 +352,7 @@ class StorageClient(BaseOSDUAPIClient):
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -362,7 +367,7 @@ class StorageClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -377,7 +382,7 @@ class StorageClient(BaseOSDUAPIClient):
     def purge_record_versions(
         self,
         *,
-        x_collaboration: dict | None = None,
+        x_collaboration: str | None = None,
         id: str,
         version_ids: str | None = None,
         limit: str | None = None,
@@ -385,7 +390,7 @@ class StorageClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -414,7 +419,7 @@ class StorageClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -434,7 +439,7 @@ class StorageClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -446,7 +451,7 @@ class StorageClient(BaseOSDUAPIClient):
         if filter is not None:
             data["filter"] = filter
 
-        ReplayRequest(**data)
+        validate_data(data, ReplayRequest, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "replay")
         response = requests.post(url, headers=headers, json=data)
@@ -457,7 +462,7 @@ class StorageClient(BaseOSDUAPIClient):
     def get_whoami(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -472,7 +477,7 @@ class StorageClient(BaseOSDUAPIClient):
     def update_whoami(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -487,7 +492,7 @@ class StorageClient(BaseOSDUAPIClient):
     def create_whoami(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -502,7 +507,7 @@ class StorageClient(BaseOSDUAPIClient):
     def delete_whoami(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -517,7 +522,7 @@ class StorageClient(BaseOSDUAPIClient):
     def options_whoami(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -532,7 +537,7 @@ class StorageClient(BaseOSDUAPIClient):
     def head_whoami(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -547,7 +552,7 @@ class StorageClient(BaseOSDUAPIClient):
     def patch_whoami(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

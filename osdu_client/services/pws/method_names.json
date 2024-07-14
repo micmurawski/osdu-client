@@ -1,0 +1,72 @@
+{
+    "get:/projects": [
+        "get_projects",
+        "Get all project's.",
+        "This API returns a list of projects."
+    ],
+    "post:/projects": [
+        "create_project",
+        "Create new collaboration project.",
+        "The API performs new collaboration project creation."
+    ],
+    "post:/projects/{id}/status": [
+        "change_projects_status",
+        "Change status of collaboration project by project id.",
+        "The API to change status by project Id."
+    ],
+    "get:/projects/{id}/resources": [
+        "get_project_resources",
+        "Get collaboration project resources Ids by project Id.",
+        "The API returns the given record by project Id."
+    ],
+    "post:/projects/{id}/resources": [
+        "assign_projects_resources",
+        "Assign the resources to the collaboration project.",
+        "The API performs assignment of resources to the collaboration project."
+    ],
+    "delete:/projects/{id}/resources": [
+        "delete_projects_resources",
+        "Revoke the resources from the collaboration project by project id.",
+        "The API revoke resources by project Id."
+    ],
+    "get:/projects/{id}/lifecycleevent": [
+        "get_projects_lifecycleevent",
+        "Read LifecycleEvents from the collaboration project.",
+        "The API performs read operation of LifecycleEvents from the collaboration project."
+    ],
+    "post:/projects/{id}/lifecycleevent": [
+        "assign_projects_lifecycleevent",
+        "Assign the LifecycleEvent to the collaboration project.",
+        "The API performs assignment of LifecycleEvents to the collaboration project."
+    ],
+    "delete:/projects/{id}/lifecycleevent": [
+        "delete_projects_lifecycleevent",
+        "Delete LifecycleEvents from the collaboration project.",
+        "The API performs delete operation of LifecycleEvents from the collaboration project."
+    ],
+    "get:/projects/{id}": [
+        "get_project",
+        "Get project by Id.",
+        "The API returns the given record by its Id."
+    ],
+    "get:/projects/{id}/wip-resources": [
+        "get_projects_wip_resources",
+        "Get collaboration project WIP resources Ids by project Id.",
+        "The API returns the given record by project Id."
+    ],
+    "get:/info": [
+        "get_info",
+        "Version info",
+        "For deployment available public `/info` endpoint, which provides build and git related information."
+    ],
+    "get:/_ah/readiness_check": [
+        "get_readiness_check",
+        "Readiness Check endpoint",
+        "For deployment available public `/readiness_check` endpoint, which provides `PWS service is ready` message."
+    ],
+    "get:/_ah/liveness_check": [
+        "get_liveness_check",
+        "Liveness Check endpoint",
+        "For deployment available public `/liveness_check` endpoint, which provides `PWS service is alive` message."
+    ]
+}

@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     SchemaRequest,
     SchemaRequest,
@@ -13,10 +18,10 @@ class SchemaAPIError(OSDUAPIError):
     pass
 
 
-class SchemaClient(BaseOSDUAPIClient):
+class SchemaClient(OSDUAPIClient):
     service_path = "/api/schema-service/v1"
 
-    def put_schemas_system(
+    def update_schemas_system(
         self,
         *,
         schema_info: dict,
@@ -24,7 +29,7 @@ class SchemaClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -35,7 +40,7 @@ class SchemaClient(BaseOSDUAPIClient):
             "schema": schema,
         }
 
-        SchemaRequest(**data)
+        validate_data(data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schemas/system")
         response = requests.put(url, headers=headers, json=data)
@@ -43,7 +48,7 @@ class SchemaClient(BaseOSDUAPIClient):
             raise SchemaAPIError(response.text, response.status_code)
         return response.json()
 
-    def search_schema(
+    def search_schemas(
         self,
         *,
         authority: str | None = None,
@@ -60,7 +65,7 @@ class SchemaClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -96,7 +101,7 @@ class SchemaClient(BaseOSDUAPIClient):
             raise SchemaAPIError(response.text, response.status_code)
         return response.json()
 
-    def put_schema(
+    def update_schema(
         self,
         *,
         schema_info: dict,
@@ -104,7 +109,7 @@ class SchemaClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -115,7 +120,7 @@ class SchemaClient(BaseOSDUAPIClient):
             "schema": schema,
         }
 
-        SchemaRequest(**data)
+        validate_data(data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schema")
         response = requests.put(url, headers=headers, json=data)
@@ -131,7 +136,7 @@ class SchemaClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -142,7 +147,7 @@ class SchemaClient(BaseOSDUAPIClient):
             "schema": schema,
         }
 
-        SchemaRequest(**data)
+        validate_data(data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schema")
         response = requests.post(url, headers=headers, json=data)
@@ -157,7 +162,7 @@ class SchemaClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -172,7 +177,7 @@ class SchemaClient(BaseOSDUAPIClient):
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -187,7 +192,7 @@ class SchemaClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

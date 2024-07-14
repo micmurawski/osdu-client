@@ -1,33 +1,41 @@
-from .auth import AuthBackendInterface
-from .exceptions import OSDUClientError
-from .services.dataset_api import DatasetAPIClient
-from .services.entitlements_api import EntitlementsAPIClient
-from .services.legal_api import LegalAPIClient
-from .services.schema_api import SchemaAPIClient
-from .services.sdms_api import SDMSAPIClient
-from .services.search_api import SearchAPIClient
-from .services.storage_api import StorageAPIClient
+from __future__ import annotations
+from osdu_client.auth import AuthBackendInterface
+from osdu_client.exceptions import OSDUClientError
+from osdu_client.services.base import OSDUAPIClient
+from importlib import import_module
 
-CLIENTS = {
-    "dataset": DatasetAPIClient,
-    "entitlements": EntitlementsAPIClient,
-    "schema": SchemaAPIClient,
-    "sdms": SDMSAPIClient,
-    "search": SearchAPIClient,
-    "storage": StorageAPIClient,
-    "legal": LegalAPIClient,
+DMS_NAMES = {
+    "sdms": "SDMS",
+    "pws": "PWS",
+    "rafs": "RAFS",
+    "welldelivery": "WellDelivery"
 }
 
 
-def get_service_client(name):
-    if name not in CLIENTS:
-        raise OSDUClientError(
-            f"Service {name} not recognized. Choose one from available {', '.join(CLIENTS.keys())}"
+def get_service_client(name: str, version: str | None = None) -> type[OSDUAPIClient]:
+    service_name = DMS_NAMES.get(name, name.capitalize())
+
+    try:
+        module = import_module(
+            f"osdu_client.services.{name}"
         )
-    return CLIENTS[name]
+        available_versions = getattr(module, "VERSIONS", {})
+
+        if available_versions and version is None:
+            version = getattr(module, "DEFAULT_VERSION")
+            client_class = available_versions[version]
+        else:
+            client_class = getattr(module, f"{service_name}Client")
+    except KeyError as e:
+        raise OSDUClientError(
+            f"Version {version} of a client {name} does not exist. Available: {available_versions}") from e
+    except ImportError as e:
+        raise OSDUClientError(f"Client for service {name} does not exist.") from e
+    return client_class
 
 
 class OSDUAPI:
     @staticmethod
-    def client(service_name, auth_backend: AuthBackendInterface = None):
-        return get_service_client(service_name)(auth_backend)
+    def client(service_name, auth_backend: AuthBackendInterface, version: str | None = None) -> OSDUAPIClient:
+        client_class = get_service_client(service_name, version)
+        return client_class(auth_backend)

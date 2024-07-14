@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     TranslateItem,
 )
@@ -11,18 +16,18 @@ class PolicyAPIError(OSDUAPIError):
     pass
 
 
-class PolicyClient(BaseOSDUAPIClient):
+class PolicyClient(OSDUAPIClient):
     service_path = ""
 
     def home_page(
         self,
         *,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -41,13 +46,13 @@ class PolicyClient(BaseOSDUAPIClient):
     def get_api_policy_v1_policies(
         self,
         *,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -69,13 +74,13 @@ class PolicyClient(BaseOSDUAPIClient):
         self,
         *,
         policy_id: str,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -99,13 +104,13 @@ class PolicyClient(BaseOSDUAPIClient):
         self,
         *,
         policy_id: str,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -132,13 +137,13 @@ class PolicyClient(BaseOSDUAPIClient):
         *,
         policy_id: str,
         data_partition: str,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -165,13 +170,13 @@ class PolicyClient(BaseOSDUAPIClient):
         *,
         policy_id: str,
         data_partition: str,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -198,13 +203,13 @@ class PolicyClient(BaseOSDUAPIClient):
         *,
         policy_id: str,
         data_partition: str,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -231,13 +236,13 @@ class PolicyClient(BaseOSDUAPIClient):
         *,
         policy_id: str,
         include_auth: str | None = None,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -269,13 +274,13 @@ class PolicyClient(BaseOSDUAPIClient):
         query: str,
         input: dict,
         unknowns: list[str],
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -293,7 +298,7 @@ class PolicyClient(BaseOSDUAPIClient):
             "unknowns": unknowns,
         }
 
-        TranslateItem(**data)
+        validate_data(data, TranslateItem, PolicyAPIError)
 
         url = urljoin(self.base_url, self.service_path, "api/policy/v1/translate")
         response = requests.post(url, headers=headers, json=data)
@@ -304,12 +309,12 @@ class PolicyClient(BaseOSDUAPIClient):
     def get_api_policy_v1_info(
         self,
         *,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -330,13 +335,13 @@ class PolicyClient(BaseOSDUAPIClient):
         *,
         metrics: str | None = None,
         instrument: str | None = None,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -364,13 +369,13 @@ class PolicyClient(BaseOSDUAPIClient):
         self,
         *,
         all_data: str | None = None,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -398,13 +403,13 @@ class PolicyClient(BaseOSDUAPIClient):
         service: str,
         polling_min_delay_seconds: str | None = None,
         polling_max_delay_seconds: str | None = None,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -433,13 +438,13 @@ class PolicyClient(BaseOSDUAPIClient):
     def delete_tenant(
         self,
         *,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -460,12 +465,12 @@ class PolicyClient(BaseOSDUAPIClient):
     def get_health(
         self,
         *,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -484,12 +489,12 @@ class PolicyClient(BaseOSDUAPIClient):
     def get_ready(
         self,
         *,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -510,13 +515,13 @@ class PolicyClient(BaseOSDUAPIClient):
         *,
         policy_id: str,
         template: str | None = None,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -543,13 +548,13 @@ class PolicyClient(BaseOSDUAPIClient):
     def get_backup(
         self,
         *,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -571,13 +576,13 @@ class PolicyClient(BaseOSDUAPIClient):
         self,
         *,
         force: str | None = None,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -602,13 +607,13 @@ class PolicyClient(BaseOSDUAPIClient):
     def get_api_policy_v1_config(
         self,
         *,
-        correlation_id: dict | None = None,
-        user_agent: dict | None = None,
-        x_user_id: dict | None = None,
+        correlation_id: str | None = None,
+        user_agent: str | None = None,
+        x_user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

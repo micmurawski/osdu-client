@@ -1,0 +1,22 @@
+{
+    "get:/about": [
+        "get_about",
+        "Get About",
+        ""
+    ],
+    "post:/log-recognition/family": [
+        "recognize_family",
+        "Recognize family and unit",
+        "Find the most probable family and unit using family assignment rule based catalogs. User defined catalog will have the priority."
+    ],
+    "put:/log-recognition/upload-catalog": [
+        "update_log_recognition_upload_catalog",
+        "Upload user-defined catalog with family assignment rules",
+        "Upload user-defined catalog with family assignment rules for specific partition ID. \n            If there is an existing catalog, it will be replaced. It takes maximum of 5 mins to replace the existing catalog. \n            Hence, any call to retrieve the family should be made after 5 mins of uploading the catalog.   \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/version": [
+        "get_version",
+        "Get Version",
+        ""
+    ]
+}

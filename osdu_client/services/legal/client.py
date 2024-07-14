@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     UpdateLegalTag,
     LegalTagDto,
@@ -15,7 +20,7 @@ class LegalAPIError(OSDUAPIError):
     pass
 
 
-class LegalClient(BaseOSDUAPIClient):
+class LegalClient(OSDUAPIClient):
     service_path = "/api/legal/v1/"
 
     def list_legaltags(
@@ -25,7 +30,7 @@ class LegalClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -41,7 +46,7 @@ class LegalClient(BaseOSDUAPIClient):
             raise LegalAPIError(response.text, response.status_code)
         return response.json()
 
-    def update_legaltags(
+    def update_legaltag(
         self,
         *,
         name: str | None = None,
@@ -52,7 +57,7 @@ class LegalClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -70,7 +75,7 @@ class LegalClient(BaseOSDUAPIClient):
         if extension_properties is not None:
             data["extensionProperties"] = extension_properties
 
-        UpdateLegalTag(**data)
+        validate_data(data, UpdateLegalTag, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags")
         response = requests.put(url, headers=headers, json=data)
@@ -78,7 +83,7 @@ class LegalClient(BaseOSDUAPIClient):
             raise LegalAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_legaltags(
+    def create_legaltag(
         self,
         *,
         name: str | None = None,
@@ -87,7 +92,7 @@ class LegalClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -101,7 +106,7 @@ class LegalClient(BaseOSDUAPIClient):
         if properties is not None:
             data["properties"] = properties
 
-        LegalTagDto(**data)
+        validate_data(data, LegalTagDto, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags")
         response = requests.post(url, headers=headers, json=data)
@@ -109,14 +114,14 @@ class LegalClient(BaseOSDUAPIClient):
             raise LegalAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_legaltags_validate(
+    def validate_legaltags(
         self,
         *,
         names: list[str],
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -126,7 +131,7 @@ class LegalClient(BaseOSDUAPIClient):
             "names": names,
         }
 
-        RequestLegalTags(**data)
+        validate_data(data, RequestLegalTags, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags:validate")
         response = requests.post(url, headers=headers, json=data)
@@ -134,7 +139,7 @@ class LegalClient(BaseOSDUAPIClient):
             raise LegalAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_legaltags_query(
+    def query_legaltags(
         self,
         *,
         query_list: list[str] | None = None,
@@ -146,7 +151,7 @@ class LegalClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -168,7 +173,7 @@ class LegalClient(BaseOSDUAPIClient):
         if limit is not None:
             data["limit"] = limit
 
-        SearchLegalTag(**data)
+        validate_data(data, SearchLegalTag, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags:query")
         response = requests.post(url, headers=headers, params=params, json=data)
@@ -176,14 +181,14 @@ class LegalClient(BaseOSDUAPIClient):
             raise LegalAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_legaltags_batch_get(
+    def get_batch_legaltags(
         self,
         *,
         names: list[str],
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -193,7 +198,7 @@ class LegalClient(BaseOSDUAPIClient):
             "names": names,
         }
 
-        RequestLegalTags(**data)
+        validate_data(data, RequestLegalTags, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags:batchRetrieve")
         response = requests.post(url, headers=headers, json=data)
@@ -204,7 +209,7 @@ class LegalClient(BaseOSDUAPIClient):
     def get_legaltags_properties(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -223,7 +228,7 @@ class LegalClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -235,14 +240,14 @@ class LegalClient(BaseOSDUAPIClient):
             raise LegalAPIError(response.text, response.status_code)
         return response.json()
 
-    def delete_legaltags(
+    def delete_legaltag(
         self,
         *,
         name: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -254,10 +259,10 @@ class LegalClient(BaseOSDUAPIClient):
             raise LegalAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_jobs_update_legal_tag_status(
+    def get_legaltag_compliance_job_status(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -272,7 +277,7 @@ class LegalClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -287,7 +292,7 @@ class LegalClient(BaseOSDUAPIClient):
     def get_readiness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -302,7 +307,7 @@ class LegalClient(BaseOSDUAPIClient):
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

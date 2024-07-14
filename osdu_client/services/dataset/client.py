@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     CreateDatasetRegistryRequest,
     GetDatasetRegistryRequest,
@@ -13,17 +18,17 @@ class DatasetAPIError(OSDUAPIError):
     pass
 
 
-class DatasetClient(BaseOSDUAPIClient):
+class DatasetClient(OSDUAPIClient):
     service_path = "/api/dataset/v1/"
 
-    def update_register_dataset(
+    def create_or_update_dataset_registry(
         self,
         *,
         dataset_registries: list[dict],
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -33,7 +38,7 @@ class DatasetClient(BaseOSDUAPIClient):
             "datasetRegistries": dataset_registries,
         }
 
-        CreateDatasetRegistryRequest(**data)
+        validate_data(data, CreateDatasetRegistryRequest, DatasetAPIError)
 
         url = urljoin(self.base_url, self.service_path, "registerDataset")
         response = requests.put(url, headers=headers, json=data)
@@ -41,7 +46,7 @@ class DatasetClient(BaseOSDUAPIClient):
             raise DatasetAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_storage_instructions(
+    def get_storage_instructions(
         self,
         *,
         kind_sub_type: str,
@@ -49,7 +54,7 @@ class DatasetClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -67,14 +72,14 @@ class DatasetClient(BaseOSDUAPIClient):
             raise DatasetAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_revoke_u_r_l(
+    def get_revoke_url(
         self,
         *,
         kind_sub_type: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -98,7 +103,7 @@ class DatasetClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -116,7 +121,7 @@ class DatasetClient(BaseOSDUAPIClient):
             raise DatasetAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_retrieval_instructions(
+    def get_retrieval_instructions_for_multiple_datasets(
         self,
         *,
         dataset_registry_ids: list[str],
@@ -124,7 +129,7 @@ class DatasetClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -138,7 +143,7 @@ class DatasetClient(BaseOSDUAPIClient):
             "datasetRegistryIds": dataset_registry_ids,
         }
 
-        GetDatasetRegistryRequest(**data)
+        validate_data(data, GetDatasetRegistryRequest, DatasetAPIError)
 
         url = urljoin(self.base_url, self.service_path, "retrievalInstructions")
         response = requests.post(url, headers=headers, params=params, json=data)
@@ -153,7 +158,7 @@ class DatasetClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -176,7 +181,7 @@ class DatasetClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -186,7 +191,7 @@ class DatasetClient(BaseOSDUAPIClient):
             "datasetRegistryIds": dataset_registry_ids,
         }
 
-        GetDatasetRegistryRequest(**data)
+        validate_data(data, GetDatasetRegistryRequest, DatasetAPIError)
 
         url = urljoin(self.base_url, self.service_path, "getDatasetRegistry")
         response = requests.post(url, headers=headers, json=data)
@@ -197,7 +202,7 @@ class DatasetClient(BaseOSDUAPIClient):
     def get_liveness_check(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -212,7 +217,7 @@ class DatasetClient(BaseOSDUAPIClient):
     def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

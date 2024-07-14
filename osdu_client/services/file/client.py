@@ -1,7 +1,12 @@
-from osdu_client.utils import urljoin
-from osdu_client.services.base import BaseOSDUAPIClient
-from osdu_client.exceptions import OSDUAPIError
+from __future__ import annotations
+
 import requests
+
+from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
+from osdu_client.validation import validate_data
+
 from .models import (
     LocationRequest,
     Record,
@@ -15,17 +20,17 @@ class FileAPIError(OSDUAPIError):
     pass
 
 
-class FileClient(BaseOSDUAPIClient):
+class FileClient(OSDUAPIClient):
     service_path = "VALID_FILE_SERVICE_BASE_URL"
 
-    def create_v2_get_location(
+    def get_location(
         self,
         *,
         file_i_d: dict | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -35,7 +40,7 @@ class FileClient(BaseOSDUAPIClient):
         if file_i_d is not None:
             data["FileID"] = file_i_d
 
-        LocationRequest(**data)
+        validate_data(data, LocationRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getLocation")
         response = requests.post(url, headers=headers, json=data)
@@ -43,10 +48,10 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_v2_files_upload_u_r_l(
+    def get_files_upload_url(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -58,7 +63,7 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_v2_files_metadata(
+    def create_files_metadata(
         self,
         *,
         kind: str,
@@ -70,7 +75,7 @@ class FileClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -87,7 +92,7 @@ class FileClient(BaseOSDUAPIClient):
         if ancestry is not None:
             data["ancestry"] = ancestry
 
-        Record(**data)
+        validate_data(data, Record, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/files/metadata")
         response = requests.post(url, headers=headers, json=data)
@@ -95,14 +100,14 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_v2_files_metadata(
+    def get_files_metadata(
         self,
         *,
         id: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -114,14 +119,14 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def delete_v2_files_metadata(
+    def delete_files_metadata(
         self,
         *,
         id: str,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -141,7 +146,7 @@ class FileClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -157,14 +162,14 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_v2_get_file_location(
+    def get_file_location(
         self,
         *,
         file_i_d: dict | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -174,7 +179,7 @@ class FileClient(BaseOSDUAPIClient):
         if file_i_d is not None:
             data["FileID"] = file_i_d
 
-        FileLocationRequest(**data)
+        validate_data(data, FileLocationRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getFileLocation")
         response = requests.post(url, headers=headers, json=data)
@@ -182,14 +187,14 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_v2_delivery_get_file_signed_url(
+    def get_file_signed_url(
         self,
         *,
         srn: list[str] | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -199,7 +204,7 @@ class FileClient(BaseOSDUAPIClient):
         if srn is not None:
             data["srn"] = srn
 
-        deliveryGetFileSignedURLRequest(**data)
+        validate_data(data, deliveryGetFileSignedURLRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/delivery/getFileSignedUrl")
         response = requests.post(url, headers=headers, json=data)
@@ -207,7 +212,7 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_v2_get_file_list(
+    def get_file_list(
         self,
         *,
         time_from: dict | None = None,
@@ -218,7 +223,7 @@ class FileClient(BaseOSDUAPIClient):
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -236,7 +241,7 @@ class FileClient(BaseOSDUAPIClient):
         if user_i_d is not None:
             data["UserID"] = user_i_d
 
-        FileListRequest(**data)
+        validate_data(data, FileListRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getFileList")
         response = requests.post(url, headers=headers, json=data)
@@ -244,10 +249,10 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_v2_info(
+    def get_info(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -259,10 +264,10 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_v2_file_collections_storage_instructions(
+    def get_file_collections_storage_instructions(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -276,10 +281,10 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_v2_file_collections_retrieval_instructions(
+    def get_file_collections_retrieval_instructions(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:
@@ -295,10 +300,10 @@ class FileClient(BaseOSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_v2_file_collections_copy(
+    def copy_file_collections(
         self, data_partition_id: str | None = None, tenant: str | None = None
     ) -> dict:
-        headers = self.auth.headers
+        headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
         if tenant:

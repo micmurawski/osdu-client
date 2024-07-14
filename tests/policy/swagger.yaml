@@ -1,0 +1,1695 @@
+openapi: 3.1.0
+info:
+  title: OSDU Policy Service
+  description: >2
+
+        OSDU Policy Service v0.24.0 API for Milestone M21
+
+    Policy service is used for management and evaluation of dynamic policies in
+    OSDU.
+
+
+    ### Dependencies:
+
+    Policy service has a runtime dependency on the following:
+
+    * Open Policy Agent [OPA](https://openpolicyagent.org/)
+
+    * OSDU entitlements service for API authorization
+
+
+    ### API authorization
+
+    * To read or evaluate policies, user calling the policy service, must be a
+    member of _service.policy.user_ or _service.policy.admin_ group.
+
+    * To create, update, or delete the policies, user must be a member of
+    _service.policy.admin_ group.
+
+    * User can be added to these groups by using entitlements service.
+
+
+    ### Useful information
+
+    *
+    [Documentation](https://osdu.pages.opengroup.org/platform/security-and-compliance/policy/)
+
+    *
+    [Source](https://community.opengroup.org/osdu/platform/security-and-compliance/policy)
+  contact:
+    name: OSDU Policy Service
+    url: https://osdu.pages.opengroup.org/platform/security-and-compliance/policy/
+  license:
+    name: Apache 2.0
+    url: >-
+      https://community.opengroup.org/osdu/platform/security-and-compliance/policy/-/raw/trusted-FastAPI/LICENSE
+  version: v0.24.0 M21
+paths:
+  /:
+    get:
+      tags:
+        - home
+      summary: Home Page
+      operationId: home_page__get
+      parameters:
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/html:
+              schema:
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/policies:
+    get:
+      tags:
+        - policies
+      summary: Fetch All Policies That Match Partition
+      description: >-
+        Return all policies from OPA directly that match partition_bundle_root
+        data-partition-id in header (if bundles are enabled).
+
+        This API gives the list of all the defined policies and it includes the
+        policy definitions in the raw Rego form.
+
+        It performs authorization check. The user making the call needs to be
+        either service.policy.user or service.policy.admin in the provided data
+        partition.
+      operationId: fetch_all_policies_that_match_partition_api_policy_v1_policies_get
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/policies/{policy_id}:
+    get:
+      tags:
+        - policies
+      summary: Fetch A Policy
+      description: Return a policy directly from OPA with no filtering
+      operationId: fetch_a_policy_api_policy_v1_policies__policy_id__get
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: policy_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Policy Id
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/policies/osdu/instance/{policy_id}:
+    get:
+      tags:
+        - policies
+      summary: Fetch Instance Policy
+      description: Return an instance policy from OPA directly.
+      operationId: >-
+        fetch_instance_policy_api_policy_v1_policies_osdu_instance__policy_id__get
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: policy_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Policy Id
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/policies/osdu/partition/{data_partition}/{policy_id}:
+    get:
+      tags:
+        - policies
+      summary: Fetch Partition Policy Directly From Opa
+      description: |-
+        Return an policy for a partition id from OPA.
+        Requires data-partition-id in header.
+      operationId: >-
+        fetch_partition_policy_directly_from_opa_api_policy_v1_policies_osdu_partition__data_partition___policy_id__get
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: policy_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Policy Id
+        - name: data_partition
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Data Partition
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+        - policies
+      summary: Delete Partition Policy
+      description: >-
+        ## Delete a partition policy
+
+        * This API requires admin privileges (service.policy.admin) in the
+        provided data partition.
+
+        * Partition ID in header and in path must match
+
+        * Policy_id must end with a ".rego"
+
+
+        ### Possible http return status codes:
+
+        * 200 - no error
+
+        * 202 - accepted
+
+        * 400 - bad request
+            * for example, if data_partition in path doesn't match data-partition-id in header
+        * 401 - unauthorized
+
+        * 403 - forbidden
+            * for example, if calling with only user privs
+        * 404 - not found
+
+        * 422 - validation Error
+            * for example, if policy_id doesn't end with ".rego"
+        * 500 - server error
+
+        * 501 - not implemented
+            * for example, if bundles are not supported.
+        * 503 - service not available
+            * for example, if issues with bundles server
+
+        Errors will include some detail in returning json.
+
+
+        Return json:
+
+        ```
+            {
+                "policy_id": string, 
+                "data_partition": string,
+                "status": bool,
+                "message": string,
+                "result": string json from OPA
+            }
+        ```
+      operationId: >-
+        delete_partition_policy_api_policy_v1_policies_osdu_partition__data_partition___policy_id__delete
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: policy_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Policy Id
+        - name: data_partition
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Data Partition
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+        - policies
+      summary: Create Or Update Partition Policy
+      description: >-
+        ## Create or update a policy with given policy_id for a given data
+        partition.
+
+        This API will create/update policy definition with provided Rego
+        expression included in file and assign it with provided id.
+
+
+        * This API requires admin privileges (service.policy.admin) in the
+        provided data partition.
+
+        * Partition ID in header and in path must match
+
+        * Policy_id must end with a ".rego"
+
+
+        ### Possible http return status codes:
+
+        * 200 - no error
+
+        * 202 - accepted
+
+        * 400 - bad request
+            * for example, if data_partition in path doesn't match data-partition-id in header
+        * 401 - unauthorized
+
+        * 403 - forbidden
+            * for example, if calling with only user privs
+        * 422 - validation Error
+            * for example, if policy_id doesn't end with ".rego"
+            * for example, if package declaration issue
+        * 500 - server error
+
+        * 501 - not implemented
+            * for example, if bundles are not supported.
+        * 503 - service not available
+            * for example, if issues with bundles server
+
+        Errors will include some detail in returning json.
+
+
+        Return json:
+
+        ```
+            {
+                "policy_id": string,
+                "data_partition": string,
+                "opa_payload": string,
+                "status_code": http status code
+                "status": bool
+                "message": string
+            }
+        ```
+      operationId: >-
+        create_or_update_partition_policy_api_policy_v1_policies_osdu_partition__data_partition___policy_id__put
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: policy_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Policy Id
+        - name: data_partition
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Data Partition
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: >-
+                #/components/schemas/Body_create_or_update_partition_policy_api_policy_v1_policies_osdu_partition__data_partition___policy_id__put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/evaluations/query:
+    post:
+      tags:
+        - evaluate
+      summary: Evaluate Policy
+      description: >-
+        ## Evaulate Policies
+
+        This API is to help you evaluate policies.
+
+
+        If include_auth is True, then in your file data token, xuserid and data
+        partition id will be ignored in the file and information from the
+        headers
+
+        of the request will be used for this information.
+
+
+        ### Example:
+
+        For example file data for policy dataauthz.rego:
+
+        Where XXXX is the data partition and YYYY is a legal tag
+
+        ```json
+
+        {
+            "input": {
+                "operation": "update",
+                "records": [
+                    {
+                        "id":"XXXX:test:1.4.1654807204111",
+                        "kind":"XXXX:bulkupdate:test:1.1.1654807204111",
+                        "legal":{
+                            "legaltags":[
+                                "YYYY"
+                            ],
+                            "otherRelevantDataCountries":["US"],
+                            "status":"compliant"
+                        },
+                        "acls":{
+                            "viewers":["data.default.viewers@XXXX.group"],
+                            "owners":["data.default.owners@XXXX.group"]
+                        }
+                    }
+                ]
+            }
+        }
+
+        ```
+      operationId: evaluate_policy_api_policy_v1_evaluations_query_post
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: policy_id
+          in: query
+          required: true
+          schema:
+            type: string
+            title: Policy Id
+        - name: include_auth
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: >-
+              Update posted data to include auth (token, xuserid and data
+              partition id) from headers
+            default: false
+            title: Include Auth
+          description: >-
+            Update posted data to include auth (token, xuserid and data
+            partition id) from headers
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: >-
+                #/components/schemas/Body_evaluate_policy_api_policy_v1_evaluations_query_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/translate:
+    post:
+      tags:
+        - translate
+        - translate
+      summary: Translate Policy Api
+      description: >-
+        ## Translate policy
+
+        Given an OPA query that should be partially evaluated, return an
+        ElasticSearch request body
+
+
+        In the body of the request the JSON schema should match "TranslateItem".
+
+        Please note: xuserid, token and datapartitionid are now actively
+        inserted into input request
+      operationId: translate_policy_api_api_policy_v1_translate_post
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TranslateItem'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/info:
+    get:
+      tags:
+        - diagnostic
+      summary: Return Version Info
+      description: >-
+        Return Service version information.
+
+        Expected returned JSON is in "InfoOut" schema, which include Services
+        and ServiceDetail schemas.
+      operationId: return_version_info_api_policy_v1_info_get
+      parameters:
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InfoOut'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/compile:
+    post:
+      tags:
+        - utility
+      summary: Compile Partially Evaluate A Query
+      description: >-
+        # Compile - Partially evaluate a query.
+
+        The Compile API allows you to partially evaluate Rego queries and obtain
+        a simplified version of the policy.
+
+
+        ### Metrics
+
+        When query parameter metrics=true, the API response will include
+        detailed performance metrics from OPA.
+
+        OPA currently supports the following query performance metrics:
+
+            timer_rego_input_parse_ns: time taken (in nanoseconds) to parse the input
+            timer_rego_query_parse_ns: time taken (in nanonseconds) to parse the query.
+            timer_rego_query_compile_ns: time taken (in nanonseconds) to compile the query.
+            timer_rego_query_eval_ns: time taken (in nanonseconds) to evaluate the query.
+            timer_rego_module_parse_ns: time taken (in nanoseconds) to parse the input policy module.
+            timer_rego_module_compile_ns: time taken (in nanoseconds) to compile the loaded policy modules.
+            timer_server_handler_ns: time take (in nanoseconds) to handle the API request.
+
+        ### Instrumentation
+
+        To enable query instrumentation, specify metrics=true and
+        instrument=true query parameters when executing the API call.
+
+        Query instrumentation can help diagnose performance problems, however,
+        it can add significant overhead to query evaluation.
+
+        We recommend leaving query instrumentation off unless you are debugging
+        a performance problem.
+      operationId: compile_partially_evaluate_a_query_api_policy_v1_compile_post
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: metrics
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: >-
+              Include report detailed performance metrics on requested on
+              individual API call. Returned inline with the API response
+            default: false
+            title: Metrics
+          description: >-
+            Include report detailed performance metrics on requested on
+            individual API call. Returned inline with the API response
+        - name: instrument
+          in: query
+          required: false
+          schema:
+            type: boolean
+            description: >-
+              Include instrumentation data wth detailed performance metrics on
+              requested on individual API call. Returned inline with the API
+              response
+            default: false
+            title: Instrument
+          description: >-
+            Include instrumentation data wth detailed performance metrics on
+            requested on individual API call. Returned inline with the API
+            response
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: >-
+                #/components/schemas/Body_compile_partially_evaluate_a_query_api_policy_v1_compile_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/tenant:
+    get:
+      tags:
+        - utility
+      summary: Get Tenant
+      description: >-
+        Experimental tenant API for retrieving OPA bundle config for a data
+        partition.
+
+        These details are read from OPA configmap.
+      operationId: get_tenant_api_policy_v1_tenant_get
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: all_data
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+            title: All Data
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+        - utility
+      summary: Update Tenant
+      description: >-
+        Experimental tenant API for updating OPA bundle config for a data
+        partition.
+
+        Adding new partitions is not supported in M20.
+      operationId: update_tenant_api_policy_v1_tenant_put
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: service
+          in: query
+          required: true
+          schema:
+            type: string
+            title: Service
+        - name: polling_min_delay_seconds
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 6
+            title: Polling Min Delay Seconds
+        - name: polling_max_delay_seconds
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 12
+            title: Polling Max Delay Seconds
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+        - utility
+      summary: Delete Tenant
+      description: >-
+        Experimental tenant API for deleting tenant OPA bundle config for a data
+        partition.
+
+        Deleting partitions is not supported in M20.
+      operationId: delete_tenant_api_policy_v1_tenant_delete
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/health:
+    get:
+      tags:
+        - diagnostic
+      summary: Health
+      description: >-
+        ## Health check endpoint, which does not depend on OPA.
+
+        This API does not require any headers or authentication.
+
+
+        The /health endpoint responds with a 200 HTTP status code when the
+        service pod can receive requests.
+
+        The endpoint indicates that the service pod is healthy and reachable.
+
+        It does not indicate that the service is ready to serve requests.
+      operationId: health_api_policy_v1_health_get
+      parameters:
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/ready:
+    get:
+      tags:
+        - diagnostic
+      summary: Ready
+      description: >-
+        ## Health check endpoint, which depends on OPA being available and
+        healthy.
+
+        This API does not require any headers or authentication.
+
+
+        ### Possible http return status codes:
+
+        * 200 - no error
+
+        * 501 - not implemented
+
+        * 503 - service not available
+
+
+        The /ready endpoint responds with a 200 HTTP status code if the overall
+        application works.
+
+        The endpoint indicates that the service is ready to serve requests.
+      operationId: ready_api_policy_v1_ready_get
+      parameters:
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/validate/{policy_id}:
+    put:
+      tags:
+        - diagnostic
+      summary: Validate Policy
+      description: >-
+        # Validate Policy
+
+        This API checks to make sure the rego is valid and the naming of the
+        policy package is acceptable.
+
+
+        If template parameter is True, then the incoming file will automatically
+        replace the following during validation:
+
+        - data_partition
+
+        - DATA_PARTITION
+
+        - name with policy_id without ".rego" suffix
+      operationId: validate_policy_api_policy_v1_validate__policy_id__put
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: policy_id
+          in: path
+          required: true
+          schema:
+            type: string
+            title: Policy Id
+        - name: template
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+            title: Template
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: >-
+                #/components/schemas/Body_validate_policy_api_policy_v1_validate__policy_id__put
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/backup:
+    get:
+      tags:
+        - utility
+      summary: Backup
+      description: >-
+        Experimental Backup API.
+
+
+        Allows downloading the bundle for a data partition.
+
+
+        Bundle filename will be in the form bundle-`data
+        partition`-`date`.tar.gz
+      operationId: backup_api_policy_v1_backup_get
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/bootstrap:
+    post:
+      tags:
+        - utility
+      summary: Bootstrap
+      description: |-
+        Experimental bootstrap API for creating and updating bundle to default.
+        This should be used when adding a partition to OSDU.
+
+        Without force:
+
+            * This method is only allowed if the partition doesn't already have a bundle.
+            * If the bundle already exists it will return 405 METHOD_NOT_ALLOWED.
+            * Policy Service can be configured to ignore force.
+
+        May return:
+
+            * HTTP_202_ACCEPTED - updated
+            * HTTP_201_CREATED - created
+            * HTTP_405_METHOD_NOT_ALLOWED - not allowed
+            * HTTP_424_FAILED_DEPENDENCY - bundle server caused failure
+      operationId: bootstrap_api_policy_v1_bootstrap_post
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: force
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+            title: Force
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/policy/v1/config:
+    get:
+      tags:
+        - diagnostic
+      summary: Show Policy Config Details
+      description: |-
+        Return detail configuration details.
+        Diagnostic API
+      operationId: show_policy_config_details_api_policy_v1_config_get
+      security:
+        - HTTPBearer: []
+      parameters:
+        - name: correlation-id
+          in: header
+          required: false
+          schema:
+            type: string
+            title: Correlation-Id
+        - name: user-agent
+          in: header
+          required: false
+          schema:
+            type: string
+            title: User-Agent
+        - name: data-partition-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier of the data partition to query
+            title: Data-Partition-Id
+          description: identifier of the data partition to query
+        - name: x-user-id
+          in: header
+          required: false
+          schema:
+            type: string
+            minLength: 1
+            description: identifier the user in the query
+            title: X-User-Id
+          description: identifier the user in the query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    Body_compile_partially_evaluate_a_query_api_policy_v1_compile_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+        - file
+      title: Body_compile_partially_evaluate_a_query_api_policy_v1_compile_post
+    Body_create_or_update_partition_policy_api_policy_v1_policies_osdu_partition__data_partition___policy_id__put:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+        - file
+      title: >-
+        Body_create_or_update_partition_policy_api_policy_v1_policies_osdu_partition__data_partition___policy_id__put
+    Body_evaluate_policy_api_policy_v1_evaluations_query_post:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+        - file
+      title: Body_evaluate_policy_api_policy_v1_evaluations_query_post
+    Body_validate_policy_api_policy_v1_validate__policy_id__put:
+      properties:
+        file:
+          type: string
+          format: binary
+          title: File
+      type: object
+      required:
+        - file
+      title: Body_validate_policy_api_policy_v1_validate__policy_id__put
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    InfoOut:
+      properties:
+        version:
+          type: string
+          title: Version
+        artifactId:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Artifactid
+        name:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Name
+          default: policy
+        groupId:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Groupid
+        buildTime:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Buildtime
+        branch:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Branch
+        commitId:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Commitid
+        commitMessage:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Commitmessage
+        connectedOuterServices:
+          $ref: '#/components/schemas/Services'
+      type: object
+      required:
+        - version
+        - artifactId
+        - name
+        - groupId
+        - buildTime
+        - branch
+        - commitId
+        - commitMessage
+        - connectedOuterServices
+      title: InfoOut
+    Input:
+      properties:
+        operation:
+          type: string
+          enum:
+            - view
+            - create
+            - update
+            - delete
+            - purge
+          title: Operation
+        groups:
+          anyOf:
+            - items:
+                type: string
+              type: array
+            - type: 'null'
+          title: Groups
+          default:
+            - ''
+        xuserid:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Xuserid
+          default: ''
+        token:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Token
+          default: ''
+        datapartitionid:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Datapartitionid
+          default: ''
+      type: object
+      required:
+        - operation
+      title: Input
+    ServiceDetail:
+      properties:
+        version:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Version
+      type: object
+      required:
+        - version
+      title: ServiceDetail
+    Services:
+      properties:
+        opa:
+          $ref: '#/components/schemas/ServiceDetail'
+      type: object
+      required:
+        - opa
+      title: Services
+    TranslateItem:
+      properties:
+        query:
+          type: string
+          title: Query
+        input:
+          $ref: '#/components/schemas/Input'
+        unknowns:
+          items:
+            type: string
+          type: array
+          title: Unknowns
+      type: object
+      required:
+        - query
+        - input
+        - unknowns
+      title: TranslateItem
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+  securitySchemes:
+    HTTPBearer:
+      type: http
+      scheme: bearer
+tags:
+  - name: policies
+    description: Policy Maintenance
+  - name: evaluate
+    description: Evaluate APIs
+  - name: translate
+    description: Translation APIs
+    externalDocs:
+      description: Translate API documentation
+      url: >-
+        https://osdu.pages.opengroup.org/platform/security-and-compliance/policy/translate/
+  - name: diagnostic
+    description: Version information and other diagnostic APIs
+  - name: utility
+    description: Service APIs
+  - name: login
+    description: Login for Admin UI
+  - name: home
+    description: Home Page

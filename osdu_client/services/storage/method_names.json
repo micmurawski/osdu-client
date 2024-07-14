@@ -1,0 +1,122 @@
+{
+    "put:/records": [
+        "update_records",
+        "Create or Update Records",
+        "The API represents the main injection mechanism into the Data Ecosystem. \nIt allows records creation and/or update.When no record id is provided or when the provided id is not already present in the Data Ecosystem then a new record is created. \n If the id is related to an existing record in the Data Ecosystem then an update operation takes place and a new version of the record is created."
+    ],
+    "patch:/records": [
+        "patch_records",
+        "Modify record data and/or metadata attributes using patch operations",
+        "The API represents the patch update mechanism for records. It allows updating multiple records in one request. The API supports metadata update only (Legal Tags, ACLs and Tags) if the request body media type is `application/json`. The API supports metadata and data update (Legal Tags, ACLs, Tags, Ancestry, Kind, Meta and Data) if the request body media type is `application/json-patch+json`. Please choose the appropriate media type from the Request body dropdown. The currently supported operations are replace, add, and remove. \nRequired roles: `users.datalake.editors` or `users.datalake.admins`."
+    ],
+    "put:/records/copy": [
+        "update_records_copy",
+        "Copy a Record references form one namespace to another",
+        "This API attempts to copy all the Record references it is provided from the given source namespace to the target namespace. All refences will be copied or all will fail as a transaction. IF the target namesapce does not et exist it will be created. It requires 'services.storage.admin' permission to call"
+    ],
+    "post:/records/{id}:delete": [
+        "delete_record",
+        "Delete Record",
+        "The API performs a logical deletion of the record using recordId. This operation can be reverted later. \nAllowed roles: `service.storage.creator` and `service.storage.admin` who is the OWNER of the record."
+    ],
+    "post:/records/delete": [
+        "create_records_delete",
+        "Soft delete of multiple records",
+        "The API performs a soft deletion of the given list of records. \nRequired roles: `users.datalake.editors` or `users.datalake.admins` who is the OWNER of the record."
+    ],
+    "get:/query/records": [
+        "query_records_from_kind",
+        "Get all record from kind",
+        "The API returns a list of all record ids which belong to the specified kind.\nAllowed roles: `service.storage.admin`."
+    ],
+    "post:/query/records": [
+        "query_records",
+        "Fetch records",
+        "The API fetches multiple records at once.\nAllowed roles: `service.storage.viewer`,`service.storage.creator` and `service.storage.admin`."
+    ],
+    "post:/query/records:batch": [
+        "query_records_batch",
+        "Fetch multiple records",
+        "The API fetches multiple records at once in the specific {data-partition-id}.The value of {frame-of-reference} indicates whether normalization is applied.\nRequired roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`."
+    ],
+    "get:/records/{id}": [
+        "get_record",
+        "Get latest record version data",
+        "This API returns the latest version of the given record.\nAllowed roles: `service.storage.viewer`, `service.storage.creator` and `service.storage.admin`."
+    ],
+    "delete:/records/{id}": [
+        "purge_record",
+        "Purge Record",
+        "The API performs the physical deletion of the given record and all of its versions.\n This operation cannot be undone. \nAllowed roles: `service.storage.admin` who is the OWNER of the record."
+    ],
+    "get:/records/{id}/{version}": [
+        "get_record_version",
+        "Get Specific record",
+        "The API retrieves the specific version of the given record. \nAllowed roles: `service.storage.viewer`, `service.storage.creator` and `service.storage.admin`."
+    ],
+    "get:/records/versions/{id}": [
+        "get_record_versions",
+        "Get record versions",
+        "The API returns a list containing all versions for the given record id. \nAllowed roles: `service.storage.viewer`, `service.storage.creator` and `service.storage.admin`."
+    ],
+    "get:/liveness_check": [
+        "get_liveness_check",
+        "Liveness Check endpoint",
+        "For deployment available public `/liveness_check` endpoint verifies the operational status of the Storage Service."
+    ],
+    "get:/info": [
+        "get_info",
+        "Version info",
+        "For deployment available public `/info` endpoint, which provides build and git related information."
+    ],
+    "delete:/records/{id}/versions": [
+        "purge_record_versions",
+        "Purge Record Versions",
+        "The API for the given record id, performs the permanent deletion of physical record versions excluding latest version. `versionIds`, `limit`, `from` query parameters used to delete the record versions. \n `versionIds` comma separated value of version ids can be provided on `versionIds` query parameter. API will delete all versions defined by 'versionIds' query parameter. Maximum 50 record versions can be deleted per request. If `limit` query parameter ONLY is used, then it will delete oldest versions defined by `limit`. If `from` query parameter is used then it will delete all versions before current one (exclusive). `versionIds` explicit version should always take precedence than `limit` & `from` query parameter If both `from` and `limit` are used then API will delete `limit` number of versions starting `from` version This operation cannot be undone. Required roles: `users.datalake.admins` who is the OWNER of the record."
+    ],
+    "get:/replay/status/{id}": [
+        "get_replay_status",
+        "get status of replay operation",
+        "By passing replayId , you can get the replay operation status. \nAllowed roles: `users.datalake.ops`"
+    ],
+    "post:/replay": [
+        "create_replay",
+        "replay based on type",
+        "Replay all the kinds. Allowed roles `users.datalake.ops`"
+    ],
+    "get:/whoami": [
+        "get_whoami",
+        null,
+        ""
+    ],
+    "put:/whoami": [
+        "update_whoami",
+        null,
+        ""
+    ],
+    "post:/whoami": [
+        "create_whoami",
+        null,
+        ""
+    ],
+    "delete:/whoami": [
+        "delete_whoami",
+        null,
+        ""
+    ],
+    "options:/whoami": [
+        "options_whoami",
+        null,
+        ""
+    ],
+    "head:/whoami": [
+        "head_whoami",
+        null,
+        ""
+    ],
+    "patch:/whoami": [
+        "patch_whoami",
+        null,
+        ""
+    ]
+}

@@ -1,0 +1,37 @@
+{
+    "put:/schemas/system": [
+        "update_schemas_system",
+        "Creates/Updates a schema in development status",
+        "Creates a new schema or updates an already existing schema with status `DEVELOPMENT` in the schema repository. If a user tries to create a schema with status other than `DEVELOPMENT`, API will not throw an exception. <p>The update of schema without `DEVELOPMENT` status would cause error. Any schema instance with the same schemaIdentity is replaced. A schema state can also be changed from `DEVELOPMENT` to `PUBLISHED` or `OBSOLETE` while updating schema content or by providing the same schema content.</p> <p>**Note:** The schema may refer to other schema definitions in `DEVELOPMENT` state. If those schemas are updated themselves, it is the developer's responsibility to PUT the dependent schemas again to update the schema. Scope for a schema will be SHARED for all the schemas created using this API.</p><p>Service principal authorization is required to call thi API.</p>"
+    ],
+    "get:/schema": [
+        "search_schemas",
+        "Searches SchemaInfo repository",
+        "Searches for information of available schema (SchemaInfo) in schema repository. Support options to filter out the search contents. <p>Required roles:  `service.schema-service.viewers` groups to get the schema.</p>"
+    ],
+    "put:/schema": [
+        "update_schema",
+        "Creates/Updates a schema in development status",
+        "Creates a new schema or updates an already existing schema with status `DEVELOPMENT` in the schema repository. If a user tries to create/update a schema with status other than `DEVELOPMENT`, API will throw an exception. <p>Any schema instance with the same schemaIdentity is replaced (in contrast to the immutability of `PUBLISHED` or `OBSOLETE` schemas). A schema state can also be changed from `DEVELOPMENT` to `PUBLISHED` or `OBSOLETE` while updating schema content or by providing the same schema content.</p> <p>**Note:** The schema may refer to other schema definitions in `DEVELOPMENT` state. If those schemas are updated themselves, it is the developer's responsibility to PUT the dependent schemas again to update the schemas. Scope for a schema can't be updated, its a system defined value.</p> <p>Required roles:  `service.schema-service.editors` groups to update schema.</p>"
+    ],
+    "post:/schema": [
+        "create_schema",
+        "Adds a schema to the schema repository.",
+        "Adds a schema to the schema repository. The schemaIdentity must be unique. The `authority`, `source` and `entityType` will be registered if not present. <p>If lower minor versions are registered the service validates the new schema against breaking changes; if breaking changes are discovered the request fails.</p> <p>**Note:** The schema must not reference other schemas with status `DEVELOPMENT`. Scope to a schema will be set by system based on partition id (`SHARED` for common tenant and `INTERNAL` for private tenant). </p><p>Required roles : `service.schema-service.editors` groups to create schema.</p>"
+    ],
+    "get:/schema/{id}": [
+        "get_schema",
+        "Gets schema from the schema repository.",
+        "Retrieve a schema using its system defined id. Required roles:  `service.schema-service.viewers` groups to get the schema."
+    ],
+    "get:/liveness_check": [
+        "get_liveness_check",
+        "Liveness Check endpoint",
+        "For deployment available public `/liveness_check` endpoint verifies the operational status of the Schema Service."
+    ],
+    "get:/info": [
+        "get_info",
+        "Version info",
+        "For deployment available public `/info` endpoint, which provides build and git related information."
+    ]
+}

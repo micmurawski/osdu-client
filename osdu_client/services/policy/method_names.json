@@ -1,0 +1,102 @@
+{
+    "get:/": [
+        "home_page",
+        "Home Page",
+        ""
+    ],
+    "get:/api/policy/v1/policies": [
+        "get_api_policy_v1_policies",
+        "Fetch All Policies That Match Partition",
+        "Return all policies from OPA directly that match partition_bundle_root data-partition-id in header (if bundles are enabled).\nThis API gives the list of all the defined policies and it includes the policy definitions in the raw Rego form.\nIt performs authorization check. The user making the call needs to be either service.policy.user or service.policy.admin in the provided data partition."
+    ],
+    "get:/api/policy/v1/policies/{policy_id}": [
+        "get_fetch_policy",
+        "Fetch A Policy",
+        "Return a policy directly from OPA with no filtering"
+    ],
+    "get:/api/policy/v1/policies/osdu/instance/{policy_id}": [
+        "get_fetch_instance_policy",
+        "Fetch Instance Policy",
+        "Return an instance policy from OPA directly."
+    ],
+    "get:/api/policy/v1/policies/osdu/partition/{data_partition}/{policy_id}": [
+        "get_api_policy_v1_policies_osdu_partition",
+        "Fetch Partition Policy Directly From Opa",
+        "Return an policy for a partition id from OPA.\nRequires data-partition-id in header."
+    ],
+    "delete:/api/policy/v1/policies/osdu/partition/{data_partition}/{policy_id}": [
+        "delete_partition_policy",
+        "Delete Partition Policy",
+        "## Delete a partition policy\n* This API requires admin privileges (service.policy.admin) in the provided data partition.\n* Partition ID in header and in path must match\n* Policy_id must end with a \".rego\"\n\n### Possible http return status codes:\n* 200 - no error\n* 202 - accepted\n* 400 - bad request\n    * for example, if data_partition in path doesn't match data-partition-id in header\n* 401 - unauthorized\n* 403 - forbidden\n    * for example, if calling with only user privs\n* 404 - not found\n* 422 - validation Error\n    * for example, if policy_id doesn't end with \".rego\"\n* 500 - server error\n* 501 - not implemented\n    * for example, if bundles are not supported.\n* 503 - service not available\n    * for example, if issues with bundles server\n\nErrors will include some detail in returning json.\n\nReturn json:\n```\n    {\n        \"policy_id\": string, \n        \"data_partition\": string,\n        \"status\": bool,\n        \"message\": string,\n        \"result\": string json from OPA\n    }\n```"
+    ],
+    "put:/api/policy/v1/policies/osdu/partition/{data_partition}/{policy_id}": [
+        "create_or_update_partition_policy",
+        "Create Or Update Partition Policy",
+        "## Create or update a policy with given policy_id for a given data partition.\nThis API will create/update policy definition with provided Rego expression included in file and assign it with provided id.\n\n* This API requires admin privileges (service.policy.admin) in the provided data partition.\n* Partition ID in header and in path must match\n* Policy_id must end with a \".rego\"\n\n### Possible http return status codes:\n* 200 - no error\n* 202 - accepted\n* 400 - bad request\n    * for example, if data_partition in path doesn't match data-partition-id in header\n* 401 - unauthorized\n* 403 - forbidden\n    * for example, if calling with only user privs\n* 422 - validation Error\n    * for example, if policy_id doesn't end with \".rego\"\n    * for example, if package declaration issue\n* 500 - server error\n* 501 - not implemented\n    * for example, if bundles are not supported.\n* 503 - service not available\n    * for example, if issues with bundles server\n\nErrors will include some detail in returning json.\n\nReturn json:\n```\n    {\n        \"policy_id\": string,\n        \"data_partition\": string,\n        \"opa_payload\": string,\n        \"status_code\": http status code\n        \"status\": bool\n        \"message\": string\n    }\n```"
+    ],
+    "post:/api/policy/v1/evaluations/query": [
+        "evaluate_policy",
+        "Evaluate Policy",
+        "## Evaulate Policies\nThis API is to help you evaluate policies.\n\nIf include_auth is True, then in your file data token, xuserid and data partition id will be ignored in the file and information from the headers\nof the request will be used for this information.\n\n### Example:\nFor example file data for policy dataauthz.rego:\nWhere XXXX is the data partition and YYYY is a legal tag\n```json\n{\n    \"input\": {\n        \"operation\": \"update\",\n        \"records\": [\n            {\n                \"id\":\"XXXX:test:1.4.1654807204111\",\n                \"kind\":\"XXXX:bulkupdate:test:1.1.1654807204111\",\n                \"legal\":{\n                    \"legaltags\":[\n                        \"YYYY\"\n                    ],\n                    \"otherRelevantDataCountries\":[\"US\"],\n                    \"status\":\"compliant\"\n                },\n                \"acls\":{\n                    \"viewers\":[\"data.default.viewers@XXXX.group\"],\n                    \"owners\":[\"data.default.owners@XXXX.group\"]\n                }\n            }\n        ]\n    }\n}\n```"
+    ],
+    "post:/api/policy/v1/translate": [
+        "translate_policy_api",
+        "Translate Policy Api",
+        "## Translate policy\nGiven an OPA query that should be partially evaluated, return an ElasticSearch request body\n\nIn the body of the request the JSON schema should match \"TranslateItem\".\nPlease note: xuserid, token and datapartitionid are now actively inserted into input request"
+    ],
+    "get:/api/policy/v1/info": [
+        "get_api_policy_v1_info",
+        "Return Version Info",
+        "Return Service version information.\nExpected returned JSON is in \"InfoOut\" schema, which include Services and ServiceDetail schemas."
+    ],
+    "post:/api/policy/v1/compile": [
+        "create_api_policy_v1_compile",
+        "Compile Partially Evaluate A Query",
+        "# Compile - Partially evaluate a query.\nThe Compile API allows you to partially evaluate Rego queries and obtain a simplified version of the policy.\n\n### Metrics\nWhen query parameter metrics=true, the API response will include detailed performance metrics from OPA.\nOPA currently supports the following query performance metrics:\n\n    timer_rego_input_parse_ns: time taken (in nanoseconds) to parse the input\n    timer_rego_query_parse_ns: time taken (in nanonseconds) to parse the query.\n    timer_rego_query_compile_ns: time taken (in nanonseconds) to compile the query.\n    timer_rego_query_eval_ns: time taken (in nanonseconds) to evaluate the query.\n    timer_rego_module_parse_ns: time taken (in nanoseconds) to parse the input policy module.\n    timer_rego_module_compile_ns: time taken (in nanoseconds) to compile the loaded policy modules.\n    timer_server_handler_ns: time take (in nanoseconds) to handle the API request.\n\n### Instrumentation\nTo enable query instrumentation, specify metrics=true and instrument=true query parameters when executing the API call.\nQuery instrumentation can help diagnose performance problems, however, it can add significant overhead to query evaluation.\nWe recommend leaving query instrumentation off unless you are debugging a performance problem."
+    ],
+    "get:/api/policy/v1/tenant": [
+        "get_tenant",
+        "Get Tenant",
+        "Experimental tenant API for retrieving OPA bundle config for a data partition.\nThese details are read from OPA configmap."
+    ],
+    "put:/api/policy/v1/tenant": [
+        "update_tenant",
+        "Update Tenant",
+        "Experimental tenant API for updating OPA bundle config for a data partition.\nAdding new partitions is not supported in M20."
+    ],
+    "delete:/api/policy/v1/tenant": [
+        "delete_tenant",
+        "Delete Tenant",
+        "Experimental tenant API for deleting tenant OPA bundle config for a data partition.\nDeleting partitions is not supported in M20."
+    ],
+    "get:/api/policy/v1/health": [
+        "get_health",
+        "Health",
+        "## Health check endpoint, which does not depend on OPA.\nThis API does not require any headers or authentication.\n\nThe /health endpoint responds with a 200 HTTP status code when the service pod can receive requests.\nThe endpoint indicates that the service pod is healthy and reachable.\nIt does not indicate that the service is ready to serve requests."
+    ],
+    "get:/api/policy/v1/ready": [
+        "get_ready",
+        "Ready",
+        "## Health check endpoint, which depends on OPA being available and healthy.\nThis API does not require any headers or authentication.\n\n### Possible http return status codes:\n* 200 - no error\n* 501 - not implemented\n* 503 - service not available\n\nThe /ready endpoint responds with a 200 HTTP status code if the overall application works.\nThe endpoint indicates that the service is ready to serve requests."
+    ],
+    "put:/api/policy/v1/validate/{policy_id}": [
+        "validate_policy",
+        "Validate Policy",
+        "# Validate Policy\nThis API checks to make sure the rego is valid and the naming of the policy package is acceptable.\n\nIf template parameter is True, then the incoming file will automatically replace the following during validation:\n- data_partition\n- DATA_PARTITION\n- name with policy_id without \".rego\" suffix"
+    ],
+    "get:/api/policy/v1/backup": [
+        "get_backup",
+        "Backup",
+        "Experimental Backup API.\n\nAllows downloading the bundle for a data partition.\n\nBundle filename will be in the form bundle-`data partition`-`date`.tar.gz"
+    ],
+    "post:/api/policy/v1/bootstrap": [
+        "bootstrap",
+        "Bootstrap",
+        "Experimental bootstrap API for creating and updating bundle to default.\nThis should be used when adding a partition to OSDU.\n\nWithout force:\n\n    * This method is only allowed if the partition doesn't already have a bundle.\n    * If the bundle already exists it will return 405 METHOD_NOT_ALLOWED.\n    * Policy Service can be configured to ignore force.\n\nMay return:\n\n    * HTTP_202_ACCEPTED - updated\n    * HTTP_201_CREATED - created\n    * HTTP_405_METHOD_NOT_ALLOWED - not allowed\n    * HTTP_424_FAILED_DEPENDENCY - bundle server caused failure"
+    ],
+    "get:/api/policy/v1/config": [
+        "get_api_policy_v1_config",
+        "Show Policy Config Details",
+        "Return detail configuration details.\nDiagnostic API"
+    ]
+}

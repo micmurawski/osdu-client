@@ -1,0 +1,342 @@
+{
+    "get:/alpha/ddms/v2/logs/{record_id}/data": [
+        "get_alpha_logs_data",
+        "Returns the data according to the specified query parameters.",
+        "Returns the data according to the specified query parameters.  \nMultiple media types response are available (\"application/json\", \"application/x-parquet\").  \nThe desired format can be specify in the \"Accept\" header, default is Parquet.  \n\nWhen bulk statistics are requested using _describe_ query parameter, the response is always provided in JSON.  \nThe requested columns must not exceed 500. \nThe query parameter _curves_ can be use to limit the number of columns.  \n  \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data.\n  \n**Important**: In order to minimize reading time.\n\n1. Partial reading\n    - Select only needed columns\n    \nNote: using curves filtering has a cost, use it only if it reduces significantly the amount of retrieved bulk data.\n\n2. Full reading\n    - Try to read all the curves, if those errors are returned go to next steps:\n        - HTTP 400 \"Too many columns requested\"\n        - HTTP 400 \"Too many values requested\"\n        - HTTP 413 \"the resource requested exceeds the limit\" (When WDDMS worker are enabled)\n    - Get curve names and number of rows per curve by using describe parameter\n       - Each request should fetch as many as columns it is possible until upper limits are reached (> 10 millions values or > 500 columns)"
+    ],
+    "post:/alpha/ddms/v2/logs/{record_id}/data": [
+        "write_alpha_logs_data",
+        "Writes data as a whole bulk, creates a new version.",
+        "Writes data to the associated record. It creates a new version.\nPayload is expected to contain the entire bulk which will replace as latest version\nany previous bulk. Previous bulk versions are accessible via the get bulk data version API.\nSupport JSON and Parquet format ('Content_Type' must be set accordingly).\nSupport http chunked encoding transfer.\n  \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins\n  \n**Important**: In order to minimize writing time, it's necessary to:  \n- Double check whether bulk data is big enough to be sent with chunking APIs: meaning > 10 millions values or > 500 columns\n    - If no, use instead POST /ddms/v3/welllogs/MY_RECORD_ID/data API\n- Ensure all curve's values are in the same chunk to be sent\n- Each chunk should contain as many as columns it is possible until upper limits are reached (> 10 millions values or > 500 columns)"
+    ],
+    "get:/alpha/ddms/v2/logs/{record_id}/sessions": [
+        "list_records_sessions_v2",
+        "list session of the given record.",
+        ""
+    ],
+    "post:/alpha/ddms/v2/logs/{record_id}/sessions": [
+        "create_alpha_logs_sessions",
+        "Create a new session on the given record for writing bulk data.",
+        "Initiate a session based on record version provided. The session is isolated from any other modifications. Inside a session, individual chunk doesn't generate new individual version. A new single version is created only at session completion 'aggregating' all updates. A typical workflow is:\n1. create a session\n2. send X chunks (can be parallelized)\n3. commit the session\n\nSession has an expiry time. If the session is not completed before, it's automatically dropped. The session duration is specified in the request but cannot exceeds 24 hours."
+    ],
+    "get:/alpha/ddms/v2/logs/{record_id}/sessions/{session_id}": [
+        "get_record_session_v2",
+        "get session.",
+        ""
+    ],
+    "patch:/alpha/ddms/v2/logs/{record_id}/sessions/{session_id}": [
+        "patch_alpha_logs_sessions",
+        "Update a session, either commit or abandon.",
+        "Either validates the session' bulk data, a new version of record will be created with data sent \n                within the session. Either abandon the session, and let record unchanged.  \n                Note: bulk data consistency check will be run when committing bulk data."
+    ],
+    "post:/alpha/ddms/v2/logs/{record_id}/sessions/{session_id}/data": [
+        "send_alpha_logs_sessions_data",
+        "Send a data chunk. Session must be complete/commit once all chunks are sent.",
+        "Send a data chunk. Session must be complete/commit once all chunks are sent. This will create a new and single version aggregating all and previous bulk.Support JSON and Parquet format ('Content_Type' must be set accordingly). Support http chunked encoding.  \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/alpha/ddms/v2/logs/{record_id}/versions/{version}/data": [
+        "get_alpha_logs_versions_data",
+        "Returns data of the specified version.",
+        "Returns the data of a specific version according to the specified query parameters.  \nMultiple media types response are available (\"application/json\", \"application/x-parquet\").  \nThe desired format can be specify in the \"Accept\" header, default is Parquet.  \n\nWhen bulk statistics are requested using _describe_ query parameter, the response is always provided in JSON.  \nThe requested columns must not exceed 500. \nThe query parameter _curves_ can be use to limit the number of columns.  \n  \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data.\n  \n**Important**: In order to minimize reading time.\n\n1. Partial reading\n    - Select only needed columns\n    \nNote: using curves filtering has a cost, use it only if it reduces significantly the amount of retrieved bulk data.\n\n2. Full reading\n    - Try to read all the curves, if those errors are returned go to next steps:\n        - HTTP 400 \"Too many columns requested\"\n        - HTTP 400 \"Too many values requested\"\n        - HTTP 413 \"the resource requested exceeds the limit\" (When WDDMS worker are enabled)\n    - Get curve names and number of rows per curve by using describe parameter\n       - Each request should fetch as many as columns it is possible until upper limits are reached (> 10 millions values or > 500 columns)"
+    ],
+    "post:/ddms/v2/dipsets": [
+        "create_or_update_dipset",
+        "Create or update the DipSets using wks:dipSet:1.0.0 schema",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "delete:/ddms/v2/dipsets/{dipsetid}": [
+        "delete_dipset",
+        "Delete the DipSet. The API performs a logical deletion of the given record",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/dipsets/{dipsetid}": [
+        "get_dipset",
+        "Get the DipSet using wks:dipSet:1.0.0 schema",
+        "Get the DipSet object using its **id**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/dipsets/{dipsetid}/dips": [
+        "get_dip",
+        "Get dips",
+        "Return dips from dipset from the given index until the given number of dips specifed in query parameters. \n    If not specified returns all dips from dipset.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/dipsets/{dipsetid}/dips": [
+        "define_dips_dipset",
+        "Define the dips of the dipset",
+        "Replace previous dips by provided dips. Sort dips by reference and azimuth.   \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "post:/ddms/v2/dipsets/{dipsetid}/dips/insert": [
+        "insert_dip_in_dipset",
+        "insert dip in  a dipset",
+        "Insert dips in dipset. \n    Existing dips are not replaced. \n    Several dip can have same reference. \n    Operation will sort by reference all dips in dipset (may modify dip indexes).   \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/dipsets/{dipsetid}/dips/query": [
+        "query_dip_from_dipset",
+        "Query dip from dipset",
+        "Search dip within reference interval and specific classification.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "delete:/ddms/v2/dipsets/{dipsetid}/dips/{index}": [
+        "delete_dip",
+        "Delete a dip",
+        "Removes the dip at index.   \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/dipsets/{dipsetid}/dips/{index}": [
+        "get_dip_at_index",
+        "Get a dip at index",
+        "\"Return dip from dipset at the given index.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "patch:/ddms/v2/dipsets/{dipsetid}/dips/{index}": [
+        "update_dip",
+        "Update dip",
+        "\"Update dip at index     \n    Operation will sort by reference all dips in dipset (may modify dip indexes)."
+    ],
+    "get:/ddms/v2/dipsets/{dipsetid}/versions": [
+        "get_versions_dipset",
+        "Get all versions of the dipset",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/dipsets/{dipsetid}/versions/{version}": [
+        "get_dipsets_versions",
+        "Get the given version of DipSet using wks:dipset:1.0.0 schema",
+        "\"Get the DipSet object using its **id**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/logs": [
+        "create_or_update_logs",
+        "Create or update the logs using wks:log:1.0.5 schema",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "delete:/ddms/v2/logs/{logid}": [
+        "delete_log",
+        "Delete the log. The API performs a logical deletion of the given record",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/logs/{logid}": [
+        "get_log",
+        "Get the Log using wks:log:1.0.5 schema",
+        "Get the log object using its data ecosystem **id**.  <p>If the log\n                kind is *wks:log:1.0.5* returns the record directly</p> <p>If the\n                wellbore kind is different *wks:log:1.0.5* it will get the raw\n                record and convert the results to match the *wks:log:1.0.5*. If\n                conversion is not possible returns an error **500**.</p>  \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/logs/{logid}/data": [
+        "get_log_data",
+        "Returns all data within the specified filters. Strongly consistent.",
+        "return full bulk data.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/logs/{logid}/data": [
+        "write_log_data",
+        "Writes the specified data to the log (atomic).",
+        "Overwrite if exists.   \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/logs/{logid}/decimated": [
+        "get_decimated_log",
+        "Returns a decimated version of all data within the specified filters. Eventually consistent.",
+        "TODO\n            Note: row order is not preserved.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/logs/{logid}/statistics": [
+        "get_log_statistics",
+        "Data statistics",
+        "This API will return count, mean, std, min, max and percentiles of each column.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/logs/{logid}/upload_data": [
+        "upload_log_data",
+        "Writes the data to the log. Support json file (then orient must be provided) and parquet",
+        "Overwrite if exists.   \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/logs/{logid}/versions": [
+        "get_log_versions",
+        "Get all versions of the log",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/logs/{logid}/versions/{version}": [
+        "get_log_version",
+        "Get the given version of log using wks:log:1.0.5 schema",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/logs/{logid}/versions/{version}/data": [
+        "get_log_version_data",
+        "Returns all data within the specified filters. Strongly consistent.",
+        "return full bulk data.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/logsets": [
+        "create_or_update_logsets",
+        "Create or update the LogSets using wks:logSet:1.0.5 schema",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "delete:/ddms/v2/logsets/{logsetid}": [
+        "delete_logset",
+        "Delete the LogSet. The API performs a logical deletion of the given record",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/logsets/{logsetid}": [
+        "get_logset",
+        "Get the LogSet using wks:logSet:1.0.5 schema",
+        "Get the LogSet object using its **id**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/logsets/{logsetid}/versions": [
+        "get_logset_versions",
+        "Get all versions of the logset.",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/logsets/{logsetid}/versions/{version}": [
+        "get_logset_version",
+        "Get the given version of LogSet using wks:logSet:1.0.5 schema",
+        "\"Get the LogSet object using its **id**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/markers": [
+        "create_or_update_marker",
+        "Create or update the markers using wks:marker:1.0.4 schema",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "delete:/ddms/v2/markers/{markerid}": [
+        "delete_marker",
+        "Delete the marker. The API performs a logical deletion of the given record",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/markers/{markerid}": [
+        "get_marker",
+        "Get the marker using wks:marker:1.0.4 schema",
+        "Get the Marker object using its **id**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/markers/{markerid}/versions": [
+        "get_marker_versions",
+        "Get all versions of the marker",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/markers/{markerid}/versions/{version}": [
+        "get_marker_version",
+        "Get the given version of marker using wks:marker:1.0.4 schema",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/trajectories": [
+        "create_or_update_trajectories",
+        "Create or update the trajectories using wks:Trajectory:1.0.5 schema",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "delete:/ddms/v2/trajectories/{trajectoryid}": [
+        "delete_trajectory",
+        "Delete the Trajectory. The API performs a logical deletion of the given record",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/trajectories/{trajectoryid}": [
+        "get_trajectory",
+        "Get the trajectory using wks:trajectory:1.0.5 schema",
+        "Get the Trajectory object using its **id**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/trajectories/{trajectoryid}/data": [
+        "get_trajectory_data",
+        "Returns all data within the specified filters. Strongly consistent.",
+        "return full bulk data.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/trajectories/{trajectoryid}/data": [
+        "create_trajectory_data",
+        "Writes the specified data to the trajectory (atomic).",
+        "Overwrite if exists.   \nRequired roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/trajectories/{trajectoryid}/versions": [
+        "get_trajectory_versions",
+        "Get all versions of the Trajectory",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/trajectories/{trajectoryid}/versions/{version}": [
+        "get_trajectory_version",
+        "Get the given version of Trajectory using wks:Trajectory:1.0.5 schema",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/trajectories/{trajectoryid}/versions/{version}/data": [
+        "get_trajectory_version_data",
+        "Returns all data within the specified filters. Strongly consistent.",
+        "return full bulk data.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/wellbores": [
+        "create_or_update_wellbore_v2",
+        "Create or update the Wellbores using wks:wellbore:1.0.6 schema",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "delete:/ddms/v2/wellbores/{wellboreid}": [
+        "delete_wellbores",
+        "Delete the wellbore. The API performs a logical deletion of the given record",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/wellbores/{wellboreid}": [
+        "get_wellbores",
+        "Get the Wellbore using wks:wellbore:1.0.6 schema",
+        "Get the Wellbore object using its **id**.  <p>If the wellbore kind is\n        *wks:wellbore:1.0.6* returns the record directly</p> <p>If the wellbore\n        kind is different *wks:wellbore:1.0.6* it will get the raw record and\n        convert the results to match the *wks:wellbore:1.0.6*. If convertion is\n        not possible returns an error **500**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/wellbores/{wellboreid}/versions": [
+        "get_versions_wellbore",
+        "Get all versions of the Wellbore",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/wellbores/{wellboreid}/versions/{version}": [
+        "get_wellbores_versions",
+        "Get the given version of the Wellbore using wks:wellbore:1.0.6 schema",
+        "\"Get the Wellbore object using its **id**.  <p>If the wellbore kind is\n        *wks:wellbore:1.0.6* returns the record directly</p> <p>If the wellbore\n        kind is different *wks:wellbore:1.0.6* it will get the raw record and\n        convert the results to match the *wks:wellbore:1.0.6*. If convertion is\n        not possible returns an error **500**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "post:/ddms/v2/wells": [
+        "create_or_update_well",
+        "Create or update the Wells using wks:well:1.0.2 schema",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "delete:/ddms/v2/wells/{wellid}": [
+        "delete_well",
+        "Delete the well. The API performs a logical deletion of the given record",
+        "Required roles: 'users.datalake.editors' or 'users.datalake.admins"
+    ],
+    "get:/ddms/v2/wells/{wellid}": [
+        "get_well_v2",
+        "Get the Well using wks:well:1.0.2 schema",
+        "Get the Well object using its **id**.  <p>If the well kind is\n        *wks:well:1.0.2* returns the record directly</p> <p>If the well\n        kind is different *wks:well:1.0.2* it will get the raw record and\n        convert the results to match the *wks:well:1.0.2*. If convertion is\n        not possible returns an error **500**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/wells/{wellid}/versions": [
+        "get_well_versions_v2",
+        "Get all versions of the Well",
+        "Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/ddms/v2/wells/{wellid}/versions/{version}": [
+        "get_well_version",
+        "Get the given version of the Well using wks:well:1.0.2 schema",
+        "\"Get the Well object using its **id**.  <p>If the well kind is\n        *wks:well:1.0.2* returns the record directly</p> <p>If the well\n        kind is different *wks:well:1.0.2* it will get the raw record and\n        convert the results to match the *wks:well:1.0.2*. If convertion is\n        not possible returns an error **500**.   \nRequired roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'.\nIn addition, users must be a member of data groups to access the data."
+    ],
+    "get:/api/rafs-ddms/v2/samplesanalysesreport/{record_id}": [
+        "get_sar_record_v2",
+        "Get Record",
+        "Get the latest version of `SamplesAnalysesReport` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v2/samplesanalysesreport/{record_id}": [
+        "soft_delete_sar_record_v2",
+        "Soft Delete Record",
+        "Delete the `SamplesAnalysesReport` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v2/samplesanalysesreport/{record_id}/versions": [
+        "get_sar_record_versions_v2",
+        "Get Record Versions",
+        "Get a list of `SamplesAnalysesReport` object versions by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v2/samplesanalysesreport/{record_id}/versions/{version}": [
+        "get_sar_record_specific_version_v2",
+        "Get Record Specific Version",
+        "Get the given version of `SamplesAnalysesReport` object.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "post:/api/rafs-ddms/v2/samplesanalysesreport": [
+        "create_or_update_sar_records_v2",
+        "Post Records",
+        "Create or update `SamplesAnalysesReport` record(s).<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "get:/api/rafs-ddms/v2/samplesanalysesreport/{record_id}/source": [
+        "get_sar_source_data_v2",
+        "Get Source Data",
+        "Get source data from data.Datasets property.\n\n:param record_id: record id\n:type record_id: str\n:param storage_service: storage service, defaults to\n    Depends(get_async_storage_service)\n:type storage_service: dataset.DatasetService, optional\n:param dataset_service: dataset service, defaults to\n    Depends(get_async_dataset_service)\n:type dataset_service: storage.StorageService, optional\n:param version: version, defaults to None\n:type version: Optional[str], optional\n:return: rendered source data response\n:rtype: JSONResponse"
+    ],
+    "get:/api/rafs-ddms/v2/samplesanalysis/analysistypes": [
+        "get_sar_types_v2",
+        "Get Types",
+        "Get available types."
+    ],
+    "get:/api/rafs-ddms/v2/samplesanalysis/{record_id}": [
+        "get_sar_record_v2",
+        "Get Record",
+        "Get the latest version of `SamplesAnalysis` object by record id.<br><br>        Required roles: `users.datalake.viewers` or `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ],
+    "delete:/api/rafs-ddms/v2/samplesanalysis/{record_id}": [
+        "soft_delete_sar_record_v2",
+        "Soft Delete Record",
+        "Delete the `SamplesAnalysis` object by record id.<br><br>        Required roles: `users.datalake.editors` or `users.datalake.admins`.<br>         In addition, users must be members of a data group(ACL) to access the data."
+    ]
+}

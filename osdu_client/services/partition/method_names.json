@@ -1,0 +1,37 @@
+{
+    "get:/partitions/{partitionId}": [
+        "get_partition",
+        "Get Partition Info",
+        "Get all properties and their values for a given data partition id"
+    ],
+    "post:/partitions/{partitionId}": [
+        "create_partitions",
+        "Create a new Partition",
+        "Creates a new data partition with all given properties and their values."
+    ],
+    "delete:/partitions/{partitionId}": [
+        "delete_partition",
+        "Delete an existing Partition",
+        "Delete all the properties of a given data partition"
+    ],
+    "patch:/partitions/{partitionId}": [
+        "update_partitions",
+        "Updates an existing Partition",
+        "Add new properties or update existing properties of a given data partition"
+    ],
+    "get:/partitions": [
+        "list_partitions",
+        "List all Partitions",
+        "Returns all existing data partitions"
+    ],
+    "get:/liveness_check": [
+        "get_liveness_check",
+        "Liveness Check endpoint",
+        "For deployment available public `/liveness_check` endpoint."
+    ],
+    "get:/info": [
+        "get_info",
+        "Version info",
+        "For deployment available public `/info` endpoint, which provides build and git related information."
+    ]
+}
