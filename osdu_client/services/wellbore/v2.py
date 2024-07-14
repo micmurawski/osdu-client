@@ -30,7 +30,7 @@ class WellboreClient(WellboreCommonClient):
         curves: str | None = None,
         describe: str | None = None,
         filter: str | None = None,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -109,7 +109,7 @@ class WellboreClient(WellboreCommonClient):
     def create_alpha_logs_sessions(
         self,
         *,
-        mode: dict,
+        mode: str,
         from_version: int | None = 0,
         meta: dict | None = None,
         time_to_live: int | None = "1440",
@@ -133,7 +133,8 @@ class WellboreClient(WellboreCommonClient):
         if time_to_live is not None:
             data["timeToLive"] = time_to_live
 
-        validate_data(data, CreateDataSessionRequest, WellboreAPIError)
+        if self.validation:
+            validate_data(data, CreateDataSessionRequest, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
@@ -172,7 +173,7 @@ class WellboreClient(WellboreCommonClient):
     def patch_alpha_logs_sessions(
         self,
         *,
-        state: dict,
+        state: str,
         record_id: str,
         session_id: str,
         data_partition_id: str | None = None,
@@ -188,7 +189,8 @@ class WellboreClient(WellboreCommonClient):
             "state": state,
         }
 
-        validate_data(data, UpdateSessionState, WellboreAPIError)
+        if self.validation:
+            validate_data(data, UpdateSessionState, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
@@ -234,7 +236,7 @@ class WellboreClient(WellboreCommonClient):
         curves: str | None = None,
         describe: str | None = None,
         filter: str | None = None,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -517,7 +519,8 @@ class WellboreClient(WellboreCommonClient):
         if z_coordinate is not None:
             data["zCoordinate"] = z_coordinate
 
-        validate_data(data, Dip, WellboreAPIError)
+        if self.validation:
+            validate_data(data, Dip, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
@@ -631,7 +634,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         logid: str,
-        orient: dict | None = None,
+        orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
@@ -658,7 +661,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         logid: str,
-        orient: dict | None = None,
+        orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
@@ -749,7 +752,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         logid: str,
-        orient: dict | None = None,
+        orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
@@ -824,7 +827,7 @@ class WellboreClient(WellboreCommonClient):
         *,
         logid: str,
         version: str,
-        orient: dict | None = None,
+        orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
@@ -1114,7 +1117,7 @@ class WellboreClient(WellboreCommonClient):
         *,
         trajectoryid: str,
         channels: str | None = None,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -1144,7 +1147,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         trajectoryid: str,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -1221,7 +1224,7 @@ class WellboreClient(WellboreCommonClient):
         trajectoryid: str,
         version: str,
         channels: str | None = None,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:

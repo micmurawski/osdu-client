@@ -7,10 +7,11 @@ def validate_data(data: dict, schema: BaseModel, exception: OSDUAPIError = OSDUA
     try:
         schema(**data)
     except ValidationError as e:
+        messages = []
         for error in e.errors(include_url=False):
             _type =  error["type"]
-            loc = ".".join(convert_to_snake_case(str(i)) for i in error["loc"])
+            loc = ".".join(i for i in error["loc"])
             msg = error["msg"]
             _input = error["input"]
-            message = f"{msg} {_type} in {loc}. Input: {_input}"
-            raise exception(message)
+            messages.append(f"{msg} {_type} in {loc}. Input: {_input}")
+        raise exception(messages)

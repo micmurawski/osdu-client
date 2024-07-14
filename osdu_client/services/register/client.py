@@ -8,12 +8,12 @@ from osdu_client.exceptions import OSDUAPIError
 from osdu_client.validation import validate_data
 
 from .models import (
-    ddms,
-    createAction,
-    testAction,
-    record,
-    subscription,
-    secret,
+    Ddms,
+    CreateAction,
+    TestAction,
+    Record,
+    Subscription,
+    Secret,
 )
 
 
@@ -91,7 +91,8 @@ class RegisterClient(OSDUAPIClient):
         if interfaces is not None:
             data["interfaces"] = interfaces
 
-        validate_data(data, ddms, RegisterAPIError)
+        if self.validation:
+            validate_data(data, Ddms, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "ddms")
         response = requests.post(url, headers=headers, json=data)
@@ -218,7 +219,8 @@ class RegisterClient(OSDUAPIClient):
         if filter is not None:
             data["filter"] = filter
 
-        validate_data(data, createAction, RegisterAPIError)
+        if self.validation:
+            validate_data(data, CreateAction, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action")
         response = requests.post(url, headers=headers, json=data)
@@ -246,7 +248,8 @@ class RegisterClient(OSDUAPIClient):
         if test_payload is not None:
             data["testPayload"] = test_payload
 
-        validate_data(data, testAction, RegisterAPIError)
+        if self.validation:
+            validate_data(data, TestAction, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action:test")
         response = requests.post(url, headers=headers, json=data)
@@ -283,7 +286,8 @@ class RegisterClient(OSDUAPIClient):
         if data is not None:
             data["data"] = data
 
-        validate_data(data, record, RegisterAPIError)
+        if self.validation:
+            validate_data(data, Record, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action:retrieve")
         response = requests.post(url, headers=headers, json=data)
@@ -320,7 +324,8 @@ class RegisterClient(OSDUAPIClient):
         if secret is not None:
             data["secret"] = secret
 
-        validate_data(data, subscription, RegisterAPIError)
+        if self.validation:
+            validate_data(data, Subscription, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "subscription")
         response = requests.post(url, headers=headers, json=data)
@@ -387,7 +392,8 @@ class RegisterClient(OSDUAPIClient):
         if value is not None:
             data["value"] = value
 
-        validate_data(data, secret, RegisterAPIError)
+        if self.validation:
+            validate_data(data, Secret, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "subscription/%s/secret" % id)
         response = requests.put(url, headers=headers, json=data)

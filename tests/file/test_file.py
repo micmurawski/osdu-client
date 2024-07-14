@@ -11,9 +11,19 @@ def test_file_copy_file_collections(file_api_server, file_client: FileClient):
 def test_file_create_files_metadata(file_api_server, file_client: FileClient):
     file_client.create_files_metadata(
         kind="text",
-        acl={},
+        acl={
+            "viewers": ["example"], "owners": ["example"],
+        },
         legal={},
-        data={},
+        data={
+            "Name": "text",
+            "Endian": "BIG",
+            "DatasetProperties": {
+                "FileSourceInfo": {
+                    "FileSource": ""
+                }
+            }
+        },
         id="text",
         ancestry={},
         data_partition_id="text",
@@ -45,11 +55,11 @@ def test_file_get_file_collections_storage_instructions(file_api_server, file_cl
 
 def test_file_get_file_list(file_api_server, file_client: FileClient):
     file_client.get_file_list(
-        time_from={},
-        time_to={},
+        time_from="2024-01-01T00:00:00",
+        time_to="2024-01-01T00:00:00",
         page_num=10,
         items=10,
-        user_i_d="text",
+        user_id="text",
         data_partition_id="text",
         tenant="text",
     )
@@ -57,7 +67,7 @@ def test_file_get_file_list(file_api_server, file_client: FileClient):
 
 def test_file_get_file_location(file_api_server, file_client: FileClient):
     file_client.get_file_location(
-        file_i_d={},
+        file_id="2034ae65-552a-4c04-9e0c-e344ebe40bc7",
         data_partition_id="text",
         tenant="text",
     )
@@ -95,7 +105,7 @@ def test_file_get_info(file_api_server, file_client: FileClient):
 
 def test_file_get_location(file_api_server, file_client: FileClient):
     file_client.get_location(
-        file_i_d={},
+        file_id="2034ae65-552a-4c04-9e0c-e344ebe40bc7",
         data_partition_id="text",
         tenant="text",
     )

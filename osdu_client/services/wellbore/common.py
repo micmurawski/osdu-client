@@ -58,7 +58,8 @@ class WellboreCommonClient(OSDUAPIClient):
         if log_unit is not None:
             data["log_unit"] = log_unit
 
-        validate_data(data, GuessRequest, WellboreAPIError)
+        if self.validation:
+            validate_data(data, GuessRequest, WellboreAPIError)
 
         url = urljoin(self.base_url, self.service_path, "log-recognition/family")
         response = requests.post(url, headers=headers, json=data)
@@ -87,7 +88,8 @@ class WellboreCommonClient(OSDUAPIClient):
             "legal": legal,
         }
 
-        validate_data(data, CatalogRecord, WellboreAPIError)
+        if self.validation:
+            validate_data(data, CatalogRecord, WellboreAPIError)
 
         url = urljoin(
             self.base_url, self.service_path, "log-recognition/upload-catalog"

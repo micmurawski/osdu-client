@@ -105,8 +105,8 @@ def test_entitlements_list_partition_groups(entitlements_api_server, entitlement
         tenant="text",
     )
 
-def test_entitlements_patch_groups(entitlements_api_server, entitlements_client: EntitlementsClient):
-    entitlements_client.patch_groups(
+def test_entitlements_update_groups(entitlements_api_server, entitlements_client: EntitlementsClient):
+    entitlements_client.update_groups(
         update_group_request=[{}],
         group_email="text",
         data_partition_id="text",

@@ -36,6 +36,9 @@ def get_service_client(name: str, version: str | None = None) -> type[OSDUAPICli
 
 class OSDUAPI:
     @staticmethod
-    def client(service_name, auth_backend: AuthBackendInterface, version: str | None = None) -> OSDUAPIClient:
+    def client(service_name, auth_backend: AuthBackendInterface, version: str | None = None, validation: bool = True) -> OSDUAPIClient:
         client_class = get_service_client(service_name, version)
-        return client_class(auth_backend)
+        return client_class(
+            auth_backend=auth_backend,
+            validation=validation,
+        )

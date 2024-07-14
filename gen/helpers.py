@@ -3,7 +3,7 @@ import os
 import sys
 from subprocess import PIPE, Popen
 from typing import Any
-
+from .swagger import SwaggerDoc
 import yaml
 
 NOT_SET = object()
@@ -60,11 +60,11 @@ def generate_models(input: str, output: str, suppress_errors=True):
                 print(msg)
 
 
-def load_swagger(text: str) -> dict:
+def load_swagger(text: str) -> SwaggerDoc:
     try:
-        return json.loads(text)
+        return SwaggerDoc(**json.loads(text))
     except json.decoder.JSONDecodeError:
-        return yaml.safe_load(text)
+        return SwaggerDoc(**yaml.safe_load(text))
 
 
 def get_server_url(swagger: dict) -> str:
@@ -89,7 +89,11 @@ def get_path(data: dict, path: str, default: Any = NOT_SET, separator: str = "."
     result: Any = data
     for el in path.split(separator):
         try:
-            result = result[el]
+            if isinstance(result, dict):
+                result = result[el]
+            else:
+                idx = int(el)
+                result = result[idx]
         except KeyError as e:
             if default is NOT_SET:
                 raise KeyError(f"Path {path} not found") from e

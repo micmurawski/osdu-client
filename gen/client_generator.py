@@ -54,40 +54,57 @@ COMPLEX_TYPES_MAP = {
 }
 
 
-def get_type_for_param(param: dict) -> str:
+def get_type_for_param(param: dict, swagger: dict | None = None) -> str:
+    if swagger is None:
+        swagger = {}
+
     if param.get("in") in ("query", "path"):
         return str.__name__
 
+    param_type = param.get("type")
     schema_type = get_path(param, "schema.type", None)
-    if "type" not in param and not schema_type:
-        return dict.__name__
-    elif schema_type in SIMPLE_TYPES_MAP:
+    ref_path = get_path(param, "$ref", None)
+    all_of = get_path(param, "allOf.0.$ref", None)
+    any_of = get_path(param, "anyOf", None)
+
+    if any_of:
+        raise Exception(param)
+
+    while ref_path or all_of:
+        ref_path = ref_path or all_of
+        ref = get_path(swagger, ref_path[2:], separator="/", default=None)
+
+        ref_path = get_path(ref, "$ref", None)
+        all_of = get_path(ref, "allOf.0.$ref", None)
+        if not ref_path and not all_of:
+            return SIMPLE_TYPES_MAP[ref["type"]]
+
+    if ref_path:
+        ref = get_path(swagger, ref_path[2:], separator="/", default=None)
+    else:
+        ref = None
+
+    if schema_type in SIMPLE_TYPES_MAP:
         return SIMPLE_TYPES_MAP[schema_type]
-    elif schema_type in COMPLEX_TYPES:
+    elif param_type in COMPLEX_TYPES:
         items_type = get_path(param, "schema.items.type", default="object")
-        return COMPLEX_TYPES_MAP[(schema_type, items_type)]
-
-    if param["type"] in SIMPLE_TYPES_MAP:
-        return SIMPLE_TYPES_MAP[param["type"]]
-
-    return COMPLEX_TYPES_MAP[(param["type"], get_path(param, "items.type", default="object"))]
+        return COMPLEX_TYPES_MAP[(param_type, items_type)]
+    elif param_type in SIMPLE_TYPES_MAP:
+        return SIMPLE_TYPES_MAP[param_type]
+    else:
+        raise Exception(param_type, schema_type, ref, param)
 
 
 no_default = object()
 
 
-def param_to_function_argument(param: dict, swagger: dict = None) -> str:
+def param_to_function_argument(param: dict, swagger: dict | None = None) -> str:
 
     if swagger is None:
         swagger = {}
 
     name = convert_to_snake_case(param["name"])
-    if "type" in param:
-        _type = get_type_for_param(param)
-    elif get_path(param, "schema.type", default=None) is None:
-        _type = "dict"
-    else:
-        _type = get_type_for_param(param)
+    _type = get_type_for_param(param, swagger)
 
     is_required = param.get('required', False)
     _default = param.get('default', None)
@@ -376,15 +393,14 @@ def create_validation_block(path: str, method: str, swagger: dict, name: str) ->
     if request_body is None:
         return ""
 
-    schema_path = get_path(request_body, "content.application/json.schema.$ref", None)
+    schema_path = get_path(request_body, "content.application/json.schema.$ref", get_path(request_body, "$ref", None))
     if schema_path:
         model_class = schema_path.rsplit("/", 1)[-1]
-        return "validate_data(data, %s, %sAPIError)" % (model_class, name)
-
-    schema_path = get_path(request_body, "$ref", None)
-    if schema_path:
-        model_class = schema_path.rsplit("/", 1)[-1]
-        return "%s(**data)" % (model_class)
+        lines = [
+            "if self.validation:",
+            "%svalidate_data(data, %s, %sAPIError)" % (INDENT, model_class, name),
+        ]
+        return "\n".join(lines)
     return ""
 
 

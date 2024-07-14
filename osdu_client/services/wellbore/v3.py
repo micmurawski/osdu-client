@@ -512,7 +512,7 @@ class WellboreClient(WellboreCommonClient):
         curves: str | None = None,
         describe: str | None = None,
         filter: str | None = None,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -595,7 +595,7 @@ class WellboreClient(WellboreCommonClient):
     def create_wellboretrajectories_sessions(
         self,
         *,
-        mode: dict,
+        mode: str,
         from_version: int | None = 0,
         meta: dict | None = None,
         time_to_live: int | None = "1440",
@@ -619,7 +619,8 @@ class WellboreClient(WellboreCommonClient):
         if time_to_live is not None:
             data["timeToLive"] = time_to_live
 
-        validate_data(data, CreateDataSessionRequest, WellboreAPIError)
+        if self.validation:
+            validate_data(data, CreateDataSessionRequest, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
@@ -658,7 +659,7 @@ class WellboreClient(WellboreCommonClient):
     def patch_wellboretrajectories_sessions(
         self,
         *,
-        state: dict,
+        state: str,
         record_id: str,
         session_id: str,
         data_partition_id: str | None = None,
@@ -674,7 +675,8 @@ class WellboreClient(WellboreCommonClient):
             "state": state,
         }
 
-        validate_data(data, UpdateSessionState, WellboreAPIError)
+        if self.validation:
+            validate_data(data, UpdateSessionState, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
@@ -721,7 +723,7 @@ class WellboreClient(WellboreCommonClient):
         curves: str | None = None,
         describe: str | None = None,
         filter: str | None = None,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -878,7 +880,7 @@ class WellboreClient(WellboreCommonClient):
         curves: str | None = None,
         describe: str | None = None,
         filter: str | None = None,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -983,7 +985,7 @@ class WellboreClient(WellboreCommonClient):
     def create_welllogs_sessions(
         self,
         *,
-        mode: dict,
+        mode: str,
         from_version: int | None = 0,
         meta: dict | None = None,
         time_to_live: int | None = "1440",
@@ -1007,7 +1009,8 @@ class WellboreClient(WellboreCommonClient):
         if time_to_live is not None:
             data["timeToLive"] = time_to_live
 
-        validate_data(data, CreateDataSessionRequest, WellboreAPIError)
+        if self.validation:
+            validate_data(data, CreateDataSessionRequest, WellboreAPIError)
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v3/welllogs/%s/sessions" % record_id
@@ -1044,7 +1047,7 @@ class WellboreClient(WellboreCommonClient):
     def update_welllogs_sessions(
         self,
         *,
-        state: dict,
+        state: str,
         record_id: str,
         session_id: str,
         data_partition_id: str | None = None,
@@ -1060,7 +1063,8 @@ class WellboreClient(WellboreCommonClient):
             "state": state,
         }
 
-        validate_data(data, UpdateSessionState, WellboreAPIError)
+        if self.validation:
+            validate_data(data, UpdateSessionState, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
@@ -1106,7 +1110,7 @@ class WellboreClient(WellboreCommonClient):
         curves: str | None = None,
         describe: str | None = None,
         filter: str | None = None,
-        orient: dict | None = None,
+        orient: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:

@@ -60,7 +60,8 @@ class IndexerClient(OSDUAPIClient):
         if cursor is not None:
             data["cursor"] = cursor
 
-        validate_data(data, RecordReindexRequest, IndexerAPIError)
+        if self.validation:
+            validate_data(data, RecordReindexRequest, IndexerAPIError)
 
         url = urljoin(self.base_url, self.service_path, "reindex")
         response = requests.post(url, headers=headers, params=params, json=data)
@@ -108,7 +109,8 @@ class IndexerClient(OSDUAPIClient):
             "recordIds": record_ids,
         }
 
-        validate_data(data, ReindexRecordsRequest, IndexerAPIError)
+        if self.validation:
+            validate_data(data, ReindexRecordsRequest, IndexerAPIError)
 
         url = urljoin(self.base_url, self.service_path, "reindex/records")
         response = requests.post(url, headers=headers, json=data)

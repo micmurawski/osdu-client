@@ -38,7 +38,8 @@ class DatasetClient(OSDUAPIClient):
             "datasetRegistries": dataset_registries,
         }
 
-        validate_data(data, CreateDatasetRegistryRequest, DatasetAPIError)
+        if self.validation:
+            validate_data(data, CreateDatasetRegistryRequest, DatasetAPIError)
 
         url = urljoin(self.base_url, self.service_path, "registerDataset")
         response = requests.put(url, headers=headers, json=data)
@@ -143,7 +144,8 @@ class DatasetClient(OSDUAPIClient):
             "datasetRegistryIds": dataset_registry_ids,
         }
 
-        validate_data(data, GetDatasetRegistryRequest, DatasetAPIError)
+        if self.validation:
+            validate_data(data, GetDatasetRegistryRequest, DatasetAPIError)
 
         url = urljoin(self.base_url, self.service_path, "retrievalInstructions")
         response = requests.post(url, headers=headers, params=params, json=data)
@@ -191,7 +193,8 @@ class DatasetClient(OSDUAPIClient):
             "datasetRegistryIds": dataset_registry_ids,
         }
 
-        validate_data(data, GetDatasetRegistryRequest, DatasetAPIError)
+        if self.validation:
+            validate_data(data, GetDatasetRegistryRequest, DatasetAPIError)
 
         url = urljoin(self.base_url, self.service_path, "getDatasetRegistry")
         response = requests.post(url, headers=headers, json=data)

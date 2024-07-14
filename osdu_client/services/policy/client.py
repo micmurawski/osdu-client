@@ -298,7 +298,8 @@ class PolicyClient(OSDUAPIClient):
             "unknowns": unknowns,
         }
 
-        validate_data(data, TranslateItem, PolicyAPIError)
+        if self.validation:
+            validate_data(data, TranslateItem, PolicyAPIError)
 
         url = urljoin(self.base_url, self.service_path, "api/policy/v1/translate")
         response = requests.post(url, headers=headers, json=data)

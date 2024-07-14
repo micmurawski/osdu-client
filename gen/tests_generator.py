@@ -18,6 +18,7 @@ TYPE_DEFAULTS = {
     list[str]: '["text"]',
     'list[str]': '["text"]',
     list[dict]: '[{}]',
+    'list[dict]': '[{}]',
     list[dict] | None: '[{}]',
     dict | None: '{}',
     list[str] | None: '["text"]'

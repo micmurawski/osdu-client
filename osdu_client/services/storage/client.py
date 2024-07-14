@@ -71,7 +71,8 @@ class StorageClient(OSDUAPIClient):
             "ops": ops,
         }
 
-        validate_data(data, RecordBulkUpdateParam, StorageAPIError)
+        if self.validation:
+            validate_data(data, RecordBulkUpdateParam, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "records")
         response = requests.patch(url, headers=headers, json=data)
@@ -102,7 +103,8 @@ class StorageClient(OSDUAPIClient):
         if records is not None:
             data["records"] = records
 
-        validate_data(data, CopyRecordReferencesModel, StorageAPIError)
+        if self.validation:
+            validate_data(data, CopyRecordReferencesModel, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "records/copy")
         response = requests.put(url, headers=headers, json=data)
@@ -208,7 +210,8 @@ class StorageClient(OSDUAPIClient):
         if attributes is not None:
             data["attributes"] = attributes
 
-        validate_data(data, MultiRecordIds, StorageAPIError)
+        if self.validation:
+            validate_data(data, MultiRecordIds, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query/records")
         response = requests.post(url, headers=headers, json=data)
@@ -242,7 +245,8 @@ class StorageClient(OSDUAPIClient):
             "records": records,
         }
 
-        validate_data(data, MultiRecordRequest, StorageAPIError)
+        if self.validation:
+            validate_data(data, MultiRecordRequest, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query/records:batch")
         response = requests.post(url, headers=headers, json=data)
@@ -451,7 +455,8 @@ class StorageClient(OSDUAPIClient):
         if filter is not None:
             data["filter"] = filter
 
-        validate_data(data, ReplayRequest, StorageAPIError)
+        if self.validation:
+            validate_data(data, ReplayRequest, StorageAPIError)
 
         url = urljoin(self.base_url, self.service_path, "replay")
         response = requests.post(url, headers=headers, json=data)

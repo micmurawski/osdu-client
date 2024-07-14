@@ -69,7 +69,8 @@ class SecretClient(OSDUAPIClient):
         if enabled is not None:
             data["enabled"] = enabled
 
-        validate_data(data, Secret, SecretAPIError)
+        if self.validation:
+            validate_data(data, Secret, SecretAPIError)
 
         url = urljoin(self.base_url, self.service_path, "secrets/%s" % secret_name)
         response = requests.put(url, headers=headers, json=data)
@@ -140,7 +141,8 @@ class SecretClient(OSDUAPIClient):
         if enabled is not None:
             data["enabled"] = enabled
 
-        validate_data(data, Secret, SecretAPIError)
+        if self.validation:
+            validate_data(data, Secret, SecretAPIError)
 
         url = urljoin(self.base_url, self.service_path, "secrets")
         response = requests.post(url, headers=headers, json=data)

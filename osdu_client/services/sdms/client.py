@@ -124,7 +124,8 @@ class SDMSClient(OSDUAPIClient):
         if acls is not None:
             data["acls"] = acls
 
-        validate_data(data, DatasetRegisterBody, SDMSAPIError)
+        if self.validation:
+            validate_data(data, DatasetRegisterBody, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -278,7 +279,8 @@ class SDMSClient(OSDUAPIClient):
         if acls is not None:
             data["acls"] = acls
 
-        validate_data(data, DatasetPatch, SDMSAPIError)
+        if self.validation:
+            validate_data(data, DatasetPatch, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -617,7 +619,8 @@ class SDMSClient(OSDUAPIClient):
         if cursor is not None:
             data["cursor"] = cursor
 
-        validate_data(data, DatasetListBody, SDMSAPIError)
+        if self.validation:
+            validate_data(data, DatasetListBody, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -651,7 +654,8 @@ class SDMSClient(OSDUAPIClient):
             "datasets": datasets,
         }
 
-        DatasetCheckList(**data)
+        if self.validation:
+            validate_data(data, DatasetCheckList, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -685,7 +689,8 @@ class SDMSClient(OSDUAPIClient):
             "datasets": datasets,
         }
 
-        DatasetCheckList(**data)
+        if self.validation:
+            validate_data(data, DatasetCheckList, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -761,7 +766,8 @@ class SDMSClient(OSDUAPIClient):
         if cursor is not None:
             data["cursor"] = cursor
 
-        validate_data(data, DatasetLsBody, SDMSAPIError)
+        if self.validation:
+            validate_data(data, DatasetLsBody, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "utility/ls")
         response = requests.post(url, headers=headers, json=data)
@@ -921,7 +927,8 @@ class SDMSClient(OSDUAPIClient):
             "refresh-url": refresh_url,
         }
 
-        validate_data(data, ImpTokenRequest, SDMSAPIError)
+        if self.validation:
+            validate_data(data, ImpTokenRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "imptoken")
         response = requests.post(url, headers=headers, json=data)
@@ -946,7 +953,8 @@ class SDMSClient(OSDUAPIClient):
             "token": token,
         }
 
-        validate_data(data, RefreshTokenRequest, SDMSAPIError)
+        if self.validation:
+            validate_data(data, RefreshTokenRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "imptoken")
         response = requests.put(url, headers=headers, json=data)
@@ -973,7 +981,8 @@ class SDMSClient(OSDUAPIClient):
             "refresh-url": refresh_url,
         }
 
-        validate_data(data, ImpTokenPatchRequest, SDMSAPIError)
+        if self.validation:
+            validate_data(data, ImpTokenPatchRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "imptoken")
         response = requests.patch(url, headers=headers, json=data)
@@ -1007,7 +1016,8 @@ class SDMSClient(OSDUAPIClient):
         if metadata is not None:
             data["metadata"] = metadata
 
-        validate_data(data, ImpersonationTokenRequest, SDMSAPIError)
+        if self.validation:
+            validate_data(data, ImpersonationTokenRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "impersonation-token")
         response = requests.post(url, headers=headers, json=data)
@@ -1075,7 +1085,8 @@ class SDMSClient(OSDUAPIClient):
         if acls is not None:
             data["acls"] = acls
 
-        validate_data(data, SubProjectCreateBody, SDMSAPIError)
+        if self.validation:
+            validate_data(data, SubProjectCreateBody, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -1173,7 +1184,8 @@ class SDMSClient(OSDUAPIClient):
         if acls is not None:
             data["acls"] = acls
 
-        validate_data(data, SubProjectPatchBody, SDMSAPIError)
+        if self.validation:
+            validate_data(data, SubProjectPatchBody, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -1228,7 +1240,8 @@ class SDMSClient(OSDUAPIClient):
             "default_acls": default_acls,
         }
 
-        validate_data(data, TenantCreateBody, SDMSAPIError)
+        if self.validation:
+            validate_data(data, TenantCreateBody, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "tenant/%s" % tenantid)
         response = requests.post(url, headers=headers, json=data)
@@ -1299,7 +1312,8 @@ class SDMSClient(OSDUAPIClient):
             "group": group,
         }
 
-        validate_data(data, UserAddRequest, SDMSAPIError)
+        if self.validation:
+            validate_data(data, UserAddRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "user")
         response = requests.put(url, headers=headers, json=data)
@@ -1496,7 +1510,8 @@ class SDMSClient(OSDUAPIClient):
         if filter is not None:
             data["filter"] = filter
 
-        validate_data(data, DatasetBulkDeleteBody, SDMSAPIError)
+        if self.validation:
+            validate_data(data, DatasetBulkDeleteBody, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "operation/bulk-delete")
         response = requests.put(url, headers=headers, params=params, json=data)

@@ -6,20 +6,21 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 from pydantic import BaseModel, Field, constr, RootModel, ConfigDict
 
 
 class Location(BaseModel):
-    SignedURL: Optional[str] = Field(None, example="GCS signed URL")
+    SignedURL: Optional[str] = Field(None, json_schema_extra=dict(example="GCS signed URL"))
     FileSource: Optional[str] = Field(
-        None, description="Relative location of file", example="AXB564XVCY\\SHVCU7632"
+        None, description="Relative location of file", json_schema_extra=dict(example="AXB564XVCY\\SHVCU7632")
     )
 
 
 class EndianEnum(str, Enum):
-    BIG_LITTLE = "BIG LITTLE"
+    BIG = "BIG"
+    LITTLE = "LITTLE"
 
 
 class FileSourceInfo(BaseModel):
@@ -68,17 +69,17 @@ class ExtensionProperties(BaseModel):
     kind: Optional[str] = Field(
         None,
         description="The schema ID for this schema fragment",
-        example="os:npd:csvFileExtDetails:1.0.0",
+        json_schema_extra=dict(example="os:npd:csvFileExtDetails:1.0.0"),
         title="Extension Schema ID",
     )
 
 
 class DownloadResponse(BaseModel):
-    SignedURL: Optional[str] = None
+    SignedURL: Optional[str]
 
 
 class FileMetadataResponse(BaseModel):
-    Id: Optional[str] = None
+    Id: Optional[str]
 
 
 class DeliveryGetFileSignedURLRequest(BaseModel):
@@ -86,7 +87,7 @@ class DeliveryGetFileSignedURLRequest(BaseModel):
 
 
 class Processed(BaseModel):
-    signedUrl: Optional[str] = None
+    signedUrl: Optional[str]
 
 
 class DeliveryGetFileSignedURLResponse(BaseModel):
@@ -98,7 +99,7 @@ class DeliveryGetFileSignedURLResponse(BaseModel):
     )
 
 
-class FileID(RootModel[str]):
+class FileID(RootModel[Any]):
     root: constr(pattern=r"^[\w,\s-]+(\.\w+)?$")
 
 
@@ -112,11 +113,11 @@ class Driver(Enum):
 
 
 class FileLocation(BaseModel):
-    FileID: Optional[FileID] = None
-    Driver: Optional[Driver] = None
-    Location: Optional[str] = None
-    CreatedAt: Optional[datetime] = None
-    CreatedBy: Optional[str] = None
+    FileID: Optional[FileID]
+    Driver: Optional[Driver]
+    Location: Optional[str]
+    CreatedAt: Optional[datetime]
+    CreatedBy: Optional[str]
 
 
 class Acl(BaseModel):
@@ -206,25 +207,33 @@ class MetaItem(BaseModel):
     name: Optional[str] = Field(
         None,
         description="The name of the CRS or the symbol/name of the unit",
-        example='["NAD27 * OGP-Usa Conus / North Dakota South [32021,15851]","ft"]',
+        json_schema_extra=dict(
+            example='["NAD27 * OGP-Usa Conus / North Dakota South [32021,15851]","ft"]'
+        ),
         title="Name or Symbol",
     )
     persistableReference: str = Field(
         ...,
         description="The persistable reference string uniquely identifying the CRS or Unit",
-        example='{"scaleOffset":{"scale":0.3048006096012192,"offset":0.0},"symbol":"ftUS","baseMeasurement":{"ancestry":"Length","type":"UM"},"type":"USO"}',
+        json_schema_extra=dict(
+            example='{"scaleOffset":{"scale":0.3048006096012192,"offset":0.0},"symbol":"ftUS","baseMeasurement":{"ancestry":"Length","type":"UM"},"type":"USO"}'
+        ),
         title="Persistable Reference",
     )
     propertyNames: Optional[List[str]] = Field(
         None,
         description='The list of property names, to which this meta data item provides Unit/CRS context to. Data structures, which come in a single frame of reference, can register the property name, others require a full path like "data.structureA.propertyB" to define a unique context.',
-        example=["elevationFromMsl", '"totalDepthMdDriller', "wellHeadProjected"],
+        json_schema_extra=dict(
+            example=["elevationFromMsl", '"totalDepthMdDriller', "wellHeadProjected"]
+        ),
         title="Attribute Names",
     )
     propertyValues: Optional[List[str]] = Field(
         None,
         description="The list of property values, to which this meta data item provides Unit/CRS context to. Typically a unit symbol is a value to a data structure; this symbol is then registered in this propertyValues array and the persistableReference provides the absolute reference.",
-        example=["F", "ftUS", "deg"],
+        json_schema_extra=dict(
+            example=["F", "ftUS", "deg"]
+        ),
         title="Attribute Names",
     )
     uncertainty: Optional[float] = Field(
@@ -261,20 +270,26 @@ class ToOneRelationship(BaseModel):
     confidence: Optional[float] = Field(
         None,
         description="The confidence of the relationship. If the property is absent a well-known relation is implied.",
-        example=1,
         title="Relationship Confidence",
+        json_schema_extra=dict(
+            example=1,
+        )
     )
     id: Optional[str] = Field(
         None,
         description="The id of the related object in the Data Ecosystem. If set, the id has priority over the natural key in the name property.",
-        example="data_partition:namespace:entity_845934c40e8d922bc57b678990d55722",
         title="Related Object Id",
+        json_schema_extra=dict(
+            example="data_partition:namespace:entity_845934c40e8d922bc57b678990d55722",
+        )
     )
     name: Optional[str] = Field(
         None,
         description="The name or natural key of the related object. This property is required if the target object id could not (yet) be identified.",
-        example="Survey ST2016",
         title="Related Object Name",
+        json_schema_extra=dict(
+            example="Survey ST2016",
+        )
     )
     version: Optional[float] = Field(
         None,
@@ -292,9 +307,9 @@ class LinkList(RootModel[Optional[Dict[str, List[str]]]]):
 
 
 class Error(BaseModel):
-    message: Optional[str] = None
-    reason: Optional[str] = None
-    domain: Optional[str] = None
+    message: Optional[str]
+    reason: Optional[str]
+    domain: Optional[str]
 
 
 class ConnectedOuterService(BaseModel):
@@ -303,38 +318,40 @@ class ConnectedOuterService(BaseModel):
 
 
 class StorageLocation(BaseModel):
-    CSP_SPECIFIC_PROPERTY_1: Optional[str] = None
-    CSP_SPECIFIC_PROPERTY_2: Optional[str] = None
-    CSP_SPECIFIC_PROPERTY_3: Optional[str] = None
+    CSP_SPECIFIC_PROPERTY_1: Optional[str]
+    CSP_SPECIFIC_PROPERTY_2: Optional[str]
+    CSP_SPECIFIC_PROPERTY_3: Optional[str]
 
 
 class StorageInstructionsResponse(BaseModel):
-    providerKey: Optional[str] = Field(None, example="AZURE")
-    storageLocation: Optional[StorageLocation] = None
+    providerKey: Optional[str] = Field(None, json_schema_extra=dict(example="AZURE"))
+    storageLocation: Optional[StorageLocation]
 
 
 class RetrievalProperties(BaseModel):
-    CSP_SPECIFIC_PROPERTY_1: Optional[str] = None
-    CSP_SPECIFIC_PROPERTY_2: Optional[str] = None
-    CSP_SPECIFIC_PROPERTY_3: Optional[str] = None
+    CSP_SPECIFIC_PROPERTY_1: Optional[str]
+    CSP_SPECIFIC_PROPERTY_2: Optional[str]
+    CSP_SPECIFIC_PROPERTY_3: Optional[str]
 
 
 class Dataset(BaseModel):
     datasetRegistryId: Optional[str] = Field(
         None,
-        example="opendes:dataset--FileCollection.Generic:8118591ee2a24eada7152e54b369e99a",
+        json_schema_extra=dict(
+            example="opendes:dataset--FileCollection.Generic:8118591ee2a24eada7152e54b369e99a",
+        )
     )
-    retrievalProperties: Optional[RetrievalProperties] = None
-    providerKey: Optional[str] = Field(None, example="AZURE")
+    retrievalProperties: Optional[RetrievalProperties]
+    providerKey: Optional[str] = Field(None, json_schema_extra=dict(example="AZURE"))
 
 
 class RetrievalInstructionsResponse(BaseModel):
-    datasets: Optional[List[Dataset]] = None
+    datasets: Optional[List[Dataset]]
 
 
 class CopyDmsResponseItem(BaseModel):
-    success: Optional[bool] = None
-    datasetBlobStoragePath: Optional[str] = None
+    success: Optional[bool]
+    datasetBlobStoragePath: Optional[str]
 
 
 class CopyDmsResponse(RootModel[List[CopyDmsResponseItem]]):
@@ -342,19 +359,22 @@ class CopyDmsResponse(RootModel[List[CopyDmsResponseItem]]):
 
 
 class LocationRequest(BaseModel):
-    FileID: Optional[FileID] = None
+    FileID: Optional[FileID]
 
 
 class LocationResponse(BaseModel):
-    FileID: Optional[FileID] = None
+    FileID: Optional[FileID]
     Location: Optional[Dict[str, str]] = Field(
-        None, example={"SignedURL": "GCS signed URL"}
+        None,
+        json_schema_extra=dict(
+            example={"SignedURL": "GCS signed URL"}
+        )
     )
 
 
 class SourceLocationResponse(BaseModel):
-    FileID: Optional[FileID] = None
-    Location: Optional[Location] = None
+    FileID: Optional[FileID]
+    Location: Optional[Location]
 
 
 class DatasetProperties1(BaseModel):
@@ -365,7 +385,7 @@ class DatasetProperties1(BaseModel):
     IndexFilePath: Optional[str] = Field(
         None, description="An optional path to an index file."
     )
-    FileSourceInfo: Optional[List[FileSourceInfoObject]] = None
+    FileSourceInfo: Optional[List[FileSourceInfoObject]]
 
 
 class FileCollections(BaseModel):
@@ -406,13 +426,17 @@ class FileDetails(BaseModel):
     TargetKind: Optional[str] = Field(
         None,
         description="The target kind or schema ID which is to be used by the parser.",
-        example="os:npd:wellbore:1:*.*",
+        json_schema_extra=dict(
+            example="os:npd:wellbore:1:*.*",
+        ),
         title="Target Schema ID",
     )
     FileType: Optional[str] = Field(
         None,
         description="Type of File to decide what kind of ingestion to be triggered",
-        example="csv",
+        json_schema_extra=dict(
+            example="csv"
+        ),
         title="File Type",
     )
     FrameOfReference: Optional[List[MetaItem]] = Field(
@@ -420,37 +444,37 @@ class FileDetails(BaseModel):
         description="The list metaItem definitions which maps a named frame of reference symbol or name to the self-contained persistableReference.",
         title="Frame of Reference for data present in file.",
     )
-    ExtensionProperties: Optional[ExtensionProperties] = None
+    ExtensionProperties: Optional[ExtensionProperties]
     ParentReference: Optional[str] = Field(
         None,
         description="The parent reference for this file.",
-        example="CSBE0417",
+        json_schema_extra=dict(example="CSBE0417"),
         title="Parent Reference",
     )
 
 
 class FileLocationRequest(BaseModel):
-    FileID: Optional[FileID] = None
+    FileID: Optional[FileID]
 
 
 class FileLocationResponse(BaseModel):
-    Driver: Optional[Driver] = None
-    Location: Optional[str] = None
+    Driver: Optional[Driver]
+    Location: Optional[str]
 
 
 class FileListRequest(BaseModel):
-    TimeFrom: Optional[DateTime] = None
-    TimeTo: Optional[DateTime] = None
-    PageNum: Optional[int] = None
-    Items: Optional[int] = None
-    UserID: Optional[str] = None
+    TimeFrom: Optional[DateTime]
+    TimeTo: Optional[DateTime]
+    PageNum: Optional[int]
+    Items: Optional[int]
+    UserID: Optional[str]
 
 
 class FileListResponse(BaseModel):
-    content: Optional[List[FileLocation]] = None
-    number: Optional[int] = None
-    numberOfElements: Optional[int] = None
-    size: Optional[int] = None
+    content: Optional[List[FileLocation]]
+    number: Optional[int]
+    numberOfElements: Optional[int]
+    size: Optional[int]
 
 
 class FileCollectionRecord(BaseModel):
@@ -461,23 +485,23 @@ class FileCollectionRecord(BaseModel):
     kind: str = Field(
         ...,
         description="Kind of data being ingested. Must follow the naming convention:data-Partition-Id}:dataset-name}:record-type}:version}.",
-        example="osdu:wks:dataset--FileCollection.Generic:1.0.0",
+        json_schema_extra=dict(example="osdu:wks:dataset--FileCollection.Generic:1.0.0"),
     )
     acl: Acl
     legal: Legal
     data: FileCollections
-    ancestry: Optional[LinkList] = None
+    ancestry: Optional[LinkList]
 
 
 class Relationships(BaseModel):
-    parentEntity: Optional[ToOneRelationship] = None
-    relatedItems: Optional[ToManyRelationship] = None
+    parentEntity: Optional[ToOneRelationship]
+    relatedItems: Optional[ToManyRelationship]
 
 
 class ErrorModel(BaseModel):
-    errors: Optional[List[Error]] = None
-    code: Optional[int] = None
-    message: Optional[str] = None
+    errors: Optional[List[Error]]
+    code: Optional[int]
+    message: Optional[str]
 
 
 class VersionInfo(BaseModel):
@@ -497,19 +521,19 @@ class ExtensionPropertiesModel(BaseModel):
     Name: Optional[str] = Field(
         None,
         description="The name of the file. Note- this is an additional property, which is not part of OSDU File.1.0.0",
-        example="File",
+        json_schema_extra=dict(example="File"),
         title="File Name",
     )
     Classification: Optional[str] = Field(
         None,
         description="The well-known entity classification code.",
-        example="Raw File",
+        json_schema_extra=dict(example="Raw File"),
         title="File Classification",
     )
     Description: Optional[str] = Field(
         None,
         description="A text describing the entity.",
-        example="An text further describing this file example.",
+        json_schema_extra=dict(example="An text further describing this file example."),
         title="Entity Description",
     )
     ExternalIds: Optional[List[str]] = Field(
@@ -520,17 +544,17 @@ class ExtensionPropertiesModel(BaseModel):
     FileDateCreated: Optional[datetime] = Field(
         None,
         description="The UTC date time of the file creation",
-        example="2013-03-22T11:16:03Z",
+        json_schema_extra=dict(example="2013-03-22T11:16:03Z"),
         title="Creation Date and Time",
     )
     FileDateModified: Optional[datetime] = Field(
         None,
         description="The UTC date time of the last file modification",
-        example="2013-03-22T11:16:03Z",
+        json_schema_extra=dict(example="2013-03-22T11:16:03Z"),
         title="Last Modification Date and Time",
     )
-    FileContentsDetails: Optional[FileDetails] = None
-    relationships: Optional[Relationships] = None
+    FileContentsDetails: Optional[FileDetails]
+    relationships: Optional[Relationships]
 
 
 class Files(BaseModel):
@@ -576,12 +600,12 @@ class Record(BaseModel):
     kind: str = Field(
         ...,
         description="Kind of data being ingested. Must follow the naming convention:data-Partition-Id}:dataset-name}:record-type}:version}.",
-        example="osdu:wks:dataset--File.Generic:1.0.0",
+        json_schema_extra=dict(example="osdu:wks:dataset--File.Generic:1.0.0"),
     )
     acl: Acl
     legal: Legal
     data: Files
-    ancestry: Optional[LinkList] = None
+    ancestry: Optional[LinkList]
 
 
 class RecordVersion(BaseModel):
@@ -592,19 +616,19 @@ class RecordVersion(BaseModel):
     kind: Optional[str] = Field(
         None,
         description="Kind of data being ingested. Must follow the naming convention:data-Partition-Id}:dataset-name}:record-type}:version}.",
-        example="osdu:wks:dataset--File.Generic:1.0.0",
+        json_schema_extra=dict(example="osdu:wks:dataset--File.Generic:1.0.0"),
     )
-    acl: Optional[Acl] = None
-    legal: Optional[Legal] = None
-    data: Optional[Files] = None
-    ancestry: Optional[LinkList] = None
+    acl: Optional[Acl]
+    legal: Optional[Legal]
+    data: Optional[Files]
+    ancestry: Optional[LinkList]
     version: Optional[int] = Field(
         None,
         description="The version number of this OSDU resource; set by the framework.",
-        example=1831253916104085,
+        json_schema_extra=dict(example=1831253916104085),
         title="Version Number",
     )
 
 
 class ApplicationError(BaseModel):
-    error: Optional[ErrorModel] = None
+    error: Optional[ErrorModel]

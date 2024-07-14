@@ -66,13 +66,13 @@ if __name__ == "__main__":
                 swagger_path,
                 models_path+".py",
             )
-        generate_clients(
-            swagger_path,
-            name,
-            dump_file_path=os.path.join(WORKDIR, "osdu_client", "services", name.lower(), "client.py")
-        )
-        ruff_format(
-            os.path.join(WORKDIR, "osdu_client", "services", name.lower())
-        )
+        if not os.path.exists(os.path.join(module_path, "client.py")):
+            generate_clients(
+                swagger_path,
+                name,
+                dump_file_path=os.path.join(module_path, "client.py")
+            )
+
+        ruff_format(module_path)
         # os.remove(swagger_path)
         remove_path_if_empty(models_path)

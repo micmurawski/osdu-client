@@ -11,7 +11,7 @@ from .models import (
     LocationRequest,
     Record,
     FileLocationRequest,
-    deliveryGetFileSignedURLRequest,
+    DeliveryGetFileSignedURLRequest,
     FileListRequest,
 )
 
@@ -26,7 +26,7 @@ class FileClient(OSDUAPIClient):
     def get_location(
         self,
         *,
-        file_i_d: dict | None = None,
+        file_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -37,10 +37,11 @@ class FileClient(OSDUAPIClient):
             headers["tenant"] = tenant
 
         data = {}
-        if file_i_d is not None:
-            data["FileID"] = file_i_d
+        if file_id is not None:
+            data["FileID"] = file_id
 
-        validate_data(data, LocationRequest, FileAPIError)
+        if self.validation:
+            validate_data(data, LocationRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getLocation")
         response = requests.post(url, headers=headers, json=data)
@@ -92,7 +93,8 @@ class FileClient(OSDUAPIClient):
         if ancestry is not None:
             data["ancestry"] = ancestry
 
-        validate_data(data, Record, FileAPIError)
+        if self.validation:
+            validate_data(data, Record, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/files/metadata")
         response = requests.post(url, headers=headers, json=data)
@@ -165,7 +167,7 @@ class FileClient(OSDUAPIClient):
     def get_file_location(
         self,
         *,
-        file_i_d: dict | None = None,
+        file_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -176,10 +178,11 @@ class FileClient(OSDUAPIClient):
             headers["tenant"] = tenant
 
         data = {}
-        if file_i_d is not None:
-            data["FileID"] = file_i_d
+        if file_id is not None:
+            data["FileID"] = file_id
 
-        validate_data(data, FileLocationRequest, FileAPIError)
+        if self.validation:
+            validate_data(data, FileLocationRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getFileLocation")
         response = requests.post(url, headers=headers, json=data)
@@ -190,7 +193,7 @@ class FileClient(OSDUAPIClient):
     def get_file_signed_url(
         self,
         *,
-        srn: list[str] | None = None,
+        srn: list[dict] | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -204,7 +207,8 @@ class FileClient(OSDUAPIClient):
         if srn is not None:
             data["srn"] = srn
 
-        validate_data(data, deliveryGetFileSignedURLRequest, FileAPIError)
+        if self.validation:
+            validate_data(data, DeliveryGetFileSignedURLRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/delivery/getFileSignedUrl")
         response = requests.post(url, headers=headers, json=data)
@@ -215,11 +219,11 @@ class FileClient(OSDUAPIClient):
     def get_file_list(
         self,
         *,
-        time_from: dict | None = None,
-        time_to: dict | None = None,
+        time_from: str | None = None,
+        time_to: str | None = None,
         page_num: int | None = None,
         items: int | None = None,
-        user_i_d: str | None = None,
+        user_id: str | None = None,
         data_partition_id: str | None = None,
         tenant: str | None = None,
     ) -> dict:
@@ -238,10 +242,11 @@ class FileClient(OSDUAPIClient):
             data["PageNum"] = page_num
         if items is not None:
             data["Items"] = items
-        if user_i_d is not None:
-            data["UserID"] = user_i_d
+        if user_id is not None:
+            data["UserID"] = user_id
 
-        validate_data(data, FileListRequest, FileAPIError)
+        if self.validation:
+            validate_data(data, FileListRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getFileList")
         response = requests.post(url, headers=headers, json=data)

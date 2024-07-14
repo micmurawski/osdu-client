@@ -64,7 +64,8 @@ class SearchClient(OSDUAPIClient):
         if cursor is not None:
             data["cursor"] = cursor
 
-        validate_data(data, CursorQueryRequest, SearchAPIError)
+        if self.validation:
+            validate_data(data, CursorQueryRequest, SearchAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query_with_cursor")
         response = requests.post(url, headers=headers, json=data)
@@ -119,7 +120,8 @@ class SearchClient(OSDUAPIClient):
         if offset is not None:
             data["offset"] = offset
 
-        validate_data(data, QueryRequest, SearchAPIError)
+        if self.validation:
+            validate_data(data, QueryRequest, SearchAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query")
         response = requests.post(url, headers=headers, json=data)

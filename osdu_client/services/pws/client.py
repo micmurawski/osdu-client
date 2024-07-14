@@ -67,7 +67,8 @@ class PWSClient(OSDUAPIClient):
         if status is not None:
             data["status"] = status
 
-        validate_data(data, StatusDto, PWSAPIError)
+        if self.validation:
+            validate_data(data, StatusDto, PWSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "projects/%s/status" % id)
         response = requests.post(url, headers=headers, json=data)

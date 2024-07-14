@@ -40,7 +40,8 @@ class SchemaClient(OSDUAPIClient):
             "schema": schema,
         }
 
-        validate_data(data, SchemaRequest, SchemaAPIError)
+        if self.validation:
+            validate_data(data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schemas/system")
         response = requests.put(url, headers=headers, json=data)
@@ -120,7 +121,8 @@ class SchemaClient(OSDUAPIClient):
             "schema": schema,
         }
 
-        validate_data(data, SchemaRequest, SchemaAPIError)
+        if self.validation:
+            validate_data(data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schema")
         response = requests.put(url, headers=headers, json=data)
@@ -147,7 +149,8 @@ class SchemaClient(OSDUAPIClient):
             "schema": schema,
         }
 
-        validate_data(data, SchemaRequest, SchemaAPIError)
+        if self.validation:
+            validate_data(data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schema")
         response = requests.post(url, headers=headers, json=data)

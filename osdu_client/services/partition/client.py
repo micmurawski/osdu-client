@@ -57,7 +57,8 @@ class PartitionClient(OSDUAPIClient):
             "properties": properties,
         }
 
-        validate_data(data, PartitionInfo, PartitionAPIError)
+        if self.validation:
+            validate_data(data, PartitionInfo, PartitionAPIError)
 
         url = urljoin(self.base_url, self.service_path, "partitions/%s" % partition_id)
         response = requests.post(url, headers=headers, json=data)
@@ -102,7 +103,8 @@ class PartitionClient(OSDUAPIClient):
             "properties": properties,
         }
 
-        validate_data(data, PartitionInfo, PartitionAPIError)
+        if self.validation:
+            validate_data(data, PartitionInfo, PartitionAPIError)
 
         url = urljoin(self.base_url, self.service_path, "partitions/%s" % partition_id)
         response = requests.patch(url, headers=headers, json=data)

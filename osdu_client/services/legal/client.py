@@ -75,7 +75,8 @@ class LegalClient(OSDUAPIClient):
         if extension_properties is not None:
             data["extensionProperties"] = extension_properties
 
-        validate_data(data, UpdateLegalTag, LegalAPIError)
+        if self.validation:
+            validate_data(data, UpdateLegalTag, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags")
         response = requests.put(url, headers=headers, json=data)
@@ -106,7 +107,8 @@ class LegalClient(OSDUAPIClient):
         if properties is not None:
             data["properties"] = properties
 
-        validate_data(data, LegalTagDto, LegalAPIError)
+        if self.validation:
+            validate_data(data, LegalTagDto, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags")
         response = requests.post(url, headers=headers, json=data)
@@ -131,7 +133,8 @@ class LegalClient(OSDUAPIClient):
             "names": names,
         }
 
-        validate_data(data, RequestLegalTags, LegalAPIError)
+        if self.validation:
+            validate_data(data, RequestLegalTags, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags:validate")
         response = requests.post(url, headers=headers, json=data)
@@ -173,7 +176,8 @@ class LegalClient(OSDUAPIClient):
         if limit is not None:
             data["limit"] = limit
 
-        validate_data(data, SearchLegalTag, LegalAPIError)
+        if self.validation:
+            validate_data(data, SearchLegalTag, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags:query")
         response = requests.post(url, headers=headers, params=params, json=data)
@@ -198,7 +202,8 @@ class LegalClient(OSDUAPIClient):
             "names": names,
         }
 
-        validate_data(data, RequestLegalTags, LegalAPIError)
+        if self.validation:
+            validate_data(data, RequestLegalTags, LegalAPIError)
 
         url = urljoin(self.base_url, self.service_path, "legaltags:batchRetrieve")
         response = requests.post(url, headers=headers, json=data)
