@@ -1,5 +1,6 @@
 from osdu_client.services.partition.client import PartitionClient
 
+
 def test_partition_create_partitions(partition_api_server, partition_client: PartitionClient):
     partition_client.create_partitions(
         properties={},

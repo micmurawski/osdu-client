@@ -2,19 +2,12 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.utils import urljoin
-from osdu_client.services.base import OSDUAPIClient
 from osdu_client.exceptions import OSDUAPIError
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.utils import urljoin
 from osdu_client.validation import validate_data
 
-from .models import (
-    Ddms,
-    CreateAction,
-    TestAction,
-    Record,
-    Subscription,
-    Secret,
-)
+from .models import CreateAction, Ddms, Record, Secret, Subscription, TestAction
 
 
 class RegisterAPIError(OSDUAPIError):
@@ -79,23 +72,23 @@ class RegisterClient(OSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if id is not None:
-            data["id"] = id
+            request_data["id"] = id
         if name is not None:
-            data["name"] = name
+            request_data["name"] = name
         if description is not None:
-            data["description"] = description
+            request_data["description"] = description
         if contact_email is not None:
-            data["contactEmail"] = contact_email
+            request_data["contactEmail"] = contact_email
         if interfaces is not None:
-            data["interfaces"] = interfaces
+            request_data["interfaces"] = interfaces
 
         if self.validation:
-            validate_data(data, Ddms, RegisterAPIError)
+            validate_data(request_data, Ddms, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "ddms")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
         return response.json()
@@ -203,27 +196,27 @@ class RegisterClient(OSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if id is not None:
-            data["id"] = id
+            request_data["id"] = id
         if name is not None:
-            data["name"] = name
+            request_data["name"] = name
         if description is not None:
-            data["description"] = description
+            request_data["description"] = description
         if contact_email is not None:
-            data["contactEmail"] = contact_email
+            request_data["contactEmail"] = contact_email
         if img is not None:
-            data["img"] = img
+            request_data["img"] = img
         if url is not None:
-            data["url"] = url
+            request_data["url"] = url
         if filter is not None:
-            data["filter"] = filter
+            request_data["filter"] = filter
 
         if self.validation:
-            validate_data(data, CreateAction, RegisterAPIError)
+            validate_data(request_data, CreateAction, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
         return response.json()
@@ -242,17 +235,17 @@ class RegisterClient(OSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if action is not None:
-            data["action"] = action
+            request_data["action"] = action
         if test_payload is not None:
-            data["testPayload"] = test_payload
+            request_data["testPayload"] = test_payload
 
         if self.validation:
-            validate_data(data, TestAction, RegisterAPIError)
+            validate_data(request_data, TestAction, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action:test")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
         return response.json()
@@ -274,23 +267,23 @@ class RegisterClient(OSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if id is not None:
-            data["id"] = id
+            request_data["id"] = id
         if kind is not None:
-            data["kind"] = kind
+            request_data["kind"] = kind
         if acl is not None:
-            data["acl"] = acl
+            request_data["acl"] = acl
         if legal is not None:
-            data["legal"] = legal
+            request_data["legal"] = legal
         if data is not None:
-            data["data"] = data
+            request_data["data"] = data
 
         if self.validation:
-            validate_data(data, Record, RegisterAPIError)
+            validate_data(request_data, Record, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "action:retrieve")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
         return response.json()
@@ -312,23 +305,23 @@ class RegisterClient(OSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if name is not None:
-            data["name"] = name
+            request_data["name"] = name
         if description is not None:
-            data["description"] = description
+            request_data["description"] = description
         if topic is not None:
-            data["topic"] = topic
+            request_data["topic"] = topic
         if push_endpoint is not None:
-            data["pushEndpoint"] = push_endpoint
+            request_data["pushEndpoint"] = push_endpoint
         if secret is not None:
-            data["secret"] = secret
+            request_data["secret"] = secret
 
         if self.validation:
-            validate_data(data, Subscription, RegisterAPIError)
+            validate_data(request_data, Subscription, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "subscription")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
         return response.json()
@@ -386,17 +379,17 @@ class RegisterClient(OSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if secret_type is not None:
-            data["secretType"] = secret_type
+            request_data["secretType"] = secret_type
         if value is not None:
-            data["value"] = value
+            request_data["value"] = value
 
         if self.validation:
-            validate_data(data, Secret, RegisterAPIError)
+            validate_data(request_data, Secret, RegisterAPIError)
 
         url = urljoin(self.base_url, self.service_path, "subscription/%s/secret" % id)
-        response = requests.put(url, headers=headers, json=data)
+        response = requests.put(url, headers=headers, json=request_data)
         if not response.ok:
             raise RegisterAPIError(response.text, response.status_code)
         return response.json()

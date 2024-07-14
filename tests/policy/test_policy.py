@@ -1,5 +1,6 @@
 from osdu_client.services.policy.client import PolicyClient
 
+
 def test_policy_bootstrap(policy_api_server, policy_client: PolicyClient):
     policy_client.bootstrap(
         force="text",
@@ -166,7 +167,9 @@ def test_policy_home_page(policy_api_server, policy_client: PolicyClient):
 def test_policy_translate_policy_api(policy_api_server, policy_client: PolicyClient):
     policy_client.translate_policy_api(
         query="text",
-        input={},
+        input={
+            "operation": "view"
+        },
         unknowns=["text"],
         correlation_id="text",
         user_agent="text",

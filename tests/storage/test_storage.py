@@ -1,5 +1,6 @@
 from osdu_client.services.storage.client import StorageClient
 
+
 def test_storage_create_records_delete(storage_api_server, storage_client: StorageClient):
     storage_client.create_records_delete(
         x_collaboration="text",
@@ -10,7 +11,7 @@ def test_storage_create_records_delete(storage_api_server, storage_client: Stora
 def test_storage_create_replay(storage_api_server, storage_client: StorageClient):
     storage_client.create_replay(
         operation="text",
-        filter={},
+        filter=[],
         data_partition_id="text",
         tenant="text",
     )
@@ -101,8 +102,10 @@ def test_storage_options_whoami(storage_api_server, storage_client: StorageClien
 
 def test_storage_patch_records(storage_api_server, storage_client: StorageClient):
     storage_client.patch_records(
-        query={},
-        ops=[{}],
+        query={
+            "ids": ["id-1"]
+        },
+        ops=[{"value": []}],
         x_collaboration="text",
         data_partition_id="text",
         tenant="text",

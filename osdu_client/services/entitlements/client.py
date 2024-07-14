@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.utils import urljoin
-from osdu_client.services.base import OSDUAPIClient
 from osdu_client.exceptions import OSDUAPIError
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.utils import urljoin
 
 
 class EntitlementsAPIError(OSDUAPIError):
@@ -242,7 +242,7 @@ class EntitlementsClient(OSDUAPIClient):
         self,
         *,
         member_email: str,
-        type: dict,
+        type: str,
         appid: str | None = None,
         role_required: str | None = False,
         data_partition_id: str | None = None,

@@ -1,9 +1,11 @@
-import requests_mock
-from typing import Generator
-from gen.helpers import load_swagger, get_server_url
-from osdu_client.utils import urljoin
-from gen.swagger import SwaggerDoc
 import re
+from typing import Generator
+
+import requests_mock
+
+from gen.helpers import get_server_url, load_swagger
+from gen.swagger import SwaggerDoc
+from osdu_client.utils import urljoin
 
 
 def define_endpoint(mocker: requests_mock.Mocker, path, method, swagger: dict):

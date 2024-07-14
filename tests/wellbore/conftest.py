@@ -1,10 +1,11 @@
-import pytest
 import os
-from tests.utils import create_swagger_server
-from osdu_client.auth import AuthBackendInterface
-from osdu_client.client import OSDUAPI, OSDUAPIClient
+
+import pytest
 import requests_mock
 
+from osdu_client.auth import AuthBackendInterface
+from osdu_client.client import OSDUAPI, OSDUAPIClient
+from tests.utils import create_swagger_server
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -35,5 +36,12 @@ def wellbore_api_server():
 
 
 @pytest.fixture(scope="session")
-def wellbore_client(auth_backend: AuthBackendInterface) -> OSDUAPIClient:
-    return OSDUAPI.client("wellbore", auth_backend=auth_backend)
+def wellbore_client_v2(auth_backend: AuthBackendInterface) -> OSDUAPIClient:
+    return OSDUAPI.client("wellbore", auth_backend=auth_backend, version="v2")
+
+
+@pytest.fixture(scope="session")
+def wellbore_client_v3(auth_backend: AuthBackendInterface) -> OSDUAPIClient:
+    return OSDUAPI.client("wellbore", auth_backend=auth_backend, version="v3")
+
+

@@ -1,5 +1,6 @@
 from osdu_client.services.notification.client import NotificationClient
 
+
 def test_notification_get_info(notification_api_server, notification_client: NotificationClient):
     notification_client.get_info(
         data_partition_id="text",

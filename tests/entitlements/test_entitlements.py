@@ -1,5 +1,6 @@
 from osdu_client.services.entitlements.client import EntitlementsClient
 
+
 def test_entitlements_add_member(entitlements_api_server, entitlements_client: EntitlementsClient):
     entitlements_client.add_member(
         add_member_dto={},

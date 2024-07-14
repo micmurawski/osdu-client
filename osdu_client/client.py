@@ -1,8 +1,10 @@
 from __future__ import annotations
+
+from importlib import import_module
+
 from osdu_client.auth import AuthBackendInterface
 from osdu_client.exceptions import OSDUClientError
 from osdu_client.services.base import OSDUAPIClient
-from importlib import import_module
 
 DMS_NAMES = {
     "sdms": "SDMS",
@@ -20,10 +22,10 @@ def get_service_client(name: str, version: str | None = None) -> type[OSDUAPICli
             f"osdu_client.services.{name}"
         )
         available_versions = getattr(module, "VERSIONS", {})
-
-        if available_versions and version is None:
-            version = getattr(module, "DEFAULT_VERSION")
-            client_class = available_versions[version]
+        if available_versions:
+            client_class = available_versions.get(
+                version, getattr(module, "DEFAULT_VERSION")
+            )
         else:
             client_class = getattr(module, f"{service_name}Client")
     except KeyError as e:

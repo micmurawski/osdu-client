@@ -1,11 +1,12 @@
 from osdu_client.services.secret.client import SecretClient
 
+
 def test_secret_create_secrets(secret_api_server, secret_client: SecretClient):
     secret_client.create_secrets(
         id="text",
         key="text",
         value="text",
-        created_at="text",
+        created_at="2024-01-01T00:00:00+00:00",
         enabled=False,
         data_partition_id="text",
         tenant="text",
@@ -68,7 +69,7 @@ def test_secret_update_secret(secret_api_server, secret_client: SecretClient):
         id="text",
         key="text",
         value="text",
-        created_at="text",
+        created_at="2024-01-01T00:00:00+00:00",
         enabled=False,
         secret_name="text",
         data_partition_id="text",

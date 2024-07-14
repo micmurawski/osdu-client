@@ -2,17 +2,12 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.utils import urljoin
 from osdu_client.exceptions import OSDUAPIError
 from osdu_client.services.wellbore.common import WellboreCommonClient
+from osdu_client.utils import urljoin
 from osdu_client.validation import validate_data
 
-from .models import (
-    CreateDataSessionRequest,
-    UpdateSessionState,
-    CreateDataSessionRequest,
-    UpdateSessionState,
-)
+from .models import CreateDataSessionRequest, UpdateSessionState
 
 
 class WellboreAPIError(OSDUAPIError):
@@ -609,25 +604,25 @@ class WellboreClient(WellboreCommonClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "mode": mode,
         }
         if from_version is not None:
-            data["fromVersion"] = from_version
+            request_data["fromVersion"] = from_version
         if meta is not None:
-            data["meta"] = meta
+            request_data["meta"] = meta
         if time_to_live is not None:
-            data["timeToLive"] = time_to_live
+            request_data["timeToLive"] = time_to_live
 
         if self.validation:
-            validate_data(data, CreateDataSessionRequest, WellboreAPIError)
+            validate_data(request_data, CreateDataSessionRequest, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
             self.service_path,
             "ddms/v3/wellboretrajectories/%s/sessions" % record_id,
         )
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
@@ -671,19 +666,19 @@ class WellboreClient(WellboreCommonClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "state": state,
         }
 
         if self.validation:
-            validate_data(data, UpdateSessionState, WellboreAPIError)
+            validate_data(request_data, UpdateSessionState, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
             self.service_path,
             "ddms/v3/wellboretrajectories/%s/sessions/%s" % (record_id, session_id),
         )
-        response = requests.patch(url, headers=headers, json=data)
+        response = requests.patch(url, headers=headers, json=request_data)
         if not response.ok:
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
@@ -999,23 +994,23 @@ class WellboreClient(WellboreCommonClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "mode": mode,
         }
         if from_version is not None:
-            data["fromVersion"] = from_version
+            request_data["fromVersion"] = from_version
         if meta is not None:
-            data["meta"] = meta
+            request_data["meta"] = meta
         if time_to_live is not None:
-            data["timeToLive"] = time_to_live
+            request_data["timeToLive"] = time_to_live
 
         if self.validation:
-            validate_data(data, CreateDataSessionRequest, WellboreAPIError)
+            validate_data(request_data, CreateDataSessionRequest, WellboreAPIError)
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v3/welllogs/%s/sessions" % record_id
         )
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
@@ -1059,19 +1054,19 @@ class WellboreClient(WellboreCommonClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "state": state,
         }
 
         if self.validation:
-            validate_data(data, UpdateSessionState, WellboreAPIError)
+            validate_data(request_data, UpdateSessionState, WellboreAPIError)
 
         url = urljoin(
             self.base_url,
             self.service_path,
             "ddms/v3/welllogs/%s/sessions/%s" % (record_id, session_id),
         )
-        response = requests.patch(url, headers=headers, json=data)
+        response = requests.patch(url, headers=headers, json=request_data)
         if not response.ok:
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()

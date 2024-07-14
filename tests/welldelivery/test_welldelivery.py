@@ -1,5 +1,6 @@
 from osdu_client.services.welldelivery.client import WellDeliveryClient
 
+
 def test_welldelivery_create_or_update_storage(welldelivery_api_server, welldelivery_client: WellDeliveryClient):
     welldelivery_client.create_or_update_storage(
         entity={},

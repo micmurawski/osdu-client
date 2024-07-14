@@ -1,13 +1,14 @@
 from osdu_client.services.register.client import RegisterClient
 
+
 def test_register_create_action(register_api_server, register_client: RegisterClient):
     register_client.create_action(
         id="text",
         name="text",
         description="text",
         contact_email="text",
-        img="text",
-        url="text",
+        img="https://example.url",
+        url="https://example.url",
         filter={},
         data_partition_id="text",
         tenant="text",
@@ -38,7 +39,9 @@ def test_register_create_ddms(register_api_server, register_client: RegisterClie
         name="text",
         description="text",
         contact_email="text",
-        interfaces=[{}],
+        interfaces=[{
+            "schema": {}
+        }],
         data_partition_id="text",
         tenant="text",
     )
@@ -126,7 +129,7 @@ def test_register_query_ddms(register_api_server, register_client: RegisterClien
 
 def test_register_update_subscription_secret(register_api_server, register_client: RegisterClient):
     register_client.update_subscription_secret(
-        secret_type="text",
+        secret_type="HMAC",
         value={},
         id="text",
         data_partition_id="text",

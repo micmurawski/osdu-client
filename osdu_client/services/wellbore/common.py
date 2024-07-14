@@ -2,15 +2,12 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.utils import urljoin
-from osdu_client.services.base import OSDUAPIClient
 from osdu_client.exceptions import OSDUAPIError
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.utils import urljoin
 from osdu_client.validation import validate_data
 
-from .models import (
-    GuessRequest,
-    CatalogRecord,
-)
+from .models import CatalogRecord, GuessRequest
 
 
 class WellboreAPIError(OSDUAPIError):
@@ -50,19 +47,19 @@ class WellboreCommonClient(OSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "label": label,
         }
         if description is not None:
-            data["description"] = description
+            request_data["description"] = description
         if log_unit is not None:
-            data["log_unit"] = log_unit
+            request_data["log_unit"] = log_unit
 
         if self.validation:
-            validate_data(data, GuessRequest, WellboreAPIError)
+            validate_data(request_data, GuessRequest, WellboreAPIError)
 
         url = urljoin(self.base_url, self.service_path, "log-recognition/family")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
@@ -82,19 +79,19 @@ class WellboreCommonClient(OSDUAPIClient):
         if tenant:
             headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "acl": acl,
             "data": data,
             "legal": legal,
         }
 
         if self.validation:
-            validate_data(data, CatalogRecord, WellboreAPIError)
+            validate_data(request_data, CatalogRecord, WellboreAPIError)
 
         url = urljoin(
             self.base_url, self.service_path, "log-recognition/upload-catalog"
         )
-        response = requests.put(url, headers=headers, json=data)
+        response = requests.put(url, headers=headers, json=request_data)
         if not response.ok:
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()

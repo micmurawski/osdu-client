@@ -6,15 +6,19 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field, constr, RootModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field, RootModel, constr
 
 
 class Location(BaseModel):
-    SignedURL: Optional[str] = Field(None, json_schema_extra=dict(example="GCS signed URL"))
+    SignedURL: Optional[str] = Field(
+        None, json_schema_extra=dict(example="GCS signed URL")
+    )
     FileSource: Optional[str] = Field(
-        None, description="Relative location of file", json_schema_extra=dict(example="AXB564XVCY\\SHVCU7632")
+        None,
+        description="Relative location of file",
+        json_schema_extra=dict(example="AXB564XVCY\\SHVCU7632"),
     )
 
 
@@ -231,9 +235,7 @@ class MetaItem(BaseModel):
     propertyValues: Optional[List[str]] = Field(
         None,
         description="The list of property values, to which this meta data item provides Unit/CRS context to. Typically a unit symbol is a value to a data structure; this symbol is then registered in this propertyValues array and the persistableReference provides the absolute reference.",
-        json_schema_extra=dict(
-            example=["F", "ftUS", "deg"]
-        ),
+        json_schema_extra=dict(example=["F", "ftUS", "deg"]),
         title="Attribute Names",
     )
     uncertainty: Optional[float] = Field(
@@ -273,7 +275,7 @@ class ToOneRelationship(BaseModel):
         title="Relationship Confidence",
         json_schema_extra=dict(
             example=1,
-        )
+        ),
     )
     id: Optional[str] = Field(
         None,
@@ -281,7 +283,7 @@ class ToOneRelationship(BaseModel):
         title="Related Object Id",
         json_schema_extra=dict(
             example="data_partition:namespace:entity_845934c40e8d922bc57b678990d55722",
-        )
+        ),
     )
     name: Optional[str] = Field(
         None,
@@ -289,7 +291,7 @@ class ToOneRelationship(BaseModel):
         title="Related Object Name",
         json_schema_extra=dict(
             example="Survey ST2016",
-        )
+        ),
     )
     version: Optional[float] = Field(
         None,
@@ -339,7 +341,7 @@ class Dataset(BaseModel):
         None,
         json_schema_extra=dict(
             example="opendes:dataset--FileCollection.Generic:8118591ee2a24eada7152e54b369e99a",
-        )
+        ),
     )
     retrievalProperties: Optional[RetrievalProperties]
     providerKey: Optional[str] = Field(None, json_schema_extra=dict(example="AZURE"))
@@ -365,10 +367,7 @@ class LocationRequest(BaseModel):
 class LocationResponse(BaseModel):
     FileID: Optional[FileID]
     Location: Optional[Dict[str, str]] = Field(
-        None,
-        json_schema_extra=dict(
-            example={"SignedURL": "GCS signed URL"}
-        )
+        None, json_schema_extra=dict(example={"SignedURL": "GCS signed URL"})
     )
 
 
@@ -434,9 +433,7 @@ class FileDetails(BaseModel):
     FileType: Optional[str] = Field(
         None,
         description="Type of File to decide what kind of ingestion to be triggered",
-        json_schema_extra=dict(
-            example="csv"
-        ),
+        json_schema_extra=dict(example="csv"),
         title="File Type",
     )
     FrameOfReference: Optional[List[MetaItem]] = Field(
@@ -485,7 +482,9 @@ class FileCollectionRecord(BaseModel):
     kind: str = Field(
         ...,
         description="Kind of data being ingested. Must follow the naming convention:data-Partition-Id}:dataset-name}:record-type}:version}.",
-        json_schema_extra=dict(example="osdu:wks:dataset--FileCollection.Generic:1.0.0"),
+        json_schema_extra=dict(
+            example="osdu:wks:dataset--FileCollection.Generic:1.0.0"
+        ),
     )
     acl: Acl
     legal: Legal

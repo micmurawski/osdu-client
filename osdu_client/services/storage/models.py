@@ -8,7 +8,7 @@ from datetime import date
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import BaseModel, Field, constr, RootModel
+from pydantic import BaseModel, Field, RootModel, constr
 
 
 class Acl(BaseModel):

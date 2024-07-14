@@ -9,7 +9,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 from uuid import UUID
 
-from pydantic import BaseModel, Field, confloat, ConfigDict, RootModel
+from pydantic import BaseModel, ConfigDict, Field, RootModel, confloat
 
 
 class AboutResponse(BaseModel):
