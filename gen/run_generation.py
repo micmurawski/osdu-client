@@ -4,7 +4,7 @@ import shutil
 import requests
 
 from gen.client_generator import generate_clients
-from gen.helpers import generate_models, put_inits, ruff_format
+from gen.helpers import generate_models, ruff_format
 
 WORKDIR = os.getcwd()
 
@@ -48,7 +48,6 @@ if __name__ == "__main__":
         models_path = os.path.join(module_path, "models")
         rel_module_path = module_path.replace(WORKDIR, ".")
         os.makedirs(rel_module_path, exist_ok=True)
-        put_inits(rel_module_path)
 
         swagger_path = os.path.join(module_path, "swagger.yaml")
 

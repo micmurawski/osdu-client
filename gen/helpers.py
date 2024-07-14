@@ -3,8 +3,10 @@ import os
 import sys
 from subprocess import PIPE, Popen
 from typing import Any
-from .swagger import SwaggerDoc
+
 import yaml
+
+from .swagger import SwaggerDoc
 
 NOT_SET = object()
 

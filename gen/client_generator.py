@@ -63,19 +63,39 @@ def get_type_for_param(param: dict, swagger: dict | None = None) -> str:
 
     param_type = param.get("type")
     schema_type = get_path(param, "schema.type", None)
-    ref_path = get_path(param, "$ref", None)
+    ref_path = get_path(param, "$ref", get_path(param, "schema.$ref", None))
     all_of = get_path(param, "allOf.0.$ref", None)
     any_of = get_path(param, "anyOf", None)
 
+    
     if any_of:
-        raise Exception(param)
+        types = []
+        _list = any_of
+
+        for i in _list:
+            obj = get_path(
+                swagger,
+                i["$ref"][2:],
+                None,
+                "/"
+            )
+            _type = obj["type"]
+            items_type = get_path(obj, "items.type", "object")
+
+            types.append(
+                COMPLEX_TYPES_MAP[(_type, items_type)]
+            )
+        return "Union[%s]" % ", ".join(types)
 
     while ref_path or all_of:
         ref_path = ref_path or all_of
         ref = get_path(swagger, ref_path[2:], separator="/", default=None)
 
-        ref_path = get_path(ref, "$ref", None)
-        all_of = get_path(ref, "allOf.0.$ref", None)
+        if ref_path.endswith(".json"):
+            return dict.__name__
+
+        ref_path = get_path(ref, "$ref", default=None)
+        all_of = get_path(ref, "allOf.0.$ref", default=None)
         if not ref_path and not all_of:
             return SIMPLE_TYPES_MAP[ref["type"]]
 
@@ -86,8 +106,36 @@ def get_type_for_param(param: dict, swagger: dict | None = None) -> str:
 
     if schema_type in SIMPLE_TYPES_MAP:
         return SIMPLE_TYPES_MAP[schema_type]
+    elif schema_type in COMPLEX_TYPES:
+        items_type_path = get_path(
+            param,
+            "schema.items.type",
+            get_path(
+                param,
+                "schema.items.$ref",
+                None
+            )
+        )
+        while True:
+            ref = get_path(swagger, items_type_path[2:], separator="/", default={})
+
+            if isinstance(ref, dict) and "$ref" in ref:
+                items_type_path = ref["$ref"]
+                continue
+            else:
+                _type = ref.get("type", items_type_path)
+                return COMPLEX_TYPES_MAP[(schema_type, _type)]
+
     elif param_type in COMPLEX_TYPES:
-        items_type = get_path(param, "schema.items.type", default="object")
+        items_type = get_path(
+            param,
+            "schema.items.type",
+            default=get_path(
+                param,
+                "items.type",
+                default="object"
+            )
+        )
         return COMPLEX_TYPES_MAP[(param_type, items_type)]
     elif param_type in SIMPLE_TYPES_MAP:
         return SIMPLE_TYPES_MAP[param_type]
@@ -164,7 +212,7 @@ def create_request_block(
         requests_lines[1] = requests_lines[1][:-1] + ", params=params)"
 
     if has_body:
-        requests_lines[1] = requests_lines[1][:-1] + ", json=data)"
+        requests_lines[1] = requests_lines[1][:-1] + ", json=request_data)"
 
     return "\n".join(requests_lines)
 
@@ -398,7 +446,7 @@ def create_validation_block(path: str, method: str, swagger: dict, name: str) ->
         model_class = schema_path.rsplit("/", 1)[-1]
         lines = [
             "if self.validation:",
-            "%svalidate_data(data, %s, %sAPIError)" % (INDENT, model_class, name),
+            "%svalidate_data(request_data, %s, %sAPIError)" % (INDENT, model_class, name),
         ]
         return "\n".join(lines)
     return ""
@@ -411,10 +459,10 @@ def create_body_block(required: list[dict], not_required: list[dict]) -> str:
         return ""
 
     if not required:
-        lines.append("data = {}")
+        lines.append("request_data = {}")
     else:
         lines.append(
-            "data = {"
+            "request_data = {"
         )
         for p in required:
             converted_name = convert_to_snake_case(p['name'])
@@ -432,7 +480,7 @@ def create_body_block(required: list[dict], not_required: list[dict]) -> str:
         )
 
         lines.append(
-            "%sdata['%s'] = %s" % (INDENT, p['name'], converted_name)
+            "%srequest_data['%s'] = %s" % (INDENT, p['name'], converted_name)
         )
 
     return "\n".join(lines)

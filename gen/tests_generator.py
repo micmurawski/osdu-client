@@ -1,5 +1,6 @@
 import os
 import shutil
+from importlib import import_module
 
 from gen.helpers import put_inits
 from osdu_client.client import get_service_client
@@ -12,6 +13,7 @@ TYPE_DEFAULTS = {
     'str | None': '"text"',
     'str': '"text"',
     int | None: '10',
+    'int | None': '10',
     dict: '{}',
     'dict': '{}',
     bool | None: 'False',
@@ -21,11 +23,16 @@ TYPE_DEFAULTS = {
     'list[dict]': '[{}]',
     list[dict] | None: '[{}]',
     dict | None: '{}',
-    list[str] | None: '["text"]'
+    'dict | None': '{}',
+    list[str] | None: '["text"]',
+    'list[str] | None': '["text"]'
 }
 
 
 def create_conftest(module_path: str, name: str):
+    module = import_module(f"osdu_client.services.{name.lower()}")
+    versions = getattr(module, "VERSIONS", {})
+    
     import_lines = [
         "import pytest",
         "import os",
@@ -62,6 +69,15 @@ def create_conftest(module_path: str, name: str):
         f"def {name.lower()}_client(auth_backend: AuthBackendInterface) -> OSDUAPIClient:",
         f'{INDENT}return OSDUAPI.client("{name.lower()}", auth_backend=auth_backend)',
     ]
+    if versions:
+        body = body[:-3]
+        for version in versions:
+            body += [
+                '@pytest.fixture(scope="session")',
+                f"def {name.lower()}_client_{version}(auth_backend: AuthBackendInterface) -> OSDUAPIClient:",
+                f'{INDENT}return OSDUAPI.client("{name.lower()}", auth_backend=auth_backend, version="{version}")',
+                "\n"
+            ]
 
     with open(os.path.join(module_path, "conftest.py"), "w") as file:
         for line in import_lines:
@@ -74,41 +90,80 @@ def create_tests(
     name: str,
     tests_path: str,
 ):
+    module = import_module(f"osdu_client.services.{name.lower()}")
+    versions = getattr(module, "VERSIONS", {})
+    if versions:
+        for version, client_class in versions.items():
 
-    client_class = get_service_client(name.lower())
-    methods = [
-        getattr(client_class, method_name)
-        for method_name in dir(client_class)
-        if callable(getattr(client_class, method_name)) and hasattr(
-            getattr(client_class, method_name), "__annotations__"
-        ) and method_name not in ("__init__") and getattr(client_class, method_name).__class__.__name__ == "function"
-    ]
+            methods = [
+                getattr(client_class, method_name)
+                for method_name in dir(client_class)
+                if callable(getattr(client_class, method_name)) and hasattr(
+                    getattr(client_class, method_name), "__annotations__"
+                ) and method_name not in ("__init__") and getattr(client_class, method_name).__class__.__name__ == "function"
+            ]
+            import_template = '\n'.join([
+                "from {module_path} import {class_name}",
+                "\n",
+            ])
+            test_template = '\n'.join([
+                "def test_{module}_{method_name}({module}_api_server, {module}_client_{version}: {class_name}):",
+                "{indent}{module}_client_{version}.{method_name}("
+            ])
+            versioned_tests_path = tests_path.replace(name.lower()+".py", f"{name.lower()}_{version}.py")
+            with open(versioned_tests_path, "w") as f:
+                _import = import_template.format(module=name, class_name=client_class.__name__,
+                                                 module_path=client_class.__module__)
+                f.write(_import)
+                for method in methods:
+                    test = test_template.format(
+                        module=name.lower(),
+                        class_name=client_class.__name__,
+                        method_name=method.__name__,
+                        indent=INDENT,
+                        version=version
+                    )
+                    for k, v in method.__annotations__.items():
+                        if k != "return":
+                            test += "\n"+(INDENT*2)+f'{k}={TYPE_DEFAULTS[v]},'
+                    test += f"\n{INDENT})\n\n"
+                    f.write(test)
 
-    import_template = '\n'.join([
-        "from {module_path} import {class_name}",
-        "\n",
-    ])
-    test_template = '\n'.join([
-        "def test_{module}_{method_name}({module}_api_server, {module}_client: {class_name}):",
-        "{indent}{module}_client.{method_name}("
-    ])
+    else:
+        client_class = get_service_client(name.lower())
+        methods = [
+            getattr(client_class, method_name)
+            for method_name in dir(client_class)
+            if callable(getattr(client_class, method_name)) and hasattr(
+                getattr(client_class, method_name), "__annotations__"
+            ) and method_name not in ("__init__") and getattr(client_class, method_name).__class__.__name__ == "function"
+        ]
 
-    with open(tests_path, "w") as f:
-        _import = import_template.format(module=name, class_name=client_class.__name__,
-                                         module_path=client_class.__module__)
-        f.write(_import)
-        for method in methods:
-            test = test_template.format(
-                module=name.lower(),
-                class_name=client_class.__name__,
-                method_name=method.__name__,
-                indent=INDENT,
-            )
-            for k, v in method.__annotations__.items():
-                if k != "return":
-                    test += "\n"+(INDENT*2)+f'{k}={TYPE_DEFAULTS[v]},'
-            test += f"\n{INDENT})\n\n"
-            f.write(test)
+        import_template = '\n'.join([
+            "from {module_path} import {class_name}",
+            "\n",
+        ])
+        test_template = '\n'.join([
+            "def test_{module}_{method_name}({module}_api_server, {module}_client: {class_name}):",
+            "{indent}{module}_client.{method_name}("
+        ])
+
+        with open(tests_path, "w") as f:
+            _import = import_template.format(module=name, class_name=client_class.__name__,
+                                             module_path=client_class.__module__)
+            f.write(_import)
+            for method in methods:
+                test = test_template.format(
+                    module=name.lower(),
+                    class_name=client_class.__name__,
+                    method_name=method.__name__,
+                    indent=INDENT,
+                )
+                for k, v in method.__annotations__.items():
+                    if k != "return":
+                        test += "\n"+(INDENT*2)+f'{k}={TYPE_DEFAULTS[v]},'
+                test += f"\n{INDENT})\n\n"
+                f.write(test)
 
 
 def generate_tests(
