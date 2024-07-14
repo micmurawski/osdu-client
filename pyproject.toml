@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "osdu-client"
+version = "1.0.0"
+description = "OSDU API Client"
+authors = ["Michal Murawski <mmurawski777@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.0.0"
+
+[tool.poetry.group.tests.dependencies]
+pytest = "^8.2.2"
+pytest-cov = "^5.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.setuptools.packages.find]
+exclude = ["gen*", "tests*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = [
+    "--cov=osdu_client",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+]
+
+[tool.coverage.run]
+source = ["osdu_client"]
+command_line = "-m pytest"
+
+[tool.coverage.report]
+include = ["osdu_client/*.py"]
+omit = ["*__init__.py"]
+show_missing = true
