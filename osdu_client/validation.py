@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from pydantic import BaseModel, ValidationError
 
 from osdu_client.exceptions import OSDUAPIError
