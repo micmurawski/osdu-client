@@ -36,6 +36,6 @@ source = ["osdu_client"]
 command_line = "-m pytest"
 
 [tool.coverage.report]
-include = ["osdu_client/*.py"]
+include = ["osdu_client/*"]
 omit = ["*__init__.py"]
 show_missing = true
