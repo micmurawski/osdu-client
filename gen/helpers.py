@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+import re
 from subprocess import PIPE, Popen
 from typing import Any
 
@@ -10,6 +11,7 @@ from .swagger import SwaggerDoc
 
 NOT_SET = object()
 
+UPPER_CASE_SNAKE_CASE_PATTERN = r"[a-zA-Z]+(_[a-zA-Z]+)*"
 
 def ruff_format(path: str):
     popen = Popen(
@@ -69,8 +71,16 @@ def load_swagger(text: str) -> SwaggerDoc:
         return SwaggerDoc(**yaml.safe_load(text))
 
 
+REPLACE_LIST = [
+    "http://localhost:8080",
+    "https://evq.csp.osdu.com"
+]
+
 def get_server_url(swagger: dict) -> str:
+    
     if "basePath" in swagger:
+        if re.fullmatch(UPPER_CASE_SNAKE_CASE_PATTERN, swagger["basePath"]):
+            return ""
         return swagger["basePath"]
 
     if "servers" in swagger:
@@ -78,8 +88,13 @@ def get_server_url(swagger: dict) -> str:
             return "api/seismic-store/v3"
         url = swagger["servers"][0]["url"]
 
-        if ".com" in url:
-            return url.split(".com")[-1]
+        match = re.fullmatch(UPPER_CASE_SNAKE_CASE_PATTERN, url)
+        if match:
+            return ""
+
+        for _str in REPLACE_LIST:
+            url = url.replace(_str, "")
+        
 
         return url
     else:

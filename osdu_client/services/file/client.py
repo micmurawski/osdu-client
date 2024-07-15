@@ -15,7 +15,7 @@ class FileAPIError(OSDUAPIError):
 
 
 class FileClient(OSDUAPIClient):
-    service_path = "VALID_FILE_SERVICE_BASE_URL"
+    service_path = ""
 
     def get_location(
         self,

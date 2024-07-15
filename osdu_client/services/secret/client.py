@@ -15,7 +15,7 @@ class SecretAPIError(OSDUAPIError):
 
 
 class SecretClient(OSDUAPIClient):
-    service_path = "http://localhost:8080/api/secret/v1"
+    service_path = "/api/secret/v1"
 
     def get_secret(
         self,
