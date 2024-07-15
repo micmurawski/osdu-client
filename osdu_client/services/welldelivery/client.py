@@ -15,8 +15,20 @@ class WellDeliveryClient(OSDUAPIClient):
     service_path = "/api/well-delivery"
 
     def create_or_update_storage(
-        self, *, entity: dict, type: str, data_partition_id: str | None = None
+        self, *, type: str, entity: dict, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API represents the main injection mechanism into the Object Database. It allows entity creation and/or update. When no entity id is provided or when the provided id is not already present in the Object Database then a new entity is created. If the id is related to an existing entity in the Object Database then an update operation takes place and a new version of the entity is created. Required roles: service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            entity (dict):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -34,6 +46,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_entity(
         self, *, type: str, id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        This API returns the latest version of the given entity type and id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            id (str): Entity id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -47,6 +71,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def delete_entity(
         self, *, type: str, id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API performs a logical deletion of the given entity and all of its versions.   This operation can be reverted later. Required roles: service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            id (str): Entity id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -60,6 +96,19 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_entity_version(
         self, *, type: str, id: str, version: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API retrieves the specific version of the given entity type and id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            id (str): Entity id
+            version (str): Entity version
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -77,6 +126,19 @@ class WellDeliveryClient(OSDUAPIClient):
     def delete_storage_version(
         self, *, type: str, id: str, version: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API performs a logical deletion of the given entity type, id, and version number.This operation can be reverted later. Required roles: service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            id (str): Entity id
+            version (str): Entity version
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -94,6 +156,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_storage_version(
         self, *, type: str, id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a list containing all version numbers for the given entity type and id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            id (str): Entity id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -109,6 +183,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def purge_entity(
         self, *, type: str, id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API performs a physical deletion of the given entity and all of its versions.  This operation cannot be undone. Required roles: service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            id (str): Entity id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -124,6 +210,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_version_number_list_well_activity_program(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns version number list of well activity program for the given well id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -141,6 +238,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_activity_program(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns latest version of well activity program for the given well id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -158,6 +266,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_activity_program_version(
         self, *, well_id: str, wap_version: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns specific version of well activity program for the given well id and well activity program version. Required roles: service.storage.viewer,  service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+            wap_version (str): Well activity program version
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -175,6 +295,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_activity_program_with_refs(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns the latest version of well activity program with a lists of URI   references for a well. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -192,6 +323,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_activity_program_version_with_refs(
         self, *, well_id: str, wap_version: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a specific version of well activity program with a lists of URI references for a well. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+            wap_version (str): Well activity program version
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -210,6 +353,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_activity_programs_full_content_by_well(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns the latest version of well activity program with a lists of children   for a well. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -227,6 +381,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_activity_plans_by_well(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns the Activity Plan object from a well id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -242,6 +407,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_version_number_list_actual_well(
         self, *, name: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns version number list of actual well for the given name. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            name (str): Name
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -259,6 +435,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_by_name_actual(
         self, *, name: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns actual well object for given name.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            name (str): Name
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -274,6 +461,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_version_by_name_actual(
         self, *, name: str, version: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a specific version of actual well object for the given name.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            name (str): Name
+            version (str): Well version
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -291,6 +490,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_version_number_list_planned_well(
         self, *, name: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns version number list of planned well for the given name. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            name (str): Name
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -308,6 +518,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_by_name_planned(
         self, *, name: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a latest version of planned well object for given name.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            name (str): Name
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -323,6 +544,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_well_version_by_name_planned(
         self, *, name: str, version: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a specific version of planned well object for the given name.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            name (str): Name
+            version (str): Well version
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -340,6 +573,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_version_number_list_actual_wellbore(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns version number list of actual wellbore for the given well id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -357,6 +601,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_wellbore_actual(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns latest version of actual wellbore for the given well id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -376,6 +631,18 @@ class WellDeliveryClient(OSDUAPIClient):
         wellbore_version: str,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        The API returns specific version of actual wellbore for the given well id and well activity program version. Required roles: service.storage.viewer,  service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+            wellbore_version (str): Actual wellbore version
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -393,6 +660,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_version_number_list_planned_wellbore(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns version number list of planned wellbore for the given well id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -410,6 +688,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_wellbore_planned(
         self, *, well_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns latest version of planned wellbore for the given well id. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -431,6 +720,18 @@ class WellDeliveryClient(OSDUAPIClient):
         wellbore_version: str,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        The API returns specific version of planned wellbore for the given well id and well activity program version. Required roles: service.storage.viewer,  service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            well_id (str): Well id
+            wellbore_version (str): Planned wellbore version
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -448,6 +749,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_hole_sections_v1_by_wellbore(
         self, *, wellbore_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a list of hole section objects for a wellbore id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            wellbore_id (str): Wellbore id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -465,6 +777,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_bha_runs_v1_by_hole_section(
         self, *, hole_section_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a list of BHA Run objects for a hole section id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            hole_section_id (str): Hole section id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -482,6 +805,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_bha_runs_v1_by_wellbore_actual(
         self, *, wellbore_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a list of actual BHA Run objects for a wellbore id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            wellbore_id (str): Wellbore id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -499,11 +833,24 @@ class WellDeliveryClient(OSDUAPIClient):
     def query_v1_by_well_batch(
         self,
         *,
-        well_ids: list[str],
         content__type: str,
         type: str,
+        well_ids: list[str],
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        The API returns a list of entity objects for a list of wells.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            content__type (str): Content type
+            type (str): Entity type
+            well_ids (list[str]): Array of well id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -528,6 +875,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def query_v1_by_wellbore_planned(
         self, *, type: str, wellbore_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns planned  objects for the given wellbore id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            wellbore_id (str): Wellbore id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -545,6 +904,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def query_v1_by_wellbore_actual(
         self, *, type: str, wellbore_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns actual  objects for the given wellbore id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): Entity type
+            wellbore_id (str): Wellbore id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -562,6 +933,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_wellbore_fluids_programs(
         self, *, wellbore_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns fluids program objects for the given wellbore id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            wellbore_id (str): Wellbore id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -579,6 +961,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_wellbore_operations_reports(
         self, *, wellbore_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns all available operations report objects for the given wellbore id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            wellbore_id (str): Wellbore id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -596,6 +989,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_wellbore_operations_reports_latest(
         self, *, wellbore_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns latest operations report object for the given wellbore id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            wellbore_id (str): Wellbore id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -613,6 +1017,18 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_operations_reports_by_time_range(
         self, *, start_time: str, end_time: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns a list of operations report objects for the given time range. Date time format can be 'yyyyMMdd', 'yyyy-MM-dd', 'yyyy-M-d', 'yyyy-MM-ddTHH:mm:ss' or 'yyyy-MM-ddTHH:mm:ssZ'. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            start_time (str): Start time
+            end_time (str): End time
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -630,6 +1046,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_operations_reports_with_refs_by_operations_report_id(
         self, *, operations_report_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns the latest version of operations report with a lists of URI references. Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            operations_report_id (str): Operations report id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -648,6 +1075,17 @@ class WellDeliveryClient(OSDUAPIClient):
     def get_wellbore_fluids_reports(
         self, *, wellbore_id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        The API returns fluids report objects for the given wellbore id.   Required roles: service.storage.viewer, service.storage.creator or service.storage.admin.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            wellbore_id (str): Wellbore id
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id

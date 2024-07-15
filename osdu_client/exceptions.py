@@ -5,3 +5,7 @@ class OSDUClientError(Exception):
 
 class OSDUAPIError(OSDUClientError):
     pass
+
+
+class OSDUValidation(OSDUClientError):
+    pass

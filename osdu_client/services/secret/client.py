@@ -20,6 +20,17 @@ class SecretClient(OSDUAPIClient):
     def get_secret(
         self, *, secret_name: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            secret_name (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -33,14 +44,30 @@ class SecretClient(OSDUAPIClient):
     def update_secret(
         self,
         *,
+        secret_name: str,
         id: str | None = None,
         key: str | None = None,
         value: str | None = None,
         created_at: str | None = None,
         enabled: bool | None = None,
-        secret_name: str,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            secret_name (str):
+            id (str):
+            key (str):
+            value (str):
+            created_at (str):
+            enabled (bool):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -58,7 +85,7 @@ class SecretClient(OSDUAPIClient):
             request_data["enabled"] = enabled
 
         if self.validation:
-            validate_data(request_data, Secret, SecretAPIError)
+            validate_data(request_data, Secret)
 
         url = urljoin(self.base_url, self.service_path, "secrets/%s" % secret_name)
         response = requests.put(url, headers=headers, json=request_data)
@@ -69,6 +96,17 @@ class SecretClient(OSDUAPIClient):
     def delete_secret(
         self, *, secret_name: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            secret_name (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -80,6 +118,16 @@ class SecretClient(OSDUAPIClient):
         return response.json()
 
     def list_secrets(self, data_partition_id: str | None = None) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -100,6 +148,21 @@ class SecretClient(OSDUAPIClient):
         enabled: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+            key (str):
+            value (str):
+            created_at (str):
+            enabled (bool):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -117,7 +180,7 @@ class SecretClient(OSDUAPIClient):
             request_data["enabled"] = enabled
 
         if self.validation:
-            validate_data(request_data, Secret, SecretAPIError)
+            validate_data(request_data, Secret)
 
         url = urljoin(self.base_url, self.service_path, "secrets")
         response = requests.post(url, headers=headers, json=request_data)
@@ -126,6 +189,16 @@ class SecretClient(OSDUAPIClient):
         return response.json()
 
     def create_secrets_get(self, data_partition_id: str | None = None) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -139,6 +212,17 @@ class SecretClient(OSDUAPIClient):
     def create_secrets_recover(
         self, *, secret_name: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            secret_name (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -154,6 +238,17 @@ class SecretClient(OSDUAPIClient):
     def get_secrets_deleted(
         self, *, secret_name: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            secret_name (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -167,6 +262,16 @@ class SecretClient(OSDUAPIClient):
         return response.json()
 
     def get_info(self, data_partition_id: str | None = None) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -178,6 +283,16 @@ class SecretClient(OSDUAPIClient):
         return response.json()
 
     def get_health(self, data_partition_id: str | None = None) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
