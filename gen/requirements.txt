@@ -3,3 +3,4 @@ ruff
 datamodel-code-generator
 PyYAML
 pydantic
+lxml

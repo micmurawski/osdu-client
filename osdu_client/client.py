@@ -39,8 +39,40 @@ def get_service_client(name: str, version: str | None = None) -> type[OSDUAPICli
 class OSDUAPI:
     @staticmethod
     def client(service_name, auth_backend: AuthBackendInterface, version: str | None = None, validation: bool = True) -> OSDUAPIClient:
+        """Creates client instance for given service.
+            Args:
+                service_name (str): The OSDU API service name, to check available services call list_available_services method.
+                auth_backend (AuthBackendInterface): class object that implements AuthBackendInterface and stores all auth headers.
+                version (str): Version of the service API client. If None method will produce the latest client.
+                validation (bool): Disable to turn-off request body validation done before client makes a request. By default True
+            Returns:
+                Instance of OSDUAPIClient for given service_name
+            Raises:
+                OSDUClientError: if bad arguments provided
+
+        """
         client_class = get_service_client(service_name, version)
         return client_class(
             auth_backend=auth_backend,
             validation=validation,
         )
+
+    @classmethod
+    def print_available_services(cls):
+        print("|      Name      |    versions    |")
+        print("===================================")
+        for k, v in cls.list_available_services():
+            print("|", end="")
+            space = 16 - len(k)
+            print((" "*(space//2))+k+(" "*((space//2) + space % 2)), end="")
+            print("|", end="")
+            versions_str = str(v)[1:-1].replace("'", "")
+            versions_str = versions_str if len(versions_str) else "latest"
+            space = 16 - len(versions_str)
+            print(" "*(space//2)+versions_str+(" "*((space//2) + space % 2)), end="")
+            print("|")
+
+    @staticmethod
+    def list_available_services() -> list[str, list[str]]:
+        module = import_module("osdu_client.services")
+        return [(k, v) for k, v in module.SERVICES.items()]

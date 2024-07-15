@@ -15,6 +15,16 @@ class EntitlementsClient(OSDUAPIClient):
     service_path = "/api/entitlements/v2"
 
     def get_liveness_check(self, data_partition_id: str | None = None) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -26,6 +36,16 @@ class EntitlementsClient(OSDUAPIClient):
         return response.json()
 
     def get_readiness_check(self, data_partition_id: str | None = None) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -43,6 +63,18 @@ class EntitlementsClient(OSDUAPIClient):
         role_required: str | None = False,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            on_behalf_of (str):
+            role_required (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -62,6 +94,17 @@ class EntitlementsClient(OSDUAPIClient):
     def create_group(
         self, *, group_info_dto: dict, data_partition_id: str | None = None
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            group_info_dto (dict): groupInfoDto
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -79,6 +122,17 @@ class EntitlementsClient(OSDUAPIClient):
     def delete_group(
         self, *, group_email: str | None = None, data_partition_id: str | None = None
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            group_email (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -96,10 +150,22 @@ class EntitlementsClient(OSDUAPIClient):
     def update_groups(
         self,
         *,
-        update_group_request: list[dict],
         group_email: str,
+        update_group_request: list[dict],
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            group_email (str): group_email
+            update_group_request (list[dict]): updateGroupRequest
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -122,6 +188,19 @@ class EntitlementsClient(OSDUAPIClient):
         include_type: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            group_email (str): group_email
+            role (str): role
+            include_type (str): includeType
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -143,10 +222,22 @@ class EntitlementsClient(OSDUAPIClient):
     def add_member(
         self,
         *,
-        add_member_dto: dict,
         group_email: str,
+        add_member_dto: dict,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            group_email (str): group_email
+            add_member_dto (dict): addMemberDto
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -170,6 +261,18 @@ class EntitlementsClient(OSDUAPIClient):
         member_email: str,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            group_email (str): group_email
+            member_email (str): member_email
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -187,6 +290,17 @@ class EntitlementsClient(OSDUAPIClient):
     def delete_member(
         self, *, member_email: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            member_email (str): member_email
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -206,6 +320,20 @@ class EntitlementsClient(OSDUAPIClient):
         role_required: str | None = False,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            member_email (str): member_email
+            type (str): type
+            appid (str): appid
+            role_required (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -227,6 +355,16 @@ class EntitlementsClient(OSDUAPIClient):
         return response.json()
 
     def initiate_tenant(self, data_partition_id: str | None = None) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -238,6 +376,16 @@ class EntitlementsClient(OSDUAPIClient):
         return response.json()
 
     def get_info(self, data_partition_id: str | None = None) -> dict:
+        """
+        For deployment available public `/info` endpoint, \ \ which provides build and git related information.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -255,6 +403,18 @@ class EntitlementsClient(OSDUAPIClient):
         role: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            group_email (str): group_email
+            role (str): role
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -279,6 +439,19 @@ class EntitlementsClient(OSDUAPIClient):
         limit: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str): type
+            cursor (str): cursor
+            limit (str): limit
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id

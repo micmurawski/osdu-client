@@ -8,6 +8,8 @@ import requests
 
 from .helpers import get_path, get_server_url, load_swagger
 from .swagger import SwaggerDoc
+import xml.etree.ElementTree as ET
+
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -68,7 +70,6 @@ def get_type_for_param(param: dict, swagger: dict | None = None) -> str:
     all_of = get_path(param, "allOf.0.$ref", None)
     any_of = get_path(param, "anyOf", None)
 
-    
     if any_of:
         types = []
         _list = any_of
@@ -171,8 +172,8 @@ def create_headers_block(required_header_params_without_special, optional_header
         "headers = self.auth.get_headers()",
         "if data_partition_id:",
         f"{INDENT}headers['data-partition-id'] = data_partition_id",
-        #"if tenant:",
-        #f"{INDENT}headers['tenant'] = tenant"
+        # "if tenant:",
+        # f"{INDENT}headers['tenant'] = tenant"
     ]
     if required_header_params_without_special:
         lines.append(
@@ -447,7 +448,7 @@ def create_validation_block(path: str, method: str, swagger: dict, name: str) ->
         model_class = schema_path.rsplit("/", 1)[-1]
         lines = [
             "if self.validation:",
-            "%svalidate_data(request_data, %s, %sAPIError)" % (INDENT, model_class, name),
+            "%svalidate_data(request_data, %s)" % (INDENT, model_class),
         ]
         return "\n".join(lines)
     return ""
@@ -493,7 +494,7 @@ def create_method(swagger: dict, name: str, method: str, path: str, path_templat
 
     body_required, body_not_required = get_body_params(swagger, params, request_body)
 
-    sig = create_method_sig(swagger, name, params, body_required, body_not_required) + "\n"
+    sig = create_method_sig(swagger, name, params, body_required, body_not_required, method, path) + "\n"
 
     body = create_method_body(path, method, params, body_required,
                               body_not_required, path_template, class_name, swagger)
@@ -513,7 +514,49 @@ def parse_request_body(swagger: dict, props: list[dict]) -> list[str]:
     return result
 
 
-def create_method_sig(swagger: dict, name: str, params: list[str], body_required: list[str], body_not_required: list[str]) -> str:
+def generate_doc_string(name, path_params, body_required, body_not_required, swagger, method, path, indent_offset: int = 1):
+    description = swagger['paths'][path][method].get("description", "")
+    description = re.sub('<[^<]+>', "", description)
+    lines_1 = [
+        (INDENT*(indent_offset))+'"""',
+        (INDENT*(indent_offset))+description,
+        (INDENT*(indent_offset))+"Args:",
+        (INDENT*(indent_offset+1))+"data_partition_id (str): identifier of the data partition to query. If None sets by auth session.",
+    ]
+    for path_param in path_params:
+        name = convert_to_snake_case(path_param["name"])
+        _type = get_type_for_param(path_param, swagger)
+        lines_1.append(
+            (INDENT*(indent_offset+1)) + f"{name} ({_type}): {path_param.get('description', '')}"
+        )
+
+    for param in body_required:
+        name = convert_to_snake_case(param["name"])
+        _type = get_type_for_param(param, swagger)
+        lines_1.append(
+            (INDENT*(indent_offset+1)) + f"{name} ({_type}): {param.get('description', '')}"
+        )
+
+    for param in body_not_required:
+        name = convert_to_snake_case(param["name"])
+        _type = get_type_for_param(param, swagger)
+        lines_1.append(
+            (INDENT*(indent_offset+1)) + f"{name} ({_type}): {param.get('description', '')}"
+        )
+
+    lines_2 = [
+        (INDENT*(indent_offset))+"Returns:",
+        (INDENT*(indent_offset+1))+"response data (dict)",
+        (INDENT*(indent_offset))+"Raises:",
+        (INDENT*(indent_offset+1))+"OSDUValidation: if request values are wrong.",
+        (INDENT*(indent_offset+1))+"OSDUAPIError: if response is 4XX or 5XX",
+        (INDENT*(indent_offset))+'"""'
+    ]
+    result = "\n".join(lines_1 + lines_2)
+    return result
+
+
+def create_method_sig(swagger: dict, name: str, params: list[str], body_required: list[str], body_not_required: list[str], method: str, path: str) -> str:
     path_params = [
         p for p in params if p['name'] not in SPECIAL_HEADERS and p["in"] != "body"
     ]
@@ -521,25 +564,28 @@ def create_method_sig(swagger: dict, name: str, params: list[str], body_required
     sig = ""
     _input_parameters_strings = []
 
-    if body_required:
-        _input_parameters_strings += parse_request_body(swagger, body_required)
+    
+    _input_parameters_strings += [param_to_function_argument(p)
+                                  for p in sorted(path_params, key=lambda x: 0 if x.get("required") else 1)]
     if body_not_required:
         _input_parameters_strings += parse_request_body(swagger, body_not_required)
-    
-    _input_parameters_strings += [param_to_function_argument(p) for p in sorted(path_params, key=lambda x: 0 if x.get("required") else 1)]
-    
+
+    if body_required:
+        _input_parameters_strings += parse_request_body(swagger, body_required)
+
     if _input_parameters_strings:
         sig += ", ".join(_input_parameters_strings)
 
     if sig:
         elements.append(sig)
 
+    doc = generate_doc_string(name, path_params, body_required, body_not_required, swagger, method, path, indent_offset=1)
     try:
         if len(elements) > 1:
             sig = "def %s(self, *, %s, data_partition_id: str | None = None) -> dict:" % tuple(elements)
         else:
             sig = "def %s(self, data_partition_id: str | None = None) -> dict:" % tuple(elements)
-        return sig
+        return sig + "\n" + doc
     except Exception as e:
         raise Exception(elements, len(elements)) from e
 

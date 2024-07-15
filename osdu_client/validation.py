@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ValidationError
 
-from osdu_client.exceptions import OSDUAPIError
+from osdu_client.exceptions import OSDUValidation
 from osdu_client.utils import convert_to_snake_case
 
 
@@ -16,7 +16,7 @@ def parse_loc(loc: list[str]) -> str:
     return ".".join(_loc)
 
 
-def validate_data(data: dict, schema: BaseModel, exception: OSDUAPIError = OSDUAPIError):
+def validate_data(data: dict, schema: BaseModel, exception: OSDUValidation = OSDUValidation):
     try:
         schema(**data)
     except ValidationError as e:

@@ -9,8 +9,8 @@ from gen.helpers import generate_models, ruff_format
 WORKDIR = os.getcwd()
 
 SERVICES = {
-    "Entitlements": "https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements/-/raw/master/docs/api/entitlements_openapi.yaml?ref_type=heads",
     "SDMS": "https://community.opengroup.org/osdu/platform/domain-data-mgmt-services/seismic/seismic-dms-suite/seismic-store-service/-/raw/master/app/sdms/docs/api/openapi.osdu.yaml?ref_type=heads",
+    "Entitlements": "https://community.opengroup.org/osdu/platform/security-and-compliance/entitlements/-/raw/master/docs/api/entitlements_openapi.yaml?ref_type=heads",
     "Storage": "https://community.opengroup.org/osdu/platform/system/storage/-/raw/master/docs/api/storage_openapi.yaml?ref_type=heads",
     "Search": "https://community.opengroup.org/osdu/platform/system/search-service/-/raw/master/docs/api/search_openapi.yaml?ref_type=heads",
     "Indexer": "https://community.opengroup.org/osdu/platform/system/indexer-service/-/raw/master/docs/api/indexer_openapi.yaml?ref_type=heads",
@@ -65,7 +65,7 @@ if __name__ == "__main__":
                 swagger_path,
                 models_path+".py",
             )
-        if not os.path.exists(os.path.join(module_path, "client.py")):
+        if not os.path.exists(os.path.join(module_path, "client.py")) or True:
             generate_clients(
                 swagger_path,
                 name,

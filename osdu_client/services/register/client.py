@@ -18,6 +18,17 @@ class RegisterClient(OSDUAPIClient):
     service_path = "/api/register/v1"
 
     def get_ddms(self, *, id: str, data_partition_id: str | None = None) -> dict:
+        """
+        Get a DDMS registration with the given id. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -29,6 +40,17 @@ class RegisterClient(OSDUAPIClient):
         return response.json()
 
     def delete_ddms(self, *, id: str, data_partition_id: str | None = None) -> dict:
+        """
+        Delete a DDMS registration with the given id. Required roles: 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -49,6 +71,21 @@ class RegisterClient(OSDUAPIClient):
         interfaces: list[dict] | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        Create a DDMS registration using an OpenApi spec V3 document. Required roles: 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+            name (str):
+            description (str):
+            contact_email (str):
+            interfaces (list[dict]):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -66,7 +103,7 @@ class RegisterClient(OSDUAPIClient):
             request_data["interfaces"] = interfaces
 
         if self.validation:
-            validate_data(request_data, Ddms, RegisterAPIError)
+            validate_data(request_data, Ddms)
 
         url = urljoin(self.base_url, self.service_path, "ddms")
         response = requests.post(url, headers=headers, json=request_data)
@@ -75,6 +112,17 @@ class RegisterClient(OSDUAPIClient):
         return response.json()
 
     def query_ddms(self, *, type: str, data_partition_id: str | None = None) -> dict:
+        """
+        Query for DDMS registrations allowing retrievals by type. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            type (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -92,6 +140,19 @@ class RegisterClient(OSDUAPIClient):
     def get_d(
         self, *, id: str, type: str, localid: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        Get a Single DDMS record id. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+            type (str): Specifies the type in ddms I.E wellbores
+            localid (str): Specifies the record id with Optional version partition-id:group-type--IndividualType:UniqueRecordID:<OptionalVersionNumber>
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -105,6 +166,17 @@ class RegisterClient(OSDUAPIClient):
         return response.json()
 
     def get_action(self, *, id: str, data_partition_id: str | None = None) -> dict:
+        """
+        Get an action registration with the given id. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -116,6 +188,17 @@ class RegisterClient(OSDUAPIClient):
         return response.json()
 
     def delete_action(self, *, id: str, data_partition_id: str | None = None) -> dict:
+        """
+        Delete an action registration with the given id. Required role: 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -138,6 +221,23 @@ class RegisterClient(OSDUAPIClient):
         filter: dict | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        Create an action registration. Required role: 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+            name (str):
+            description (str):
+            contact_email (str):
+            img (str): Reference link to an image file that can be usd in an UI to represent the action.
+            url (str):
+            filter (dict):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -159,7 +259,7 @@ class RegisterClient(OSDUAPIClient):
             request_data["filter"] = filter
 
         if self.validation:
-            validate_data(request_data, CreateAction, RegisterAPIError)
+            validate_data(request_data, CreateAction)
 
         url = urljoin(self.base_url, self.service_path, "action")
         response = requests.post(url, headers=headers, json=request_data)
@@ -174,6 +274,18 @@ class RegisterClient(OSDUAPIClient):
         test_payload: dict | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        Test an action registration. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            action (dict):
+            test_payload (dict):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -185,7 +297,7 @@ class RegisterClient(OSDUAPIClient):
             request_data["testPayload"] = test_payload
 
         if self.validation:
-            validate_data(request_data, TestAction, RegisterAPIError)
+            validate_data(request_data, TestAction)
 
         url = urljoin(self.base_url, self.service_path, "action:test")
         response = requests.post(url, headers=headers, json=request_data)
@@ -203,6 +315,21 @@ class RegisterClient(OSDUAPIClient):
         data: dict | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        Retrieve an action registration. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+            kind (str):
+            acl (dict):
+            legal (dict):
+            data (dict):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -220,7 +347,7 @@ class RegisterClient(OSDUAPIClient):
             request_data["data"] = data
 
         if self.validation:
-            validate_data(request_data, Record, RegisterAPIError)
+            validate_data(request_data, Record)
 
         url = urljoin(self.base_url, self.service_path, "action:retrieve")
         response = requests.post(url, headers=headers, json=request_data)
@@ -238,6 +365,21 @@ class RegisterClient(OSDUAPIClient):
         secret: dict | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        Create a subscription. Required roles: 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            name (str):
+            description (str):
+            topic (str):
+            push_endpoint (str):
+            secret (dict):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -255,7 +397,7 @@ class RegisterClient(OSDUAPIClient):
             request_data["secret"] = secret
 
         if self.validation:
-            validate_data(request_data, Subscription, RegisterAPIError)
+            validate_data(request_data, Subscription)
 
         url = urljoin(self.base_url, self.service_path, "subscription")
         response = requests.post(url, headers=headers, json=request_data)
@@ -266,6 +408,17 @@ class RegisterClient(OSDUAPIClient):
     def get_subscription(
         self, *, id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        Get a subscription with its Id. Required role: 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -279,6 +432,17 @@ class RegisterClient(OSDUAPIClient):
     def delete_subscription(
         self, *, id: str, data_partition_id: str | None = None
     ) -> dict:
+        """
+        Delete a subscription with its Id. Required role: 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -292,11 +456,24 @@ class RegisterClient(OSDUAPIClient):
     def update_subscription_secret(
         self,
         *,
+        id: str,
         secret_type: str | None = None,
         value: dict | None = None,
-        id: str,
         data_partition_id: str | None = None,
     ) -> dict:
+        """
+        Update secret for a subscription. Required role: 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+            id (str):
+            secret_type (str):
+            value (dict):
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -308,7 +485,7 @@ class RegisterClient(OSDUAPIClient):
             request_data["value"] = value
 
         if self.validation:
-            validate_data(request_data, Secret, RegisterAPIError)
+            validate_data(request_data, Secret)
 
         url = urljoin(self.base_url, self.service_path, "subscription/%s/secret" % id)
         response = requests.put(url, headers=headers, json=request_data)
@@ -317,6 +494,16 @@ class RegisterClient(OSDUAPIClient):
         return response.json()
 
     def get_topics(self, data_partition_id: str | None = None) -> dict:
+        """
+        List all topics that you can create a subscription for, along with the corresponding sample messages. Required role: 'users.datalake.editors' or 'users.datalake.admins'
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
@@ -328,6 +515,16 @@ class RegisterClient(OSDUAPIClient):
         return response.json()
 
     def get_info(self, data_partition_id: str | None = None) -> dict:
+        """
+        For deployment available public `/info` endpoint,  which provides build and git related information.
+        Args:
+            data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
+        Returns:
+            response data (dict)
+        Raises:
+            OSDUValidation: if request values are wrong.
+            OSDUAPIError: if response is 4XX or 5XX
+        """
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
