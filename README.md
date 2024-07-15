@@ -46,7 +46,7 @@ OSDUAPI.print_available_services()
 ```
 
 ```bash
-|      Name      |    versions    |
+|      Name      |    Versions    |
 ===================================
 |    dataset     |     latest     |
 |  entitlements  |     latest     |

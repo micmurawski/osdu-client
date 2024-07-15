@@ -8,8 +8,6 @@ import requests
 
 from .helpers import get_path, get_server_url, load_swagger
 from .swagger import SwaggerDoc
-import xml.etree.ElementTree as ET
-
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -87,6 +85,8 @@ def get_type_for_param(param: dict, swagger: dict | None = None) -> str:
             types.append(
                 COMPLEX_TYPES_MAP[(_type, items_type)]
             )
+        if len(types) == 1:
+            return types[0]
         return "Union[%s]" % ", ".join(types)
 
     while ref_path or all_of:
@@ -327,12 +327,8 @@ def get_name_from_name_map(method: str, path: str, method_names_file: str):
 
 
 def create_method_name(method: str, path: str, name_parts: list[str], swagger: dict, method_names_file: str) -> str:
-    # try:
     summary = swagger["paths"][path][method].get("summary")
     description = swagger["paths"][path][method].get("description", "")
-    # except TypeError as e:
-    #    print(name_parts, path)
-    #    raise e
     name = get_name_from_name_map(method, path, method_names_file)
 
     if name:
@@ -562,16 +558,14 @@ def create_method_sig(swagger: dict, name: str, params: list[str], body_required
     ]
     elements = [name, ]
     sig = ""
-    _input_parameters_strings = []
-
-    
-    _input_parameters_strings += [param_to_function_argument(p)
-                                  for p in sorted(path_params, key=lambda x: 0 if x.get("required") else 1)]
-    if body_not_required:
-        _input_parameters_strings += parse_request_body(swagger, body_not_required)
+    _input_parameters_strings = [param_to_function_argument(p)
+                                 for p in path_params]
 
     if body_required:
         _input_parameters_strings += parse_request_body(swagger, body_required)
+
+    if body_not_required:
+        _input_parameters_strings += parse_request_body(swagger, body_not_required)
 
     if _input_parameters_strings:
         sig += ", ".join(_input_parameters_strings)
@@ -579,7 +573,8 @@ def create_method_sig(swagger: dict, name: str, params: list[str], body_required
     if sig:
         elements.append(sig)
 
-    doc = generate_doc_string(name, path_params, body_required, body_not_required, swagger, method, path, indent_offset=1)
+    doc = generate_doc_string(name, path_params, body_required, body_not_required,
+                              swagger, method, path, indent_offset=1)
     try:
         if len(elements) > 1:
             sig = "def %s(self, *, %s, data_partition_id: str | None = None) -> dict:" % tuple(elements)

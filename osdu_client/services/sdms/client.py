@@ -85,12 +85,12 @@ class SDMSClient(OSDUAPIClient):
     def register_new_dataset(
         self,
         *,
-        tenantid: str,
-        subprojectid: str,
-        datasetid: str,
         impersonation_token_context: str | None = None,
         ltag: str | None = None,
+        tenantid: str,
+        subprojectid: str,
         path: str | None = None,
+        datasetid: str,
         type: str | None = None,
         gtags: list[str] | None = None,
         seismicmeta: dict | None = None,
@@ -164,11 +164,11 @@ class SDMSClient(OSDUAPIClient):
     def get_dataset(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        datasetid: str,
-        impersonation_token_context: str | None = None,
         path: str | None = None,
+        datasetid: str,
         seismicmeta: str | None = None,
         translate_user_info: str | None = None,
         record_version: str | None = None,
@@ -222,11 +222,11 @@ class SDMSClient(OSDUAPIClient):
     def delete_dataset(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        datasetid: str,
-        impersonation_token_context: str | None = None,
         path: str | None = None,
+        datasetid: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -268,11 +268,11 @@ class SDMSClient(OSDUAPIClient):
     def patch_dataset_metadata(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        datasetid: str,
-        impersonation_token_context: str | None = None,
         path: str | None = None,
+        datasetid: str,
         close: str | None = None,
         dataset_new_name: str | None = None,
         metadata: dict | None = None,
@@ -391,11 +391,11 @@ class SDMSClient(OSDUAPIClient):
     def acquire_lock_for_dataset(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        datasetid: str,
-        impersonation_token_context: str | None = None,
         path: str | None = None,
+        datasetid: str,
         openmode: str | None = None,
         wid: str | None = None,
         data_partition_id: str | None = None,
@@ -461,11 +461,11 @@ class SDMSClient(OSDUAPIClient):
     def remove_lock_associated_with_dataset(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        datasetid: str,
-        impersonation_token_context: str | None = None,
         path: str | None = None,
+        datasetid: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -516,11 +516,11 @@ class SDMSClient(OSDUAPIClient):
     def get_dataset_access_permissions(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        datasetid: str,
-        impersonation_token_context: str | None = None,
         path: str | None = None,
+        datasetid: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -571,12 +571,12 @@ class SDMSClient(OSDUAPIClient):
     def validate_ctag(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
+        path: str | None = None,
         datasetid: str,
         ctag: str,
-        impersonation_token_context: str | None = None,
-        path: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -621,12 +621,12 @@ class SDMSClient(OSDUAPIClient):
     def upsert_tags_to_dataset(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
+        path: str | None = None,
         datasetid: str,
         gtag: str,
-        impersonation_token_context: str | None = None,
-        path: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -680,11 +680,11 @@ class SDMSClient(OSDUAPIClient):
     def compute_and_get_size_dataset(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
         datasetid: str,
         path: str,
-        impersonation_token_context: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -729,9 +729,9 @@ class SDMSClient(OSDUAPIClient):
     def get_datasets_sizes(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        impersonation_token_context: str | None = None,
         datasetid: str | None = None,
         path: str | None = None,
         data_partition_id: str | None = None,
@@ -778,9 +778,9 @@ class SDMSClient(OSDUAPIClient):
     def get_content_list(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        impersonation_token_context: str | None = None,
         path: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -825,9 +825,9 @@ class SDMSClient(OSDUAPIClient):
     def list_datasets_in_subproject(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        impersonation_token_context: str | None = None,
         translate_user_info: str | None = None,
         type: str | None = None,
         gtags: list[str] | None = None,
@@ -901,9 +901,9 @@ class SDMSClient(OSDUAPIClient):
     def check_datasets_list(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        impersonation_token_context: str | None = None,
         datasets: list[str],
         data_partition_id: str | None = None,
     ) -> dict:
@@ -950,9 +950,9 @@ class SDMSClient(OSDUAPIClient):
     def list_datasets_sizes(
         self,
         *,
+        impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        impersonation_token_context: str | None = None,
         datasets: list[str],
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1001,8 +1001,8 @@ class SDMSClient(OSDUAPIClient):
     def ls(
         self,
         *,
-        sdpath: str,
         impersonation_token_context: str | None = None,
+        sdpath: str,
         wmode: str | None = None,
         limit: str | None = None,
         cursor: str | None = None,
@@ -1052,10 +1052,10 @@ class SDMSClient(OSDUAPIClient):
         self,
         *,
         impersonation_token_context: str | None = None,
+        sdpath: str,
         wmode: str | None = None,
         limit: int | None = None,
         cursor: str | None = None,
-        sdpath: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1125,9 +1125,9 @@ class SDMSClient(OSDUAPIClient):
     def copy_dataset(
         self,
         *,
+        impersonation_token_context: str | None = None,
         sdpath_from: str,
         sdpath_to: str,
-        impersonation_token_context: str | None = None,
         lock: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1176,8 +1176,8 @@ class SDMSClient(OSDUAPIClient):
     def get_gcs_access_token(
         self,
         *,
-        sdpath: str,
         impersonation_token_context: str | None = None,
+        sdpath: str,
         readonly: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1224,8 +1224,8 @@ class SDMSClient(OSDUAPIClient):
     def get_upload_connection_credential_string(
         self,
         *,
-        sdpath: str,
         impersonation_token_context: str | None = None,
+        sdpath: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1261,8 +1261,8 @@ class SDMSClient(OSDUAPIClient):
     def get_download_connection_credentials_string(
         self,
         *,
-        sdpath: str,
         impersonation_token_context: str | None = None,
+        sdpath: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1409,8 +1409,8 @@ class SDMSClient(OSDUAPIClient):
         self,
         *,
         user_token: str,
-        metadata: dict | None = None,
         resources: list[dict],
+        metadata: dict | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1488,9 +1488,9 @@ class SDMSClient(OSDUAPIClient):
     def create_new_subproject(
         self,
         *,
+        ltag: str | None = None,
         subprojectid: str,
         tenantid: str,
-        ltag: str | None = None,
         admin: str | None = None,
         storage_class: str | None = None,
         storage_location: str | None = None,

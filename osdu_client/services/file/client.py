@@ -7,7 +7,7 @@ from osdu_client.services.base import OSDUAPIClient
 from osdu_client.utils import urljoin
 from osdu_client.validation import validate_data
 
-from .models import DeliveryGetFileSignedURLRequest, FileListRequest, FileLocationRequest, LocationRequest, Record
+from .models import FileListRequest, FileLocationRequest, LocationRequest, Record, DeliveryGetFileSignedURLRequest
 
 
 class FileAPIError(OSDUAPIError):
@@ -81,12 +81,12 @@ class FileClient(OSDUAPIClient):
     def create_files_metadata(
         self,
         *,
-        id: str | None = None,
-        ancestry: dict | None = None,
         kind: str,
         acl: dict,
         legal: dict,
         data: dict,
+        id: str | None = None,
+        ancestry: dict | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """

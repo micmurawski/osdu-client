@@ -1,4 +1,4 @@
-from osdu_client.services import (rafs, wellbore)
+from osdu_client.services import rafs, wellbore
 
 SERVICES = {
     "dataset": [],

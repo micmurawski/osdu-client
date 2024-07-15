@@ -141,8 +141,8 @@ class StorageClient(OSDUAPIClient):
     def delete_record(
         self,
         *,
-        id: str,
         x_collaboration: str | None = None,
+        id: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -203,10 +203,10 @@ class StorageClient(OSDUAPIClient):
     def query_records_from_kind(
         self,
         *,
-        kind: str,
         x_collaboration: str | None = None,
         cursor: str | None = None,
         limit: str | None = None,
+        kind: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -248,8 +248,8 @@ class StorageClient(OSDUAPIClient):
         self,
         *,
         x_collaboration: str | None = None,
-        attributes: list[str] | None = None,
         records: list[str],
+        attributes: list[str] | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -290,8 +290,8 @@ class StorageClient(OSDUAPIClient):
     def query_records_batch(
         self,
         *,
-        frame_of_reference: str,
         x_collaboration: str | None = None,
+        frame_of_reference: str,
         records: list[str],
         data_partition_id: str | None = None,
     ) -> dict:
@@ -336,8 +336,8 @@ class StorageClient(OSDUAPIClient):
     def get_record(
         self,
         *,
-        id: str,
         x_collaboration: str | None = None,
+        id: str,
         attribute: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -374,8 +374,8 @@ class StorageClient(OSDUAPIClient):
     def purge_record(
         self,
         *,
-        id: str,
         x_collaboration: str | None = None,
+        id: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -407,9 +407,9 @@ class StorageClient(OSDUAPIClient):
     def get_record_version(
         self,
         *,
+        x_collaboration: str | None = None,
         id: str,
         version: str,
-        x_collaboration: str | None = None,
         attribute: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -447,8 +447,8 @@ class StorageClient(OSDUAPIClient):
     def get_record_versions(
         self,
         *,
-        id: str,
         x_collaboration: str | None = None,
+        id: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -521,8 +521,8 @@ class StorageClient(OSDUAPIClient):
     def purge_record_versions(
         self,
         *,
-        id: str,
         x_collaboration: str | None = None,
+        id: str,
         version_ids: str | None = None,
         limit: str | None = None,
         _form: str | None = None,
@@ -592,8 +592,8 @@ class StorageClient(OSDUAPIClient):
     def create_replay(
         self,
         *,
-        filter: Union[list[str]] | None = None,
         operation: str,
+        filter: list[str] | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -601,7 +601,7 @@ class StorageClient(OSDUAPIClient):
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             operation (str):
-            filter (Union[list[str]]):
+            filter (list[str]):
         Returns:
             response data (dict)
         Raises:

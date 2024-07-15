@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "osdu-client"
-version = "1.1.0"
+version = "1.2.0"
 description = "OSDU API Client"
 authors = ["Michal Murawski <mmurawski777@gmail.com>"]
 readme = "README.md"

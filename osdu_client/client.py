@@ -59,7 +59,10 @@ class OSDUAPI:
 
     @classmethod
     def print_available_services(cls):
-        print("|      Name      |    versions    |")
+        """
+        Prints available services for client
+        """
+        print("|      Name      |    Versions    |")
         print("===================================")
         for k, v in cls.list_available_services():
             print("|", end="")
@@ -73,6 +76,11 @@ class OSDUAPI:
             print("|")
 
     @staticmethod
-    def list_available_services() -> list[str, list[str]]:
+    def list_available_services() -> list[tuple[str, list[str]]]:
+        """
+        Returns list of available services for client
+        Returns:
+            list of available services for API versions (list[tuple[str, list[str]]])
+        """
         module = import_module("osdu_client.services")
         return [(k, v) for k, v in module.SERVICES.items()]

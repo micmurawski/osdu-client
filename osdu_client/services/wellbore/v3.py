@@ -827,10 +827,10 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         record_id: str,
+        mode: str,
         from_version: int | None = 0,
         meta: dict | None = None,
         time_to_live: int | None = "1440",
-        mode: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1431,10 +1431,10 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         record_id: str,
+        mode: str,
         from_version: int | None = 0,
         meta: dict | None = None,
         time_to_live: int | None = "1440",
-        mode: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """

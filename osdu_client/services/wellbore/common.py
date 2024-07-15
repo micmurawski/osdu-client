@@ -41,9 +41,9 @@ class WellboreCommonClient(OSDUAPIClient):
     def recognize_family(
         self,
         *,
+        label: str,
         description: str | None = None,
         log_unit: str | None = None,
-        label: str,
         data_partition_id: str | None = None,
     ) -> dict:
         """

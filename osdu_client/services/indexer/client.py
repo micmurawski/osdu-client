@@ -42,8 +42,8 @@ class IndexerClient(OSDUAPIClient):
         self,
         *,
         force_clean: str | None = None,
-        cursor: str | None = None,
         kind: str,
+        cursor: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """

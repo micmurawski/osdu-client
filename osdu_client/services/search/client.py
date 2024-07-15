@@ -20,6 +20,7 @@ class SearchClient(OSDUAPIClient):
     def query_with_cursor(
         self,
         *,
+        kind: dict,
         limit: int | None = None,
         query: str | None = None,
         highlighted_fields: list[str] | None = None,
@@ -29,7 +30,6 @@ class SearchClient(OSDUAPIClient):
         track_total_count: bool | None = None,
         spatial_filter: dict | None = None,
         cursor: str | None = None,
-        kind: dict,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -92,6 +92,7 @@ class SearchClient(OSDUAPIClient):
     def query(
         self,
         *,
+        kind: dict,
         limit: int | None = None,
         query: str | None = None,
         highlighted_fields: list[str] | None = None,
@@ -102,7 +103,6 @@ class SearchClient(OSDUAPIClient):
         spatial_filter: dict | None = None,
         aggregate_by: str | None = None,
         offset: int | None = None,
-        kind: dict,
         data_partition_id: str | None = None,
     ) -> dict:
         """
