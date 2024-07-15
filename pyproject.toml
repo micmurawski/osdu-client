@@ -8,12 +8,13 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.0.0"
-pyaml = "^24.4.0"
+pydantic = "^2.8.2"
 
 [tool.poetry.group.tests.dependencies]
 pytest = "^8.2.2"
 pytest-cov = "^5.0.0"
 requests-mock = "^1.12.1"
+pyaml = "^24.4.0"
 
 [build-system]
 requires = ["poetry-core"]
