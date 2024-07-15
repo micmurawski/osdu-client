@@ -1,2 +1,0 @@
-class OSDUClientError(Exception):
-    pass

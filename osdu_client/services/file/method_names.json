@@ -1,0 +1,67 @@
+{
+    "post:/v2/getLocation": [
+        "get_location",
+        "Get a location in Landing Zone to upload a file.",
+        "Create a new location in the landing zone to upload a file.\n\n**Required roles**: 'users.datalake.editors' or 'users.datalake.admins' or 'users.datalake.ops'.\n"
+    ],
+    "get:/v2/files/uploadURL": [
+        "get_files_upload_url",
+        "Get a location in Landing Zone to upload a file.",
+        "Gets a temporary signed URL to upload a file.The generated URL is time bound and expires after 24 hours.\n\nUser will receive a FileSource in the response.This is the relative path where the uploaded file will persist.\nOnce the file is uploaded, FileSource can then be used to post metadata of the file. The uploaded file gets automatically deleted, if the metadata is not posted within 24 hours of uploading the file.\n\n\n**Required roles**: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins' or 'users.datalake.ops'."
+    ],
+    "post:/v2/files/metadata": [
+        "create_files_metadata",
+        "Creates a metadata for a file",
+        "This API creates a metadata record for a file that is already uploaded. The Metadata is linked to the file via `FileSource` provided in the request body.\n\nIf `FileSource` attribute is missing in the request body or there is no file present, then the request fails with an error.\n\nWhen metadata is successfully updated in the system, it returns the `Id` of the file metadata record.\n\n**Required roles**: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins' or 'users.datalake.ops'."
+    ],
+    "get:/v2/files/{Id}/metadata": [
+        "get_files_metadata",
+        "Gets metadata record for the given id",
+        "Gets the latest version of File metadata record identified by the given id.\n\n**Required roles**: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins' or 'users.datalake.ops'."
+    ],
+    "delete:/v2/files/{Id}/metadata": [
+        "delete_files_metadata",
+        "Deletes metadata record & file assocaited with that record for the given id",
+        "Deletes the File metadata record identified by the given id and file associated with that metadata record.\n\n  **Required roles**: 'users.datalake.editors'  or 'users.datalake.admins'."
+    ],
+    "get:/v2/files/{Id}/downloadURL": [
+        "gets_url_to_download_file",
+        "Gets a URL to download the file",
+        "Gets a URL for downloading the file associated with the unique `id`.\n\n**Required roles**: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins' or 'users.datalake.ops'."
+    ],
+    "post:/v2/getFileLocation": [
+        "get_file_location",
+        null,
+        "Returns file `Location` and `Driver`.\n"
+    ],
+    "post:/v2/delivery/getFileSignedUrl": [
+        "get_file_signed_url",
+        null,
+        "Returns delivery instructions for File(s) using SRNs\n"
+    ],
+    "post:/v2/getFileList": [
+        "get_file_list",
+        null,
+        "Allows the application to audit the attempted file uploads. The method is internal and isn't available for third-party applications.\n"
+    ],
+    "get:/v2/info": [
+        "get_info",
+        "Version info",
+        "For deployment available public `/info` endpoint,  which provides build and git related information."
+    ],
+    "post:/v2/file-collections/storageInstructions": [
+        "get_file_collections_storage_instructions",
+        null,
+        "get storage/upload location file-collection datasets"
+    ],
+    "post:/v2/file-collections/retrievalInstructions": [
+        "get_file_collections_retrieval_instructions",
+        null,
+        "Generate retrieval instructions (Eg - Signed URLs) for datasets"
+    ],
+    "post:/v2/file-collections/copy": [
+        "copy_file_collections",
+        null,
+        "Copy file collection from "
+    ]
+}

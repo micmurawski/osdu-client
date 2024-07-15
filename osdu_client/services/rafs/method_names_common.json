@@ -1,0 +1,12 @@
+{
+    "get:/metrics": [
+        "get_metrics",
+        "Metrics",
+        "Endpoint that serves Prometheus metrics."
+    ],
+    "get:/api/rafs-ddms/info": [
+        "get_info",
+        "Get Info",
+        "Get application info.\n\n:return: application info\n:rtype: InfoResponse"
+    ]
+}

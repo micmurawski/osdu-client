@@ -1,0 +1,47 @@
+{
+    "put:/registerDataset": [
+        "create_or_update_dataset_registry",
+        "Create or Update Dataset Registry",
+        "Create or Update Dataset Registry. \n**Required roles: `service.storage.creator` or `service.storage.admin`."
+    ],
+    "post:/storageInstructions": [
+        "get_storage_instructions",
+        "Generate storage instructions ",
+        "Generate storage instructions (Eg - Signed URLs) for datasets. \nRequired roles: `service.dataset.editors`."
+    ],
+    "post:/revokeURL": [
+        "get_revoke_url",
+        "${datasetDmsAdminApi.revokeURL.summary}",
+        "${datasetDmsAdminApi.revokeURL.description}"
+    ],
+    "get:/retrievalInstructions": [
+        "get_retrieval_instructions",
+        "Generate retrieval instructions",
+        "Generate retrieval instructions (Eg - Signed URLs) for single dataset. \nRequired roles: `service.dataset.viewers`."
+    ],
+    "post:/retrievalInstructions": [
+        "get_retrieval_instructions_for_multiple_datasets",
+        "Generate retrieval instructions - multiple datasets ",
+        "Generate retrieval instructions (Eg - Signed URLs) for multiple datasets. \nRequired roles: `service.dataset.viewers`."
+    ],
+    "get:/getDatasetRegistry": [
+        "get_dataset_registry",
+        "Get Dataset Registry",
+        "Get Dataset Registry. \n**Required roles:  `service.storage.creator` or `service.storage.admin` or `service.storage.viewer`."
+    ],
+    "post:/getDatasetRegistry": [
+        "get_dataset_registries",
+        "Get Dataset Registries",
+        "Get Dataset Registries. \n**Required roles:  `service.storage.creator` or `service.storage.admin` or `service.storage.viewer`."
+    ],
+    "get:/liveness_check": [
+        "get_liveness_check",
+        "Liveness Check endpoint",
+        "For deployment available public `/liveness_check` endpoint verifies the operational status of the Dataset Service."
+    ],
+    "get:/info": [
+        "get_info",
+        "Version info",
+        "For deployment available public `/info` endpoint, which provides build and git related information."
+    ]
+}

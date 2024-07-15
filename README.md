@@ -15,28 +15,21 @@ OSDU API client can be adjusted to specific OSDU deployment by defining auth bac
 
 
 ```python
-from typing import Dict
-
 from osdu_client import OSDUAPI
 from osdu_client.auth import AuthBackendInterface
 
 
-class AuthBackend(AuthBackendInterface):
-    def __init__(self, headers, base_url) -> None:
-        self._headers = headers
-        self._base_url = base_url
+class AuthSession(AuthBackendInterface):
+    base_url = "https://base.url"
+    default_data_partition_id = "osdu"
+    default_tenant = "osdu"
+    authorization_header = {"Authorization": "Bearer access_token"}
 
-    def get_headers(self) -> Dict:
-        return self._headers
-
-    def get_base_url(self) -> str:
-        return self._osdu_base_url
-
-    def get_sd_connection_params(self, log_level: int = None) -> Dict:
+    def get_sd_connection_params(self):
         return {}
 
 
-auth_backend = AuthBackend(
+auth_backend = AuthSession(
     headers={"Authorization": "Bearer XYZ"},
     base_url="https://exmaple.com"
 )

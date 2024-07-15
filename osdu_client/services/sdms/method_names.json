@@ -1,0 +1,242 @@
+{
+    "get:/svcstatus": [
+        "get_svcstatus",
+        "Seismic store service status (fast check).",
+        "<ul><li>Return the seismic store service status.</li><li>Required roles: none</li></ul>"
+    ],
+    "get:/svcstatus/access": [
+        "get_svcstatus_access",
+        "Seismic store service access check.",
+        "<ul><li>Validates if the token audience is allowed</li><li>Required roles: none</li></ul>"
+    ],
+    "get:/info": [
+        "get_info",
+        "Seismic store service info.",
+        "<ul><li>Return the seismic store service deployment information.</li><li>Required roles: none</li></ul>"
+    ],
+    "post:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}": [
+        "register_new_dataset",
+        "Register a new dataset.",
+        "<ul><li>Register a new dataset in the seismic store.</li><li>Required roles: subproject.admin</li></ul>"
+    ],
+    "get:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}": [
+        "get_dataset",
+        "Retrieve a dataset.",
+        "<ul> <li>Return the dataset metadata from seismic store.</li> <li>Required roles: <ul> <li>subproject.admin, subproject.viewer: if the applied subproject policy is 'uniform'</li> <li>dataset.admin, dataset.viewer: if the applied subproject policy is 'dataset'</li> </ul> </li></ul>"
+    ],
+    "delete:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}": [
+        "delete_dataset",
+        "Delete a dataset.",
+        "<ul> <li>Delete a dataset in the seismic store.</li> <li>Required roles: <ul> <li>subproject.admin: if the applied subproject policy is 'uniform'</li> <li>dataset.admin: if the applied subproject policy is 'dataset'</li> </ul> </li></ul>"
+    ],
+    "patch:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}": [
+        "patch_dataset_metadata",
+        "Patch the dataset metadata.",
+        "<ul>\n<li>Update the dataset meta information in the seismic store or close (unlock) the dataset. If the endpoint is used without the close parameter, at least one body field is required or the endpoint will return an error.</li>\n<li>Required roles:\n  <ul>\n    <li>subproject.admin: if the applied subproject policy is 'uniform'</li>\n    <li>dataset.admin: if the applied subproject policy is 'dataset'</li>\n  </ul>\n</li>\n<li>Patchable fields: <ul>\n<li><b>dataset_new_name:</b> new name to use for the dataset (rename).</li>\n<li><b>filemetadata:</b> This is a seismic store specific field and describes how the physical data is stored in the cloud storage system (GCS/AzureContainer etc.). This metadata is mainly used by client libraries to correctly reconstruct the dataset. For example you can store a dataset as truncated in multiple objects of 64MB each, name them from 0 to N and save the filemetadata = \u201c{nObject: N, totalSize: 1024, objsize: 64, sizeUnit: MB}\u201d.</li>\n<li><b>gtags:</b> Upsert tags to an existing dataset metadata. If the dataset metadata already has gtags, then new gtags are appended to this list.</li>\n<li><b>ltag:</b> Update the existing legalTag value.</b></li>\n<li><b>readonly:</b> Update the dataset mode to readonly (true) or to read/write (false).</li>\n<li><b>status:</b> Update the dataset status.</li>\n</ul></li>\n<li><b>NOTE:</b> last_modified_date is updated automatically with each metadata change through Patch endpoint calling.</li>\n</ul>\n"
+    ],
+    "put:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/lock": [
+        "acquire_lock_for_dataset",
+        "Acquire a lock for a dataset id.",
+        "<ul>\n  <li>Open a dataset for read or write and lock its state.</li>\n  <li>Required roles open lock for write:\n    <ul>\n      <li>subproject.admin: if the applied subproject policy is 'uniform'</li>\n      <li>dataset.admin: if the applied subproject policy is 'dataset'</li>\n    </ul>\n  </li>\n  <li>Required roles open lock for read:\n    <ul>\n      <li>subproject.admin, subproject.viewer: if the applied subproject policy is 'uniform'</li>\n      <li>dataset.admin, dataset.viewer: if the applied subproject policy is 'dataset'</li>\n    </ul>\n  </li>\n</ul>\noperationId: dataset-lock\n"
+    ],
+    "put:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/unlock": [
+        "remove_lock_associated_with_dataset",
+        "Remove the lock associated with a dataset id.",
+        "<ul>\n  <li>Removes the lock for a dataset id.</li>\n  <li>Required roles:\n    <ul>\n      <li>subproject.admin: if the applied subproject policy is 'uniform'</li>\n      <li>dataset.admin: if the applied subproject policy is 'dataset'</li>\n    </ul>\n  </li>\n</ul>\n"
+    ],
+    "get:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/permission": [
+        "get_dataset_access_permissions",
+        "Retrieve the access permissions of a user on a dataset id.",
+        "<ul>\n  <li>Retrieve the access permission of a user on a dataset.</li>\n  <li>Required roles:\n    <ul>\n      <li>subproject.admin, subproject.viewer: if the applied subproject policy is 'uniform'</li>\n      <li>dataset.admin, dataset.viewer: if the applied subproject policy is 'dataset'</li>\n    </ul>\n  </li>\n</ul>\n"
+    ],
+    "get:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/ctagcheck": [
+        "validate_ctag",
+        "Validate if a dataset ctag matches the pre-existing ctag in metadata catalog.",
+        "<ul><li>Check if the provided dataset cTag match the one stored in the metadata catalog.</li><li>Required roles: subproject.admin, subproject.viewer</li></ul>"
+    ],
+    "put:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/gtags": [
+        "upsert_tags_to_dataset",
+        "Upsert tags to a dataset.",
+        "<ul>\n  <li>Upsert tags to an existing dataset metadata. If the dataset metadata already has gtags, then  new gtags are appended to this list.</li>\n  <li>Required roles:\n    <ul>\n      <li>subproject.admin: if the applied subproject policy is 'uniform'</li>\n      <li>dataset.admin: if the applied subproject policy is 'dataset'</li>\n    </ul>\n  </li>\n</ul>\n"
+    ],
+    "post:/dataset/tenant/{tenantid}/subproject/{subprojectid}/dataset/{datasetid}/size": [
+        "compute_and_get_size_dataset",
+        "Compute and retrieve the size of a dataset and the date of when the size was computed",
+        "<ul>\n<li>Compute and retrieve the size of a dataset and the date of when the size was computed.</li>\n<li>Required roles: subproject.admin</li></ul>\n"
+    ],
+    "get:/dataset/tenant/{tenantid}/subproject/{subprojectid}/size": [
+        "get_datasets_sizes",
+        "Retrieve the size of datasets",
+        "<ul>\n<li>Required roles: subproject.viewer</li></ul>\n"
+    ],
+    "get:/dataset/tenant/{tenantid}/subproject/{subprojectid}/readdsdirfulllist": [
+        "get_content_list",
+        "Content list.",
+        "<ul>\n<li>List datasets and sub-directories for a directory path.</li>\n<li>Required roles: subproject.admin, subproject.viewer</li></ul>\n"
+    ],
+    "post:/dataset/tenant/{tenantid}/subproject/{subprojectid}": [
+        "list_datasets_in_subproject",
+        "Get the list of datasets in a subproject.",
+        "<ul>\n  <li>Return the list of datasets in a sub-project. The list can be filtered by gtags. Support pagination.</li>\n  <li>Required roles: subproject.admin, subproject.viewer</li>\n</ul>\n"
+    ],
+    "post:/dataset/tenant/{tenantid}/subproject/{subprojectid}/exist": [
+        "check_datasets_list",
+        "Check to see if a list of datasets exists in the subproject.",
+        "<ul>\n<li>Check if the dataset exists.</li>\n<li>Required roles: subproject.admin, subproject.viewer</li></ul>\n"
+    ],
+    "post:/dataset/tenant/{tenantid}/subproject/{subprojectid}/sizes": [
+        "list_datasets_sizes",
+        "Retrieve the size of datasets.",
+        "<ul>\n<li>Return a list with the sizes of the requested datasets.</li>\n<li>The correctness is not guarantee since this API returns sizes stored by the user in the dataset manifest.</li>\n<li>This API is deprecated, please using /size endpoint to compute and retrieve the size information</li>\n<li>Required roles: subproject.admin, subproject.viewer</li></ul>\n"
+    ],
+    "get:/utility/ls": [
+        "ls",
+        "Retrieve the list of datasets and sub-directories inside a seismic store path.",
+        "<ul>\n<li>Return the list of datasets and sub-directories of a seismic store path.</li>\n<li>Required roles: subproject.admin, subproject.viewer</li></ul>\n"
+    ],
+    "post:/utility/ls": [
+        "ls_post",
+        "Retrieve the list of datasets and sub-directories inside a seismic store path.",
+        "<ul>\n<li>Return the list of datasets and sub-directories of a seismic store path.</li>\n<li>Required roles: subproject.admin, subproject.viewer</li></ul>\n"
+    ],
+    "get:/utility/storage-tiers": [
+        "list_storage_tiers",
+        "Retrieve the list of supported storage tiers",
+        "<ul><li>Return the list of storage tiers</ul>"
+    ],
+    "post:/utility/cp": [
+        "copy_dataset",
+        "Copy dataset.",
+        "<ul>\n<li>Copy a seismic store dataset. The source and destination dataset must be in the same sub-project.</li>\n<li>Required roles:\n  <ul>\n    <li>subproject.admin, subproject.viewer: if the applied subproject policy is 'uniform'</li>\n    <li>dataset.admin, dataset.viewer: if the applied subproject policy is 'dataset'</li>\n  </ul>\n</li>\n</ul>\n"
+    ],
+    "get:/utility/gcs-access-token": [
+        "get_gcs_access_token",
+        "Generate a GCS access token.",
+        "<ul>\n  <li>Generate a GCS access token for a specified seismic store resource. The source and destination dataset must be in the same sub-project.</li>\n  <li>Required roles:\n    <ul>\n      <li>subproject.admin, subproject.viewer: if the applied subproject policy is 'uniform'</li>\n      <li>dataset.admin, dataset.viewer: if the applied subproject policy is 'dataset'</li>\n    </ul>\n  </li>\n</ul>\n"
+    ],
+    "get:/utility/upload-connection-string": [
+        "get_upload_connection_credential_string",
+        "Generate the upload connection credentials string",
+        "<ul> <li>Generate the upload connection credential string for a subproject collection or a dataset, depending of the applied access policy (uniform/dataset). <li>These credentials can be used via CSP SDK, on client side, to perform bulk upload.</li> <li> The endpoint response is CSP (Cloud Solution Provider) dependent: <ul> <br/><li><b>Azure</b>: shared access signature (SaS) Url token <br/> <br/>{ <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_token: 'https://{accountName}.blob.core.windows.net/{containerName}?{SASQueryParameters}`' <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires_in: 3599 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type: 'SasUrl' <br/>} <br/><br/></li> <li><b>Google</b>: standard access token credential signed and down-scoped by google <br/> <br/>{ <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_token: 'google_signed_access_token' <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires_in: 3600 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type: 'Bearer' <br/>} <br/><br/></li> <li><b>AWS</b>: double column separated string containing access key id, the access key secret and the session token <br/> <br/>{ <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_token: 'accessKeyId:secretAccessKey:sessionToken' <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires_in: 3599 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type: 'Bearer' <br/>} <br/><br/></li> <li><b>IBM</b>: double column separated string containing access key id, the access key secret and the session token <br/> <br/>{ <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_token: 'accessKeyId:secretAccessKey:sessionToken' <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires_in: 7200 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type: 'Bearer' <br/>} <br/><br/></li> </ul> </li> <li>Required roles: <ul> <li>subproject.admin: if the applied subproject policy is 'uniform'</li> <li>dataset.admin: if the applied subproject policy is 'dataset'</li> </ul> </li> </ul>"
+    ],
+    "get:/utility/download-connection-string": [
+        "get_download_connection_credentials_string",
+        "Generate the download connection credentials string",
+        "<ul> <li>Generate the download connection credential string for a subproject collection or a dataset, depending of the applied access policy (uniform/dataset). <li>These credentials can be used via CSP SDK, on client side, to perform bulk download.</li> <li> The endpoint response is CSP (Cloud Solution Provider) dependent: <ul> <br/><li><b>Azure</b>: shared access signature (SaS) Url token <br/> <br/>{ <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_token: 'https://{accountName}.blob.core.windows.net/{containerName}?{SASQueryParameters}`' <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires_in: 3599 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type: 'SasUrl' <br/>} <br/><br/></li> <li><b>Google</b>: standard access token credential signed and down-scoped by google <br/> <br/>{ <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_token: 'google_signed_access_token' <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires_in: 3600 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type: 'Bearer' <br/>} <br/><br/></li> <li><b>AWS</b>: double column separated string containing access key id, the access key secret and the session token <br/> <br/>{ <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_token: 'accessKeyId:secretAccessKey:sessionToken' <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires_in: 3599 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type: 'Bearer' <br/>} <br/><br/></li> <li><b>IBM</b>: double column separated string containing access key id, the access key secret and the session token <br/> <br/>{ <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_token: 'accessKeyId:secretAccessKey:sessionToken' <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;expires_in: 7200 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_type: 'Bearer' <br/>} <br/><br/></li> </ul> </li> <li>Required roles: <ul> <li>subproject.admin, subproject.viewer: if the applied subproject policy is 'uniform'</li> <li>dataset.admin, dataset.viewer: if the applied subproject policy is 'dataset'</li> </ul> </li> </ul>"
+    ],
+    "post:/imptoken": [
+        "create_imptoken",
+        "Generate impersonation credentials token.",
+        "<ul>\n<li>Generate an impersonation credential token of a user for a set of subproject resources.</li>\n<li>Required roles: app.trusted</li></ul>\n"
+    ],
+    "put:/imptoken": [
+        "refresh_imptoken",
+        "Refresh an impersonation credential token.",
+        "<ul><li>Refresh an impersonation credential token.</li><li>Required roles: none</li></ul>"
+    ],
+    "patch:/imptoken": [
+        "patch_imptoken",
+        "Patch an impersonation credential token's refresh url and generate a new impersonation token.",
+        "<ul>\n<li>Patch an impersonation credential token's refresh url and generate a new impersonation token.</li>\n<li>Required roles: none</li></ul>\n"
+    ],
+    "post:/impersonation-token": [
+        "create_impersonation_token",
+        "Create an impersonation token credential.",
+        "<ul><li>Generate a credential token to impersonate user access for a set of subproject resources.</li><li>Required roles: app.trusted</li></ul>"
+    ],
+    "put:/impersonation-token": [
+        "refresh_impersonation_token",
+        "Refresh the impersonation credential token.",
+        "<ul><li>Refresh an impersonation credential token.</li><li>Required roles: app.trusted</li></ul>"
+    ],
+    "post:/subproject/tenant/{tenantid}/subproject/{subprojectid}": [
+        "create_new_subproject",
+        "Create a new subproject.",
+        "<ul>\n<li>Creates a new subproject resource in seismic store.</li>\n<li>Required roles: users.datalake.admin</li></ul>\n"
+    ],
+    "get:/subproject/tenant/{tenantid}/subproject/{subprojectid}": [
+        "get_subproject_metadata",
+        "Retrieve the subproject metadata.",
+        "<ul><li>Return the metadata for a requested sub-project.</li><li>Required roles: subproject.admin</li></ul>"
+    ],
+    "delete:/subproject/tenant/{tenantid}/subproject/{subprojectid}": [
+        "delete_subproject",
+        "Delete a subproject.",
+        "<ul><li>Delete a subproject in seismic store.</li><li>Required roles: users.datalake.admin</li></ul>"
+    ],
+    "patch:/subproject/tenant/{tenantid}/subproject/{subprojectid}": [
+        "patch_subprojects_metadata",
+        "Patch a subproject's metadata.",
+        "<ul>\n  <li>Patch a subproject metadata in seismic store.</li>\n  <li>Required roles: subproject.admin</li>\n  <li>Possible actions:</li>\n  <ul>\n    <li>legal tag and/or ACLs groups can be patched by providing new values</li>\n  </ul>\n</ul>\n"
+    ],
+    "get:/subproject/tenant/{tenantid}": [
+        "list_subprojects_in_tenant",
+        "List subprojects in a tenant.",
+        "<ul><li>Return the list of sub-projects in a tenant.</li><li>Required roles: users.datalake.admin</li></ul>"
+    ],
+    "post:/tenant/{tenantid}": [
+        "register_tenant",
+        "Register a seismic-dms tenant.",
+        "<ul><li>Register a data partition in seismic-dms.</li><li>Required roles: users.datalake.admin</li></ul>"
+    ],
+    "get:/tenant/{tenantid}": [
+        "get_tenant",
+        "Retrieve the tenant metadata.",
+        "<ul><li>Return the tenant metadata.</li><li>Required roles: seistore.system.admin</li></ul>"
+    ],
+    "get:/tenant/sdpath": [
+        "get_tenant_sdpath",
+        "Retrieve the tenant seismic store path.",
+        "<ul><li>Return the seistore path to a tenant associated with the data partition.</li><li>Required roles: none</li></ul>"
+    ],
+    "put:/user": [
+        "update_user",
+        "Add a user to a seismic store subproject authorization group.",
+        "<ul><li>Add a user to a subproject default authorization group if it exists, otherwise, add the user to the first group.</li><li>Required roles: subproject.admin</li></ul>"
+    ],
+    "get:/user": [
+        "get_user",
+        "List users in a subproject's role-based authorization groups.",
+        "<ul><li>List users in subproject's role-based authorization groups.</li><li>Required roles: subproject.admin</li></ul>"
+    ],
+    "delete:/user": [
+        "delete_user",
+        "Remove a user from a subproject.",
+        "<ul><li>Remove a user from subproject default authorization groups if exists, otherwise, remove it from the first authorization group.</li><li>Required roles: subproject.admin</li></ul>"
+    ],
+    "get:/user/roles": [
+        "get_user_roles",
+        "Retrieve user role in all subprojects of the tenant.",
+        "<ul><li>Retrieve user role in all subprojects of the tenant.</li><li>Required roles: none/li></ul>"
+    ],
+    "post:/app": [
+        "register_app",
+        "Register a new application.",
+        "<ul><li>Register a new application in the seismic store.</li><li>Required roles: users.datalake.admin</li></ul>"
+    ],
+    "get:/app": [
+        "get_app",
+        "Retrieve the list of registered applications.",
+        "<ul>\n<li>Retrieve the list of the registered applications in the seismic store.</li>\n<li>Required roles: users.datalake.admin</li></ul>\n"
+    ],
+    "post:/app/trusted": [
+        "set_app_trusted",
+        "Set a registered application as a trusted application.",
+        "<ul>\n<li>Set a registered application as a trusted application in the seismic store.</li>\n<li>Required roles: users.datalake.admin</li></ul>\n"
+    ],
+    "get:/app/trusted": [
+        "get_app_trusted",
+        "List the trusted applications in a seismic store tenant.",
+        "<ul>\n<li>Return the list of the trusted application in seismic store tenant.\n</li><li>Required roles: users.datalake.admin</li></ul>\n"
+    ],
+    "put:/operation/bulk-delete": [
+        "delete_all_datasets_in_subproject",
+        "delete all datasets in a subproject path.",
+        "<ul> <li>Description: delete all datasets in the specified sdms subproject path.</li> <li>Roles: subproject.admin</li></ul>"
+    ],
+    "get:/operation/bulk-delete/{operation-id}": [
+        "get_operation_bulk_delete_status",
+        "get the bulk delete operation status.",
+        "<ul> <li>Description: get the bulk delete operation status.</li> <li>Roles: any (registered user in partition)</li></ul>"
+    ]
+}

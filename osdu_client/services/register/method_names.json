@@ -1,0 +1,82 @@
+{
+    "get:/ddms/{id}": [
+        "get_ddms",
+        "Get a DDMS registration",
+        "Get a DDMS registration with the given id. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "delete:/ddms/{id}": [
+        "delete_ddms",
+        "Delete a DDMS registration",
+        "Delete a DDMS registration with the given id. Required roles: 'users.datalake.admins'"
+    ],
+    "post:/ddms": [
+        "create_ddms",
+        "Create a DDMS registration",
+        "Create a DDMS registration using an OpenApi spec V3 document. Required roles: 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "get:/ddms": [
+        "query_ddms",
+        "Query for DDMS registrations",
+        "Query for DDMS registrations allowing retrievals by type. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "get:/ddms/{id}/{type}/{localid}": [
+        "get_d",
+        "Retrieves Single Entity record id",
+        "Get a Single DDMS record id. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "get:/action/{id}": [
+        "get_action",
+        "Get an action registration",
+        "Get an action registration with the given id. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "delete:/action/{id}": [
+        "delete_action",
+        "Delete an action  registration",
+        "Delete an action registration with the given id. Required role: 'users.datalake.admins'"
+    ],
+    "post:/action": [
+        "create_action",
+        "Create an action registration",
+        "Create an action registration. Required role: 'users.datalake.admins'"
+    ],
+    "post:/action:test": [
+        "create_action_test",
+        "Test an action registration",
+        "Test an action registration. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "post:/action:retrieve": [
+        "create_action_get",
+        "Query for action registrations and substitutes any action with the given parameters",
+        "Retrieve an action registration. Required roles: 'users.datalake.viewers' or 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "post:/subscription": [
+        "create_subscription",
+        "Create a subscription",
+        "Create a subscription. Required roles: 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "get:/subscription/{id}": [
+        "get_subscription",
+        "Get a subscription",
+        "Get a subscription with its Id. Required role: 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "delete:/subscription/{id}": [
+        "delete_subscription",
+        "Delete a subscription",
+        "Delete a subscription with its Id. Required role: 'users.datalake.admins'"
+    ],
+    "put:/subscription/{id}/secret": [
+        "update_subscription_secret",
+        "Update secret for subscription",
+        "Update secret for a subscription. Required role: 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "get:/topics": [
+        "get_topics",
+        "List all topics",
+        "List all topics that you can create a subscription for, along with the corresponding sample messages. Required role: 'users.datalake.editors' or 'users.datalake.admins'"
+    ],
+    "get:/info": [
+        "get_info",
+        "Version info",
+        "For deployment available public `/info` endpoint,  which provides build and git related information."
+    ]
+}

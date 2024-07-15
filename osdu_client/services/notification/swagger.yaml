@@ -1,0 +1,126 @@
+openapi: 3.0.0
+info:
+  description: Api Documentation for Notification service
+  version: 1.0.0
+  title: Notification
+  contact:
+    name: OSDU Support
+    email: devportal-help@osdu.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+tags:
+  - name: pubsub-endpoint
+    description: Pubsub Endpoint
+  - name: info
+    description: Version info endpoint
+paths:
+  /push-handlers/records-changed:
+    post:
+      tags:
+        - pubsub-endpoint
+      summary: recordChanged
+      operationId: recordChangedUsingPOST
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: tenant
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "200":
+          description: OK
+          content:
+            "*/*":
+              schema:
+                $ref: "#/components/schemas/ResponseEntity"
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      security:
+        - JWT:
+            - global
+  /info:
+    get:
+      tags:
+        - info
+      summary: "Version info"
+      description: "For deployment available public `/info` endpoint, \
+            \ which provides build and git related information."
+      operationId: "Version info"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Version info."
+          schema:
+            $ref: "#/components/schemas/VersionInfo"
+servers:
+  - url: https://evq.csp.osdu.com/api/notification/v1
+    description: EVT
+  - url: https://evd.csp.osdu.com/api/notification/v1
+    description: EVD
+components:
+  securitySchemes:
+    JWT:
+      type: apiKey
+      name: Authorization
+      in: header
+  schemas:
+    ResponseEntity:
+      type: object
+      properties:
+        body:
+          type: object
+        statusCode:
+          type: string
+        statusCodeValue:
+          type: integer
+          format: int32
+    VersionInfo:
+      type: "object"
+      properties:
+        groupId:
+          type: "string"
+          description: "Maven artifact group ID."
+        actifactId:
+          type: "string"
+          description: "Maven artifact ID."
+        version:
+          type: "string"
+          description: "Maven artifact version"
+        buildTime:
+          type: "string"
+          description: "Maven artifact build time"
+        branch:
+          type: "string"
+          description: "Current git branch"
+        commitId:
+          type: "string"
+          description: "Latest commit hash"
+        commitMessage:
+          type: "string"
+          description: "Latest commit message"
+        connectedOuterServices:
+          type: "array"
+          description: "Connected outer services information"
+          items:
+            $ref: "#/components/schemas/ConnectedOuterService"
+      description: "Version info."
+    ConnectedOuterService:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Connected outer service name."
+        version:
+          type: "string"
+          description: "Connected outer service version."
+      description: "Connected outer service information."

@@ -1,0 +1,1368 @@
+openapi: 3.0.1
+info:
+  title: PWS Service
+  description: PWS Service provides APIs to help with efficient decision making on
+    large scale capital investments.
+  contact:
+    name: OSDU Data Platform Team
+    email: dps@OSDU.org
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: /api/pws/v1/
+security:
+  - Authorization: []
+tags:
+  - name: project life cycle events
+    description: Collaboration project LifecycleEvent management operations
+  - name: project resources
+    description: Collaboration project resources management operations
+  - name: status
+    description: API to change Collaboration Project Status
+  - name: projects
+    description: Collaboration project management operations
+  - name: work in progress project resources
+    description: Collaboration project work in progress resources management operations
+  - name: health-check
+    description: Health Check API
+  - name: info
+    description: Version info endpoint
+paths:
+  /projects:
+    get:
+      tags:
+        - projects
+      summary: Get all project's.
+      description: This API returns a list of projects.
+      operationId: getProjects
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "200":
+          description: Get list of all available projects' recordIDs
+          content:
+            '*/*':
+              schema:
+                type: string
+                example: |
+                  {
+                    [
+                      "namespace:master-data--CollaborationProject:68ab47b4-b656-5c1b-bb4a-e485bee706e0",
+                      "namespace:master-data--CollaborationProject:any-other-id"
+                    ]
+                  }
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+    post:
+      tags:
+        - projects
+      summary: Create new collaboration project.
+      description: The API performs new collaboration project creation.
+      operationId: createProject
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request example of CollaborationProject. Full json response schema
+          watch in CollaborationProject.1.0.0.json
+        content:
+          application/json:
+            schema:
+              type: string
+              example:
+                kind: osdu:wks:master-data--CollaborationProject:1.0.0
+                version: 1562066009929332
+                acl:
+                  owners:
+                    - data.default.owners@osdu.example.com
+                  viewers:
+                    - data.default.viewers@osdu.example.com
+                legal:
+                  legaltags:
+                    - osdu-public-usa-dataset
+                  otherRelevantDataCountries:
+                    - US
+                  status: compliant
+                tags:
+                  test: Integration test
+                createTime: 2020-12-16T11:46:20.163Z
+                createUser: some-user@some-company-cloud.com
+                modifyTime: 2020-12-16T11:52:24.477Z
+                modifyUser: some-user@some-company-cloud.com
+                ancestry:
+                  parents: []
+                meta:
+                  - kind: Unit
+                    name: m
+                    persistableReference: "{\"abcd\":{\"a\":0.0,\"b\":1.0,\"c\":1.0,\"\
+                    d\":0.0},\"symbol\":\"m\",\"baseMeasurement\":{\"ancestry\":\"\
+                    L\",\"type\":\"UM\"},\"type\":\"UAD\"}"
+                    unitOfMeasureID: 'namespace:reference-data--UnitOfMeasure:m:'
+                    propertyNames:
+                      - "ProjectSpecifications[0].ProjectSpecificationQuantity"
+                      - "Parameters[0].DataQuantityParameter"
+                data:
+                  ResourceHomeRegionID: 'namespace:reference-data--OSDURegion:AWSEastUSA:'
+                  ResourceHostRegionIDs:
+                    - 'namespace:reference-data--OSDURegion:AWSEastUSA:'
+                  ResourceCurationStatus: 'namespace:reference-data--ResourceCurationStatus:Created:'
+                  ResourceLifecycleStatus: 'namespace:reference-data--ResourceLifecycleStatus:Loading:'
+                  ResourceSecurityClassification: 'namespace:reference-data--ResourceSecurityClassification:Public:'
+                  Source: Example Data Source
+                  ExistenceKind: 'namespace:reference-data--ExistenceKind:Prototype:'
+                  NameAliases:
+                    - AliasName: Example AliasName
+                      AliasNameTypeID: 'namespace:reference-data--AliasNameType:RegulatoryIdentifier:'
+                      DefinitionOrganisationID: 'namespace:master-data--Organisation:SomeUniqueOrganisationID:'
+                      EffectiveDateTime: 2020-02-13T09:13:15.55Z
+                      TerminationDateTime: 2020-02-13T09:13:15.55Z
+                  GeoContexts:
+                    - GeoPoliticalEntityID: 'namespace:master-data--GeoPoliticalEntity:SomeUniqueGeoPoliticalEntityID:'
+                      GeoTypeID: 'namespace:reference-data--GeoPoliticalEntityType:Area:'
+                    - BasinID: 'namespace:master-data--Basin:SomeUniqueBasinID:'
+                      GeoTypeID: 'namespace:reference-data--BasinType:ArcWrenchOceanContinent:'
+                    - FieldID: 'namespace:master-data--Field:SomeUniqueFieldID:'
+                      GeoTypeID: Field
+                    - PlayID: 'namespace:master-data--Play:SomeUniquePlayID:'
+                      GeoTypeID: 'namespace:reference-data--PlayType:CarbonCaptureAndStorage:'
+                    - ProspectID: 'namespace:master-data--Prospect:SomeUniqueProspectID:'
+                      GeoTypeID: 'namespace:reference-data--ProspectType:Structural.Anticline:'
+                  SpatialLocation:
+                    SpatialLocationCoordinatesDate: 2020-02-13T09:13:15.55Z
+                    QuantitativeAccuracyBandID: 'namespace:reference-data--QuantitativeAccuracyBand:Length.LessThan1m:'
+                    QualitativeSpatialAccuracyTypeID: 'namespace:reference-data--QualitativeSpatialAccuracyType:Assumed:'
+                    CoordinateQualityCheckPerformedBy: Example CoordinateQualityCheckPerformedBy
+                    CoordinateQualityCheckDateTime: 2020-02-13T09:13:15.55Z
+                    CoordinateQualityCheckRemarks:
+                      - Example CoordinateQualityCheckRemarks
+                    AsIngestedCoordinates:
+                      type: AnyCrsFeatureCollection
+                      CoordinateReferenceSystemID: 'namespace:reference-data--CoordinateReferenceSystem:BoundProjected:EPSG::32021_EPSG::15851:'
+                      VerticalCoordinateReferenceSystemID: 'namespace:reference-data--CoordinateReferenceSystem:Vertical:EPSG::5714:'
+                      VerticalUnitID: 'namespace:reference-data--UnitOfMeasure:m:'
+                      persistableReferenceCrs: "{\"authCode\":{\"auth\":\"OSDU\",\"\
+                        code\":\"32021079\"},\"lateBoundCRS\":{\"authCode\":{\"auth\"\
+                        :\"EPSG\",\"code\":\"32021\"},\"name\":\"NAD_1927_StatePlane_North_Dakota_South_FIPS_3302\"\
+                        ,\"type\":\"LBC\",\"ver\":\"PE_10_9_1\",\"wkt\":\"PROJCS[\\\
+                        \"NAD_1927_StatePlane_North_Dakota_South_FIPS_3302\\\",GEOGCS[\\\
+                        \"GCS_North_American_1927\\\",DATUM[\\\"D_North_American_1927\\\
+                        \",SPHEROID[\\\"Clarke_1866\\\",6378206.4,294.9786982]],PRIMEM[\\\
+                        \"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],PROJECTION[\\\
+                        \"Lambert_Conformal_Conic\\\"],PARAMETER[\\\"False_Easting\\\
+                        \",2000000.0],PARAMETER[\\\"False_Northing\\\",0.0],PARAMETER[\\\
+                        \"Central_Meridian\\\",-100.5],PARAMETER[\\\"Standard_Parallel_1\\\
+                        \",46.18333333333333],PARAMETER[\\\"Standard_Parallel_2\\\"\
+                        ,47.48333333333333],PARAMETER[\\\"Latitude_Of_Origin\\\",45.66666666666666],UNIT[\\\
+                        \"Foot_US\\\",0.3048006096012192],AUTHORITY[\\\"EPSG\\\",32021]]\"\
+                        },\"name\":\"NAD27 * OGP-Usa Conus / North Dakota CS27 South\
+                        \ zone [32021,15851]\",\"singleCT\":{\"authCode\":{\"auth\"\
+                        :\"EPSG\",\"code\":\"15851\"},\"name\":\"NAD_1927_To_WGS_1984_79_CONUS\"\
+                        ,\"type\":\"ST\",\"ver\":\"PE_10_9_1\",\"wkt\":\"GEOGTRAN[\\\
+                        \"NAD_1927_To_WGS_1984_79_CONUS\\\",GEOGCS[\\\"GCS_North_American_1927\\\
+                        \",DATUM[\\\"D_North_American_1927\\\",SPHEROID[\\\"Clarke_1866\\\
+                        \",6378206.4,294.9786982]],PRIMEM[\\\"Greenwich\\\",0.0],UNIT[\\\
+                        \"Degree\\\",0.0174532925199433]],GEOGCS[\\\"GCS_WGS_1984\\\
+                        \",DATUM[\\\"D_WGS_1984\\\",SPHEROID[\\\"WGS_1984\\\",6378137.0,298.257223563]],PRIMEM[\\\
+                        \"Greenwich\\\",0.0],UNIT[\\\"Degree\\\",0.0174532925199433]],METHOD[\\\
+                        \"NADCON\\\"],PARAMETER[\\\"Dataset_conus\\\",0.0],OPERATIONACCURACY[5.0],AUTHORITY[\\\
+                        \"EPSG\\\",15851]]\"},\"type\":\"EBC\",\"ver\":\"PE_10_9_1\"\
+                        }"
+                      persistableReferenceVerticalCrs: "{\"authCode\":{\"auth\":\"\
+                        EPSG\",\"code\":\"5714\"},\"name\":\"MSL_Height\",\"type\"\
+                        :\"LBC\",\"ver\":\"PE_10_9_1\",\"wkt\":\"VERTCS[\\\"MSL_Height\\\
+                        \",VDATUM[\\\"Mean_Sea_Level\\\"],PARAMETER[\\\"Vertical_Shift\\\
+                        \",0.0],PARAMETER[\\\"Direction\\\",1.0],UNIT[\\\"Meter\\\"\
+                        ,1.0],AUTHORITY[\\\"EPSG\\\",5714]]\"}"
+                      persistableReferenceUnitZ: "{\"scaleOffset\":{\"scale\":1.0,\"\
+                        offset\":0.0},\"symbol\":\"m\",\"baseMeasurement\":{\"ancestry\"\
+                        :\"Length\",\"type\":\"UM\"},\"type\":\"USO\"}"
+                      features:
+                        - type: AnyCrsFeature
+                          properties: {}
+                          geometry:
+                            type: AnyCrsPoint
+                            coordinates:
+                              - 12345.6
+                              - 12345.6
+                            bbox:
+                              - 12345.6
+                              - 12345.6
+                              - 12345.6
+                              - 12345.6
+                          bbox:
+                            - 12345.6
+                            - 12345.6
+                            - 12345.6
+                            - 12345.6
+                      bbox:
+                        - 12345.6
+                        - 12345.6
+                        - 12345.6
+                        - 12345.6
+                    Wgs84Coordinates:
+                      type: FeatureCollection
+                      features:
+                        - type: Feature
+                          properties: {}
+                          geometry:
+                            type: Point
+                            coordinates:
+                              - 12345.6
+                              - 12345.6
+                            bbox:
+                              - 12345.6
+                              - 12345.6
+                              - 12345.6
+                              - 12345.6
+                          bbox:
+                            - 12345.6
+                            - 12345.6
+                            - 12345.6
+                            - 12345.6
+                      bbox:
+                        - 12345.6
+                        - 12345.6
+                        - 12345.6
+                        - 12345.6
+                    AppliedOperations:
+                      - conversion from ED_1950_UTM_Zone_31N to GCS_European_1950; 1
+                        points converted
+                      - transformation GCS_European_1950 to GCS_WGS_1984 using ED_1950_To_WGS_1984_24;
+                        1 points successfully transformed
+                    SpatialParameterTypeID: 'namespace:reference-data--SpatialParameterType:Outline:'
+                    SpatialGeometryTypeID: 'namespace:reference-data--SpatialGeometryType:Point:'
+                  VersionCreationReason: Example VersionCreationReason
+                  TechnicalAssuranceTypeID: 'namespace:reference-data--TechnicalAssuranceType:Certified:'
+                  TechnicalAssurances:
+                    - TechnicalAssuranceTypeID: 'namespace:reference-data--TechnicalAssuranceType:Trusted:'
+                      Reviewers:
+                        - RoleTypeID: 'namespace:reference-data--ContactRoleType:AccountOwner:'
+                          DataGovernanceRoleTypeID: 'namespace:reference-data--DataGovernanceRoleType:SME:'
+                          WorkflowPersonaTypeID: 'namespace:reference-data--WorkflowPersonaType:SeismicProcessor:'
+                          OrganisationID: 'namespace:master-data--Organisation:SomeUniqueOrganisationID:'
+                          Name: John Smith
+                      AcceptableUsage:
+                        - WorkflowUsageTypeID: 'namespace:reference-data--WorkflowUsageType:SeismicProcessing:'
+                          WorkflowPersonaTypeID: 'namespace:reference-data--WorkflowPersonaType:SeismicProcessor:'
+                          DataQualityRuleSetID: 'namespace:reference-data--DataQualityRuleSet:SeismicProcessingQCRuleSet:'
+                          DataQualityID: namespace:work-product-component--DataQuality:6a433d16-07c8-4f4d-9ddc-5608e2ec4234:1562066077849221
+                          ValueChainStatusTypeID: 'namespace:reference-data--ValueChainStatusType:Exploration:'
+                      UnacceptableUsage:
+                        - WorkflowUsageTypeID: 'namespace:reference-data--WorkflowUsageType:SeismicInterpretation:'
+                          WorkflowPersonaTypeID: 'namespace:reference-data--WorkflowPersonaType:SeismicInterpreter:'
+                          DataQualityRuleSetID: 'namespace:reference-data--DataQualityRuleSet:SeismicInterpretationQCRuleSet:'
+                          DataQualityID: namespace:work-product-component--DataQuality:d79bf97c-ff7c-4b82-89b5-c88520c15017:1562066009929332
+                          ValueChainStatusTypeID: 'namespace:reference-data--ValueChainStatusType:FieldDevelopment:'
+                      EffectiveDate: 2020-02-13
+                      Comment: "This is free form text from reviewer, e.g. restrictions\
+                      \ on use"
+                  ProjectID: Example External Project Identifier
+                  ProjectName: Example ProjectName
+                  Purpose: Example Purpose
+                  ProjectBeginDate: 2020-02-13T09:13:15.55Z
+                  ProjectEndDate: 2020-02-13T09:13:15.55Z
+                  FundsAuthorizations:
+                    - AuthorizationID: Example AuthorizationID
+                      EffectiveDateTime: 2020-02-13T09:13:15.55Z
+                      FundsAmount: 12345.6
+                      CurrencyID: 'namespace:reference-data--Currency:AFN:'
+                  ContractIDs:
+                    - 'namespace:master-data--Agreement:SomeUniqueAgreementID:'
+                  Operator: 'namespace:master-data--Organisation:SomeUniqueOrganisationID:'
+                  Contractors:
+                    - ContractorOrganisationID: 'namespace:master-data--Organisation:SomeUniqueOrganisationID:'
+                      ContractorCrew: Example ContractorCrew
+                      ContractorTypeID: 'namespace:reference-data--ContractorType:Record:'
+                  Personnel:
+                    - PersonName: Example PersonName
+                      CompanyOrganisationID: 'namespace:master-data--Organisation:SomeUniqueOrganisationID:'
+                      ProjectRoleID: 'namespace:reference-data--ProjectRole:ProjMgr:'
+                  ProjectSpecifications:
+                    - EffectiveDateTime: 2020-02-13T09:13:15.55Z
+                      TerminationDateTime: 2020-02-13T09:13:15.55Z
+                      ProjectSpecificationQuantity: 12345.6
+                      ProjectSpecificationDateTime: 2020-02-13T09:13:15.55Z
+                      ProjectSpecificationIndicator: true
+                      ProjectSpecificationText: Example ProjectSpecificationText
+                      UnitOfMeasureID: 'namespace:reference-data--UnitOfMeasure:m:'
+                      ParameterTypeID: 'namespace:reference-data--ParameterType:SlotName:'
+                  ProjectStates:
+                    - EffectiveDateTime: 2020-02-13T09:13:15.55Z
+                      TerminationDateTime: 2020-02-13T09:13:15.55Z
+                      ProjectStateTypeID: 'namespace:reference-data--ProjectStateType:Prop:'
+                  ActivityTemplateID: 'namespace:master-data--ActivityTemplate:SomeUniqueActivityTemplateID:'
+                  Parameters:
+                    - Title: Example Title
+                      Index: 2
+                      Selection: Example Selection
+                      Keys:
+                        - ObjectParameterKey: 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                          TimeIndexParameterKey: 11:13:15.55+02:00
+                          ParameterKey: Example Internal Parameter Key
+                          IntegerParameterKey: 2
+                          StringParameterKey: Example String Parameter Key
+                      DataObjectParameter: 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                      DataQuantityParameter: 12345.6
+                      IntegerQuantityParameter: 2
+                      StringParameter: Example String Parameter
+                      TimeIndexParameter: 2020-02-13T09:13:15.55Z
+                      BooleanParameter: true
+                      ParameterKindID: 'namespace:reference-data--ParameterKind:Integer:'
+                      ParameterRoleID: 'namespace:reference-data--ParameterRole:Input:'
+                      DataQuantityParameterUOMID: 'namespace:reference-data--UnitOfMeasure:m:'
+                  ActivityStates:
+                    - EffectiveDateTime: 2020-02-13T09:13:15.55Z
+                      TerminationDateTime: 2020-02-13T09:13:15.55Z
+                      ActivityStatusID: 'namespace:reference-data--ActivityStatus:Planned:'
+                      Remark: Example Remark
+                  LastActivityState:
+                    EffectiveDateTime: 2020-02-13T09:13:15.55Z
+                    TerminationDateTime: 2020-02-13T09:13:15.55Z
+                    ActivityStatusID: 'namespace:reference-data--ActivityStatus:Planned:'
+                    Remark: Example Remark
+                  Name: Project 1
+                  ProjectContributorACL:
+                    owners:
+                      - project_contributor@company.com
+                    viewers:
+                      - project_viewer@company.com
+                  DefaultWIPACL:
+                    owners:
+                      - project_contributor@company.com
+                    viewers:
+                      - project_viewer@company.com
+                  LifecycleStatusID: 'namespace:reference-data--CollaborationProjectLifecycleStatus:Open:'
+                  CreationDateTime: 2023-11-08T09:13:15.55Z
+                  EndDateTime: 2024-04-03T14:10:54.512Z
+                  Description: Find all the hydrocarbons on the moon
+        required: true
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "409":
+          description: Namespace Not Unique
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "201":
+          description: The collaboration project created successfully
+          content:
+            '*/*':
+              schema:
+                type: string
+                example:
+                  recordCount: 1
+                  recordIds:
+                    - osdu:master-data--CollaborationProject:888f273e880f41fe82f6881b9ae74960
+                  skippedRecordIds: []
+                  recordIdVersions:
+                    - osdu:master-data--CollaborationProject:888f273e880f41fe82f6881b9ae74960:1711456400711338
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /projects/{id}/status:
+    post:
+      tags:
+        - status
+      summary: Change status of collaboration project by project id.
+      description: The API to change status by project Id.
+      operationId: changeStatus
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Collaboration Project status
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatusDto'
+        required: true
+      responses:
+        "200":
+          description: The status of the collaboration project was changed successfully.
+          content:
+            '*/*':
+              schema:
+                type: string
+                example:
+                  operationResults:
+                    change-project-status: Status changed to 'Closed'
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /projects/{id}/resources:
+    get:
+      tags:
+        - project resources
+      summary: Get collaboration project resources Ids by project Id.
+      description: The API returns the given record by project Id.
+      operationId: getProjectResources_1
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "200":
+          description: The resources Ids for the collaboration project received
+          content:
+            '*/*':
+              schema:
+                type: string
+                example:
+                  - namespace:work-product-component--CollaborationProjectCollection:d317ec15-a9b0-5926-a47b-d53116ff3f91
+                  - namespace:work-product-component--CollaborationProjectCollection:d318ec15-a9b0-5919-a47b-d77680987854
+                  - namespace:work-product-component--CollaborationProjectCollection:d319ec15-a9b0-436-a47b-d5465683
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+    post:
+      tags:
+        - project resources
+      summary: Assign the resources to the collaboration project.
+      description: The API performs assignment of resources to the collaboration project.
+      operationId: assignProjectResources
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request example of list collaboration project resources ids.
+        content:
+          application/json:
+            schema:
+              type: string
+              example:
+                - namespace:work-product-component--CollaborationProjectCollection:d317ec15-a9b0-5926-a47b-d53116ff3f91
+                - namespace:work-product-component--CollaborationProjectCollection:d318ec15-a9b0-5919-a47b-d77680987854
+                - namespace:work-product-component--CollaborationProjectCollection:d319ec15-a9b0-436-a47b-d5465683
+        required: true
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "201":
+          description: The resources for the collaboration project assigned successfully
+          content:
+            '*/*':
+              schema:
+                type: object
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+    delete:
+      tags:
+        - project resources
+      summary: Revoke the resources from the collaboration project by project id.
+      description: The API revoke resources by project Id.
+      operationId: revokeProjectResources
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request example of list collaboration project resources ids.
+        content:
+          application/json:
+            schema:
+              type: string
+              example:
+                - namespace:work-product-component--CollaborationProjectCollection:d317ec15-a9b0-5926-a47b-d53116ff3f91
+                - namespace:work-product-component--CollaborationProjectCollection:d318ec15-a9b0-5919-a47b-d77680987854
+                - namespace:work-product-component--CollaborationProjectCollection:d319ec15-a9b0-436-a47b-d5465683
+        required: true
+      responses:
+        "204":
+          description: The resources for the collaboration project revoked successfully.
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /projects/{id}/lifecycleevent:
+    get:
+      tags:
+        - project life cycle events
+      summary: Read LifecycleEvents from the collaboration project.
+      description: The API performs read operation of LifecycleEvents from the collaboration
+        project.
+      operationId: readLifecycleEvent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "201":
+          description: The LifecycleEvent for the collaboration project read successfully
+          content:
+            '*/*':
+              schema:
+                type: object
+    post:
+      tags:
+        - project life cycle events
+      summary: Assign the LifecycleEvent to the collaboration project.
+      description: The API performs assignment of LifecycleEvents to the collaboration
+        project.
+      operationId: createLifecycleEvents
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request example of list of collaboration project LifecycleEvents
+          .
+        content:
+          application/json:
+            schema:
+              type: string
+              example:
+                - Resources:
+                    - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                  DateTime: 2020-02-13T09:13:15.55+0000
+                  Name: Example Name 01
+                  Remark: Example Remark
+                  WIPResources:
+                    - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                - Resources:
+                    - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                  DateTime: 2020-02-13T09:13:15.55+0000
+                  Name: Example Name 02
+                  Remark: Example Remark
+                  WIPResources:
+                    - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+        required: true
+      responses:
+        "201":
+          description: The LifecycleEvent for the collaboration project assigned successfully
+          content:
+            '*/*':
+              schema:
+                type: object
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+    delete:
+      tags:
+        - project life cycle events
+      summary: Delete LifecycleEvents from the collaboration project.
+      description: The API performs delete operation of LifecycleEvents from the collaboration
+        project.
+      operationId: deleteLifecycleEvent
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Request example of list of collaboration project LifecycleEvents
+          .
+        content:
+          application/json:
+            schema:
+              type: string
+              example:
+                - Resources:
+                    - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                  DateTime: 2020-02-13T09:13:15.55+0000
+                  Name: Example Name 01
+                  Remark: Example Remark
+                  WIPResources:
+                    - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                - Resources:
+                    - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                  DateTime: 2020-02-13T09:13:15.55+0000
+                  Name: Example Name 02
+                  Remark: Example Remark
+                  WIPResources:
+                    - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+        required: true
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "204":
+          description: The LifecycleEvent for the collaboration project deleted successfully
+          content:
+            '*/*':
+              schema:
+                type: object
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /projects/{id}:
+    get:
+      tags:
+        - projects
+      summary: Get project by Id.
+      description: The API returns the given record by its Id.
+      operationId: getProject
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "200":
+          description: "The collaboration project received, see the full JSON response\
+            \ schema in CollaborationProject.1.0.0.json."
+          content:
+            '*/*':
+              schema:
+                type: string
+                example:
+                  kind: osdu:wks:master-data--CollaborationProject:1.0.0
+                  acl:
+                    owners:
+                      - someone@company.com
+                    viewers:
+                      - someone@company.com
+                  legal:
+                    legaltags:
+                      - Example legaltags
+                    otherRelevantDataCountries:
+                      - US
+                    status: compliant
+                  data:
+                    VersionCreationReason: Example VersionCreationReason
+                    TechnicalAssuranceTypeID: 'namespace:reference-data--TechnicalAssuranceType:Certified:'
+                    ProjectID: Example External Project Identifier
+                    ProjectName: Example ProjectName
+                    Purpose: Example Purpose
+                    ProjectBeginDate: 2020-02-13T09:13:15.55Z
+                    ProjectEndDate: 2020-02-13T09:13:15.55Z
+                    ContractIDs:
+                      - 'namespace:master-data--Agreement:SomeUniqueAgreementID:'
+                    Operator: 'namespace:master-data--Organisation:SomeUniqueOrganisationID:'
+                    Contractors:
+                      - ContractorOrganisationID: 'namespace:master-data--Organisation:SomeUniqueOrganisationID:'
+                        ContractorCrew: Example ContractorCrew
+                        ContractorTypeID: 'namespace:reference-data--ContractorType:Record:'
+                    Personnel:
+                      - PersonName: Example PersonName
+                        CompanyOrganisationID: 'namespace:master-data--Organisation:SomeUniqueOrganisationID:'
+                        ProjectRoleID: 'namespace:reference-data--ProjectRole:ProjMgr:'
+                    ProjectSpecifications:
+                      - EffectiveDateTime: 2020-02-13T09:13:15.55Z
+                        TerminationDateTime: 2020-02-13T09:13:15.55Z
+                        ProjectSpecificationQuantity: 12345.6
+                        ProjectSpecificationDateTime: 2020-02-13T09:13:15.55Z
+                        ProjectSpecificationIndicator: true
+                        ProjectSpecificationText: Example ProjectSpecificationText
+                        UnitOfMeasureID: 'namespace:reference-data--UnitOfMeasure:m:'
+                        ParameterTypeID: 'namespace:reference-data--ParameterType:SlotName:'
+                    ProjectStates:
+                      - EffectiveDateTime: 2020-02-13T09:13:15.55Z
+                        TerminationDateTime: 2020-02-13T09:13:15.55Z
+                        ProjectStateTypeID: 'namespace:reference-data--ProjectStateType:Prop:'
+                    ActivityTemplateID: 'namespace:master-data--ActivityTemplate:SomeUniqueActivityTemplateID:'
+                    ParentProjectID: 'namespace:master-data--AnyMasterData:SomeUniqueAnyMasterDataID:'
+                    Parameters:
+                      - Title: Example Title
+                        ParameterKindID: 'namespace:reference-data--ParameterKind:Integer:'
+                    Name: Project 1
+                    ProjectContributorACL:
+                      owners:
+                        - project_contributor@company.com
+                      viewers:
+                        - project_viewer@company.com
+                    DefaultWIPACL:
+                      owners:
+                        - project_contributor@company.com
+                      viewers:
+                        - project_viewer@company.com
+                    LifecycleStatusID: 'namespace:reference-data--CollaborationProjectLifecycleStatus:Open:'
+                    Namespace: project-f3e451d1-9d49-559f-93d8-2e36722016fb
+                    CreationDateTime: 2023-11-08T09:13:15.55Z
+                    EndDateTime: 2024-04-03T14:10:54.512Z
+                    Description: Find all the hydrocarbons on the moon
+                    Resources:
+                      - namespace:work-product-component--SeismicHorizon:a7a81843-9bea-5ce4-913c-f67e4ea154ff:321
+                      - namespace:master-data--Well:6c60ceb0-3521-57b7-9bd8-e1d7c9f66230:432
+                    LifecycleEvents:
+                      - Name: Example Name
+                        DateTime: 2020-02-13T09:13:15.55Z
+                        Remark: Example Remark
+                        Resources:
+                          - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+                        WIPResources:
+                          - 'namespace:any-group-type--AnyIndividualType:SomeUniqueAnyIndividualTypeID:'
+  /projects/{id}/wip-resources:
+    get:
+      tags:
+        - work in progress project resources
+      summary: Get collaboration project WIP resources Ids by project Id.
+      description: The API returns the given record by project Id.
+      operationId: getProjectResources
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "403":
+          description: User not authorized to perform the action.
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "200":
+          description: The work in progress resources Ids for the collaboration project
+            received
+          content:
+            '*/*':
+              schema:
+                type: string
+                example:
+                  - namespace:work-product-component--WellFluidsReport:cd888e9e-b68f-5412-a11d-bc109ce38
+                  - namespace:work-product-component--WellboreIntervalSet:2828e1de-4bdd-5bfa-a4d0-c7727cd
+                  - namespace:work-product-component--WellboreTrajectory:606f224a-ef1f-5690-9843-d26cd7e33
+        "401":
+          description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /info:
+    get:
+      tags:
+        - info
+      summary: Version info
+      description: "For deployment available public `/info` endpoint, which provides\
+        \ build and git related information."
+      operationId: info
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Version info.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VersionInfo'
+  /_ah/readiness_check:
+    get:
+      tags:
+        - health-check
+      summary: Readiness Check endpoint
+      description: "For deployment available public `/readiness_check` endpoint, which\
+        \ provides `PWS service is ready` message."
+      operationId: readinessCheck
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+  /_ah/liveness_check:
+    get:
+      tags:
+        - health-check
+      summary: Liveness Check endpoint
+      description: "For deployment available public `/liveness_check` endpoint, which\
+        \ provides `PWS service is alive` message."
+      operationId: livenessCheck
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Tenant Id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+        "502":
+          description: Bad Gateway
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+        "503":
+          description: Service Unavailable
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AppError'
+components:
+  schemas:
+    AppError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        message:
+          type: string
+    StatusDto:
+      type: object
+      properties:
+        status:
+          pattern: (Open|Closed)
+          type: string
+    ConnectedOuterService:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+    VersionInfo:
+      type: object
+      properties:
+        groupId:
+          type: string
+        artifactId:
+          type: string
+        version:
+          type: string
+        buildTime:
+          type: string
+        branch:
+          type: string
+        commitId:
+          type: string
+        commitMessage:
+          type: string
+        connectedOuterServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConnectedOuterService'
+  securitySchemes:
+    Authorization:
+      type: http
+      scheme: bearer
+      bearerFormat: Authorization

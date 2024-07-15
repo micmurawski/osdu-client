@@ -1,0 +1,1623 @@
+openapi: 3.0.0
+info:
+  description: APIs to manage registrations in the OSDU.
+  version: 1.0.0
+  title: Register
+  contact:
+    name: OSDU Support
+    email: devportal-help@osdu.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+tags:
+  - name: Domain Data Management Service (DDMS)
+    description: ""
+  - name: Action
+    description: ""
+  - name: Subscription
+    description: ""
+  - name: Info
+    description: Version info endpoint
+security:
+  - bearer: []
+  - appkey: []
+paths:
+  "/ddms/{id}":
+    get:
+      tags:
+        - Domain Data Management Service (DDMS)
+      summary: Get a DDMS registration
+      description: "Get a DDMS registration with the given id. Required roles:
+        'users.datalake.viewers' or 'users.datalake.editors' or
+        'users.datalake.admins'"
+      operationId: Get a DDMS registration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[A-Za-z0-9-]{2,50}
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ddms"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+    delete:
+      tags:
+        - Domain Data Management Service (DDMS)
+      summary: Delete a DDMS registration
+      description: "Delete a DDMS registration with the given id. Required roles:
+        'users.datalake.admins'"
+      operationId: Delete a DDMS registration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[A-Za-z0-9-]{2,50}
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  /ddms:
+    post:
+      tags:
+        - Domain Data Management Service (DDMS)
+      summary: Create a DDMS registration
+      description: "Create a DDMS registration using an OpenApi spec V3 document. Required
+        roles: 'users.datalake.editors' or 'users.datalake.admins'"
+      operationId: Create a DDMS registration
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ddms"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ddms"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+    get:
+      tags:
+        - Domain Data Management Service (DDMS)
+      summary: Query for DDMS registrations
+      description: "Query for DDMS registrations allowing retrievals by type. Required
+        roles: 'users.datalake.viewers' or 'users.datalake.editors' or
+        'users.datalake.admins'"
+      operationId: Query a DDMS registration
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: ^[A-Za-z0-9 ]{2,50}
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ddms"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  "/ddms/{id}/{type}/{localid}":
+    get:
+      tags:
+        - Domain Data Management Service (DDMS)
+      summary: Retrieves Single Entity record id
+      description: "Get a Single DDMS record id. Required roles:
+        'users.datalake.viewers' or 'users.datalake.editors' or
+        'users.datalake.admins'"
+      operationId: Retrieves Single Entity record id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[\w\.-]{2,50}
+        - name: type
+          in: path
+          required: true
+          description: Specifies the type in ddms I.E wellbores
+          schema:
+            type: string
+            pattern: ^[\w\.-]{2,50}
+        - name: localid
+          in: path
+          required: true
+          description: Specifies the record id with Optional version
+            partition-id:group-type--IndividualType:UniqueRecordID:<OptionalVersionNumber>
+          schema:
+            type: string
+            pattern: ^[\w\-\.]+:[\w-\.]+:[\w\-\.\:\%]+$
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "307":
+          description: OK Temporary Redirect
+          headers:
+            location:
+              schema:
+                type: string
+              description: Redirection to DDMS Single entity retrieve URL
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  "/action/{id}":
+    get:
+      tags:
+        - Action
+      summary: Get an action registration
+      description: "Get an action registration with the given id. Required roles:
+        'users.datalake.viewers' or 'users.datalake.editors' or
+        'users.datalake.admins'"
+      operationId: Get an action registration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[A-Za-z0-9-]{2,50}
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/action"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+    delete:
+      tags:
+        - Action
+      summary: Delete an action  registration
+      description: "Delete an action registration with the given id. Required role:
+        'users.datalake.admins'"
+      operationId: Delete an action registration
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            pattern: ^[A-Za-z0-9-]{2,50}
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  /action:
+    post:
+      tags:
+        - Action
+      summary: Create an action registration
+      description: "Create an action registration. Required role: 'users.datalake.admins'"
+      operationId: Create an action registration
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createAction"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/action"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  /action:test:
+    post:
+      tags:
+        - Action
+      summary: Test an action registration
+      description: "Test an action registration. Required roles: 'users.datalake.viewers'
+        or 'users.datalake.editors' or 'users.datalake.admins'"
+      operationId: Test an action registration
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/testAction"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/testActionResult"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  /action:retrieve:
+    post:
+      tags:
+        - Action
+      summary: Query for action registrations and substitutes any action with the
+        given parameters
+      description: "Retrieve an action registration. Required roles:
+        'users.datalake.viewers' or 'users.datalake.editors' or
+        'users.datalake.admins'"
+      operationId: Retrieve an action registration
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/record"
+        description: The Record to find matching actions for and apply the template for.
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/action"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  /subscription:
+    post:
+      tags:
+        - Subscription
+      summary: Create a subscription
+      description: "Create a subscription. Required roles: 'users.datalake.editors' or
+        'users.datalake.admins'"
+      operationId: Create a subscription
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/subscription"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/subscriptionCreateResult"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "409":
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  "/subscription/{id}":
+    get:
+      tags:
+        - Subscription
+      summary: Get a subscription
+      description: "Get a subscription with its Id. Required role: 'users.datalake.editors'
+        or 'users.datalake.admins'"
+      operationId: Get a subscription by Id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/getSubscriptionResult"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+    delete:
+      tags:
+        - Subscription
+      summary: Delete a subscription
+      description: "Delete a subscription with its Id. Required role:
+        'users.datalake.admins'"
+      operationId: Delete a subscription by Id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  "/subscription/{id}/secret":
+    put:
+      tags:
+        - Subscription
+      summary: Update secret for subscription
+      description: "Update secret for a subscription. Required role:
+        'users.datalake.editors' or 'users.datalake.admins'"
+      operationId: Update secret for subscription
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/secret"
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  /topics:
+    get:
+      tags:
+        - Subscription
+      summary: List all topics
+      description: "List all topics that you can create a subscription for, along with the corresponding sample messages. Required role: 'users.datalake.editors' or
+        'users.datalake.admins'"
+      operationId: List all topics
+      parameters:
+        - name: data-partition-id
+          in: header
+          description: Specifies the partition to use. This should be either the partition
+            name associated with the partition.
+          required: true
+          schema:
+            type: string
+            default: common
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/topic"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "429":
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "500":
+          description: Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "502":
+          description: Bad Gateway
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+        "503":
+          description: Service Unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AppError"
+      security:
+        - bearer: []
+        - appkey: []
+  /info:
+    get:
+      tags:
+        - Info
+      summary: "Version info"
+      description: "For deployment available public `/info` endpoint, \
+          \ which provides build and git related information."
+      operationId: "Version info"
+      produces:
+        - "application/json"
+      responses:
+        200:
+          description: "Version info."
+          schema:
+            $ref: "#/components/schemas/VersionInfo"
+servers:
+  - url: https://evq.csp.osdu.com/api/register/v1
+    description: EVT
+  - url: https://evd.csp.osdu.com/api/register/v1
+    description: EVD
+components:
+  securitySchemes:
+    bearer:
+      type: apiKey
+      name: Authorization
+      in: header
+    appkey:
+      type: apiKey
+      name: appkey
+      in: header
+  schemas:
+    ddms:
+      type: object
+      required:
+        - schema
+      properties:
+        id:
+          type: string
+          pattern: ^[A-Za-z0-9-]{2,50}
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9- ]{2,50}
+        description:
+          type: string
+          pattern: ^[A-Za-z0-9. ]{0,255}
+        contactEmail:
+          type: string
+        interfaces:
+          type: array
+          items:
+            $ref: "#/components/schemas/ddmsInterface"
+      example:
+        id: example-id-123
+        name: example-name
+        description: example-description
+        contactEmail: abc@test.com
+        interfaces:
+          - entityType: wellbore
+            schema: {}
+    AppError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        reason:
+          type: string
+        message:
+          type: string
+      description: An error that occurs during normal application logic
+    ddmsInterface:
+      type: object
+      required:
+        - schema
+      properties:
+        entityType:
+          type: string
+          pattern: ^[A-Za-z0-9-]{2,50}
+        schema:
+          type: object
+    createAction:
+      type: object
+      required:
+        - schema
+      properties:
+        id:
+          type: string
+          pattern: ^[A-Za-z0-9-]{2,50}
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9- ]{2,50}
+        description:
+          type: string
+          pattern: ^[A-Za-z0-9. ]{0,255}
+        contactEmail:
+          type: string
+        img:
+          type: string
+          pattern: ^(https:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\(\)\*\+,;=.]+$
+          description: Reference link to an image file that can be usd in an UI to
+            represent the action.
+        url:
+          type: string
+          pattern: ^(https:\/\/)[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&\(\)\*\+,;=.]+$
+          example: https://myapp.osdu.com/action/{type}/{id}
+        filter:
+          $ref: "#/components/schemas/filter"
+      example:
+        id: petrel-launch-project
+        name: Petrel Project
+        description: This action launches the Petrel projects landing page that holds the
+          selected data.
+        img: https://mycdn.com/img.png
+        contactEmail: abc@test.com
+        url: https://myapp.osdu.com/action/{type}/{id}
+        filter:
+          entityType:
+            - regularheightfield
+          source:
+            - petrel
+          version:
+            - "*"
+    testAction:
+      type: object
+      required:
+        - schema
+      properties:
+        action:
+          $ref: "#/components/schemas/createAction"
+        testPayload:
+          type: object
+      example:
+        action:
+          id: petrel-launch-project
+          name: Petrel Project
+          description: This action launches the Petrel projects landing page that holds the
+            selected data.
+          contactEmail: abc@test.com
+          img: https://mycdn.com/img.png
+          url: https://myapp.osdu.com/action/{data.uri:^(?:[^\/]*(?:\/(?:\/[^\/]*\/?)?)?([^?]+)(?:\??.+)?)$}
+          filter:
+            entityType:
+              - regularheightfield
+              - project
+            source:
+              - petrel
+            version:
+              - "*"
+        testPayload:
+          id: common:regularheightfield:123456
+          kind: common:petrel:regularheightfield:1.0.0
+          data:
+            uri: https://myproj.com/abc123
+    testActionResult:
+      type: object
+      required:
+        - schema
+      properties:
+        url:
+          type: string
+        errors:
+          type: string
+      example:
+        url: https://myapp.osdu.com/action/abc123
+        errors: ""
+    action:
+      type: object
+      required:
+        - schema
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        contactEmail:
+          type: string
+        img:
+          type: string
+        url:
+          type: string
+          example: https://myapp.osdu.com/action/{type}/{id}
+        filter:
+          $ref: "#/components/schemas/filter"
+        createdOnEpoch:
+          type: object
+          properties:
+            seconds:
+              type: integer
+            nanos:
+              type: integer
+    record:
+      type: object
+      required:
+        - schema
+      properties:
+        id:
+          type: string
+        kind:
+          type: string
+        acl:
+          $ref: "#/components/schemas/acl"
+        legal:
+          $ref: "#/components/schemas/legal"
+        data:
+          $ref: "#/components/schemas/data"
+      example:
+        id: common:regularheightfield:123456
+        kind: common:petrel:regularheightfield:1.0.0
+        acl:
+          viewers:
+            - data.default.viewers@{datapartition}.{domain}.com
+          owners:
+            - data.default.owners@{datapartition}.{domain}.com
+        legal:
+          legaltags:
+            - common-sample-legaltag
+          otherRelevantDataCountries:
+            - US
+        data:
+          msg: Hello
+          uri: https://myproj.com/abc123
+    acl:
+      type: object
+      required:
+        - schema
+      properties:
+        viewers:
+          type: array
+          items:
+            type: string
+            example:
+              - data.default.viewers@{datapartition}.{domain}.com
+        owners:
+          type: array
+          items:
+            type: string
+            example:
+              - data.default.owners@{datapartition}.{domain}.com
+    data:
+      type: object
+      required:
+        - schema
+      properties:
+        msg:
+          type: string
+          example: Hello
+        uri:
+          type: string
+          example: https://myproj.com/abc123
+    legal:
+      type: object
+      required:
+        - schema
+      properties:
+        legaltags:
+          type: array
+          items:
+            type: string
+            example:
+              - common-sample-legaltag
+        otherRelevantDataCountries:
+          type: array
+          items:
+            type: string
+            example:
+              - US
+    filter:
+      type: object
+      required:
+        - schema
+      properties:
+        entityType:
+          type: array
+          items:
+            type: string
+            pattern: ^[a-z0-9-]{0,50}
+            default:
+              - "*"
+            example:
+              - regularheightfield
+        source:
+          type: array
+          items:
+            type: string
+            pattern: ^[a-z0-9-]{0,50}
+            default:
+              - "*"
+            example:
+              - petrel
+        version:
+          type: array
+          items:
+            type: string
+            pattern: ^[0-9.]{0,10}
+            default:
+              - "*"
+            example:
+              - "*"
+    subscription:
+      type: object
+      required:
+        - schema
+      properties:
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9- ]{2,50}
+          example: test-subscription
+        description:
+          type: string
+          pattern: ^[A-Za-z0-9. ]{0,255}
+          example: test description
+        topic:
+          type: string
+          example: data-changed-v1
+        pushEndpoint:
+          type: string
+          example: https://myListener.com
+        secret:
+          $ref: "#/components/schemas/secret"
+    getSubscriptionResult:
+      type: object
+      required:
+        - schema
+      properties:
+        id:
+          type: string
+          example: dGVzdC1uYW1l
+        name:
+          type: string
+          example: test-subscription
+        description:
+          type: string
+          example: test description
+        topic:
+          type: string
+          example: data-changed-v1
+        pushEndpoint:
+          type: string
+          example: https://myListener.com
+        createdBy:
+          type: string
+          example: test@myapp.com
+        notificationId:
+          type: string
+          example: de-6ee609b9-620e-477b-86f9-3b8907643a12
+    subscriptionCreateResult:
+      type: object
+      required:
+        - schema
+      properties:
+        id:
+          type: string
+          example: dGVzdC1uYW1l
+        name:
+          type: string
+          pattern: ^[A-Za-z0-9- ]{2,50}
+          example: test-subscription
+        description:
+          type: string
+          pattern: ^[A-Za-z0-9. ]{0,255}
+          example: test description
+        topic:
+          type: string
+          example: data-changed-v1
+        pushEndpoint:
+          type: string
+          example: https://myListener.com
+        createdBy:
+          type: string
+          example: test@myapp.com
+        notificationId:
+          type: string
+          example: de-6ee609b9-620e-477b-86f9-3b8907643a12
+        createdOnEpoch:
+          $ref: "#/components/schemas/createdOnEpoch"
+        secret:
+          $ref: "#/components/schemas/secret"
+    secret:
+      type: object
+      required:
+        - schema
+      properties:
+        secretType:
+          type: string
+          enum:
+            - HMAC
+            - GSA
+        value:
+          type: object
+          example: hmacsecret
+    createdOnEpoch:
+      type: object
+      required:
+        - schema
+      properties:
+        seconds:
+          type: integer
+          example: 1572275081
+        nanos:
+          type: integer
+          example: 51000000
+    topic:
+      type: object
+      required:
+        - schema
+      properties:
+        name:
+          type: string
+          example: records-changed
+        description:
+          type: string
+          example: This notification is sent whenever a record is created, updated or deleted.
+        state:
+          type: string
+          example: ACTIVE
+        example:
+          type: array
+          items:
+            $ref: "#/components/schemas/topicExample"
+    topicExample:
+      type: object
+      required:
+        - schema
+      properties:
+        id:
+          type: string
+          example: common:test:123
+        kind:
+          type: string
+          example: common:source:type:1.0.0
+        op:
+          type: string
+          example: deleted
+    VersionInfo:
+      type: "object"
+      properties:
+        groupId:
+          type: "string"
+          description: "Maven artifact group ID."
+        actifactId:
+          type: "string"
+          description: "Maven artifact ID."
+        version:
+          type: "string"
+          description: "Maven artifact version"
+        buildTime:
+          type: "string"
+          description: "Maven artifact build time"
+        branch:
+          type: "string"
+          description: "Current git branch"
+        commitId:
+          type: "string"
+          description: "Latest commit hash"
+        commitMessage:
+          type: "string"
+          description: "Latest commit message"
+        connectedOuterServices:
+          type: "array"
+          description: "Connected outer services information"
+          items:
+            $ref: "#/components/schemas/ConnectedOuterService"
+      description: "Version info."
+    ConnectedOuterService:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+          description: "Connected outer service name."
+        version:
+          type: "string"
+          description: "Connected outer service version."
+      description: "Connected outer service information."
