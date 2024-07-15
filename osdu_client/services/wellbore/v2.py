@@ -28,13 +28,10 @@ class WellboreClient(WellboreCommonClient):
         filter: str | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if offset is not None:
@@ -59,17 +56,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def write_alpha_logs_data(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "alpha/ddms/v2/logs/%s/data" % record_id
@@ -80,17 +71,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def list_records_sessions_v2(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -111,13 +96,10 @@ class WellboreClient(WellboreCommonClient):
         time_to_live: int | None = "1440",
         record_id: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         request_data = {
             "mode": mode,
@@ -143,18 +125,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_record_session_v2(
-        self,
-        *,
-        record_id: str,
-        session_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, session_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -173,13 +148,10 @@ class WellboreClient(WellboreCommonClient):
         record_id: str,
         session_id: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         request_data = {
             "state": state,
@@ -199,18 +171,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def send_alpha_logs_sessions_data(
-        self,
-        *,
-        record_id: str,
-        session_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, session_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -234,13 +199,10 @@ class WellboreClient(WellboreCommonClient):
         filter: str | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if offset is not None:
@@ -266,14 +228,10 @@ class WellboreClient(WellboreCommonClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_or_update_dipset(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def create_or_update_dipset(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/dipsets")
         response = requests.post(url, headers=headers)
@@ -287,13 +245,10 @@ class WellboreClient(WellboreCommonClient):
         dipsetid: str,
         recursive: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if recursive is not None:
@@ -306,17 +261,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_dipset(
-        self,
-        *,
-        dipsetid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, dipsetid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/dipsets/%s" % dipsetid)
         response = requests.get(url, headers=headers)
@@ -331,13 +280,10 @@ class WellboreClient(WellboreCommonClient):
         index: str | None = None,
         limit: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if index is not None:
@@ -354,17 +300,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def define_dips_dipset(
-        self,
-        *,
-        dipsetid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, dipsetid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/dipsets/%s/dips" % dipsetid
@@ -375,17 +315,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def insert_dip_in_dipset(
-        self,
-        *,
-        dipsetid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, dipsetid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -405,13 +339,10 @@ class WellboreClient(WellboreCommonClient):
         max_reference: str | None = None,
         classification: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if min_reference is not None:
@@ -430,18 +361,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def delete_dip(
-        self,
-        *,
-        dipsetid: str,
-        index: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, dipsetid: str, index: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -454,18 +378,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_dip_at_index(
-        self,
-        *,
-        dipsetid: str,
-        index: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, dipsetid: str, index: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -491,13 +408,10 @@ class WellboreClient(WellboreCommonClient):
         dipsetid: str,
         index: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         request_data = {
             "azimuth": azimuth,
@@ -529,17 +443,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_versions_dipset(
-        self,
-        *,
-        dipsetid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, dipsetid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/dipsets/%s/versions" % dipsetid
@@ -550,18 +458,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_dipsets_versions(
-        self,
-        *,
-        dipsetid: str,
-        version: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, dipsetid: str, version: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -573,14 +474,10 @@ class WellboreClient(WellboreCommonClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_or_update_logs(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def create_or_update_logs(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/logs")
         response = requests.post(url, headers=headers)
@@ -588,18 +485,10 @@ class WellboreClient(WellboreCommonClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def delete_log(
-        self,
-        *,
-        logid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
-    ) -> dict:
+    def delete_log(self, *, logid: str, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/logs/%s" % logid)
         response = requests.delete(url, headers=headers)
@@ -607,18 +496,10 @@ class WellboreClient(WellboreCommonClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_log(
-        self,
-        *,
-        logid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
-    ) -> dict:
+    def get_log(self, *, logid: str, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/logs/%s" % logid)
         response = requests.get(url, headers=headers)
@@ -633,13 +514,10 @@ class WellboreClient(WellboreCommonClient):
         orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if orient is not None:
@@ -660,13 +538,10 @@ class WellboreClient(WellboreCommonClient):
         orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if orient is not None:
@@ -690,13 +565,10 @@ class WellboreClient(WellboreCommonClient):
         orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if quantiles is not None:
@@ -724,13 +596,10 @@ class WellboreClient(WellboreCommonClient):
         logid: str,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if bulk_path is not None:
@@ -751,13 +620,10 @@ class WellboreClient(WellboreCommonClient):
         orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if orient is not None:
@@ -774,17 +640,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_log_versions(
-        self,
-        *,
-        logid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, logid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/logs/%s/versions" % logid
@@ -795,18 +655,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_log_version(
-        self,
-        *,
-        logid: str,
-        version: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, logid: str, version: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -826,13 +679,10 @@ class WellboreClient(WellboreCommonClient):
         orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if orient is not None:
@@ -850,14 +700,10 @@ class WellboreClient(WellboreCommonClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_or_update_logsets(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def create_or_update_logsets(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/logsets")
         response = requests.post(url, headers=headers)
@@ -871,13 +717,10 @@ class WellboreClient(WellboreCommonClient):
         logsetid: str,
         recursive: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if recursive is not None:
@@ -890,17 +733,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_logset(
-        self,
-        *,
-        logsetid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, logsetid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/logsets/%s" % logsetid)
         response = requests.get(url, headers=headers)
@@ -909,17 +746,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_logset_versions(
-        self,
-        *,
-        logsetid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, logsetid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/logsets/%s/versions" % logsetid
@@ -930,18 +761,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_logset_version(
-        self,
-        *,
-        logsetid: str,
-        version: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, logsetid: str, version: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -953,14 +777,10 @@ class WellboreClient(WellboreCommonClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_or_update_marker(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def create_or_update_marker(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/markers")
         response = requests.post(url, headers=headers)
@@ -969,17 +789,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def delete_marker(
-        self,
-        *,
-        markerid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, markerid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/markers/%s" % markerid)
         response = requests.delete(url, headers=headers)
@@ -988,17 +802,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_marker(
-        self,
-        *,
-        markerid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, markerid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/markers/%s" % markerid)
         response = requests.get(url, headers=headers)
@@ -1007,17 +815,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_marker_versions(
-        self,
-        *,
-        markerid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, markerid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/markers/%s/versions" % markerid
@@ -1028,18 +830,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_marker_version(
-        self,
-        *,
-        markerid: str,
-        version: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, markerid: str, version: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -1052,13 +847,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def create_or_update_trajectories(
-        self, data_partition_id: str | None = None, tenant: str | None = None
+        self, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/trajectories")
         response = requests.post(url, headers=headers)
@@ -1067,17 +860,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def delete_trajectory(
-        self,
-        *,
-        trajectoryid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, trajectoryid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/trajectories/%s" % trajectoryid
@@ -1088,17 +875,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_trajectory(
-        self,
-        *,
-        trajectoryid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, trajectoryid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/trajectories/%s" % trajectoryid
@@ -1115,13 +896,10 @@ class WellboreClient(WellboreCommonClient):
         channels: str | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if channels is not None:
@@ -1145,13 +923,10 @@ class WellboreClient(WellboreCommonClient):
         trajectoryid: str,
         orient: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if orient is not None:
@@ -1168,17 +943,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_trajectory_versions(
-        self,
-        *,
-        trajectoryid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, trajectoryid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -1191,18 +960,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_trajectory_version(
-        self,
-        *,
-        trajectoryid: str,
-        version: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, trajectoryid: str, version: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -1222,13 +984,10 @@ class WellboreClient(WellboreCommonClient):
         channels: str | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if channels is not None:
@@ -1247,13 +1006,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def create_or_update_wellbore_v2(
-        self, data_partition_id: str | None = None, tenant: str | None = None
+        self, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/wellbores")
         response = requests.post(url, headers=headers)
@@ -1267,13 +1024,10 @@ class WellboreClient(WellboreCommonClient):
         wellboreid: str,
         recursive: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if recursive is not None:
@@ -1288,17 +1042,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_wellbores(
-        self,
-        *,
-        wellboreid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, wellboreid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/wellbores/%s" % wellboreid
@@ -1309,17 +1057,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_versions_wellbore(
-        self,
-        *,
-        wellboreid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, wellboreid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -1332,18 +1074,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_wellbores_versions(
-        self,
-        *,
-        wellboreid: str,
-        version: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, wellboreid: str, version: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -1355,14 +1090,10 @@ class WellboreClient(WellboreCommonClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_or_update_well(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def create_or_update_well(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/wells")
         response = requests.post(url, headers=headers)
@@ -1376,13 +1107,10 @@ class WellboreClient(WellboreCommonClient):
         wellid: str,
         recursive: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if recursive is not None:
@@ -1394,18 +1122,10 @@ class WellboreClient(WellboreCommonClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_well_v2(
-        self,
-        *,
-        wellid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
-    ) -> dict:
+    def get_well_v2(self, *, wellid: str, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "ddms/v2/wells/%s" % wellid)
         response = requests.get(url, headers=headers)
@@ -1414,17 +1134,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_well_versions_v2(
-        self,
-        *,
-        wellid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, wellid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "ddms/v2/wells/%s/versions" % wellid
@@ -1435,18 +1149,11 @@ class WellboreClient(WellboreCommonClient):
         return response.json()
 
     def get_well_version(
-        self,
-        *,
-        wellid: str,
-        version: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, wellid: str, version: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,

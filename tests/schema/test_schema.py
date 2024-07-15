@@ -16,21 +16,21 @@ def test_schema_create_schema(schema_api_server, schema_client: SchemaClient):
         },
         schema={},
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_schema_get_info(schema_api_server, schema_client: SchemaClient):
     schema_client.get_info(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_schema_get_liveness_check(schema_api_server, schema_client: SchemaClient):
     schema_client.get_liveness_check(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -38,7 +38,7 @@ def test_schema_get_schema(schema_api_server, schema_client: SchemaClient):
     schema_client.get_schema(
         id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -56,7 +56,7 @@ def test_schema_search_schemas(schema_api_server, schema_client: SchemaClient):
         limit="text",
         offset="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -75,12 +75,12 @@ def test_schema_update_schema(schema_api_server, schema_client: SchemaClient):
         },
         schema={},
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
-def test_schema_update_schemas_system(schema_api_server, schema_client: SchemaClient):
-    schema_client.update_schemas_system(
+def test_schema_create_or_update_schema_system(schema_api_server, schema_client: SchemaClient):
+    schema_client.create_or_update_schema_system(
         schema_info={
             "schemaIdentity": {
                 "source": "source",
@@ -94,5 +94,5 @@ def test_schema_update_schemas_system(schema_api_server, schema_client: SchemaCl
         },
         schema={},
         data_partition_id="text",
-        tenant="text",
+
     )

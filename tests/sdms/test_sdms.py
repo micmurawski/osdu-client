@@ -11,7 +11,7 @@ def test_sdms_acquire_lock_for_dataset(sdms_api_server, sdms_client: SDMSClient)
         openmode="text",
         wid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -22,7 +22,7 @@ def test_sdms_check_datasets_list(sdms_api_server, sdms_client: SDMSClient):
         tenantid="text",
         subprojectid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -34,7 +34,7 @@ def test_sdms_compute_and_get_size_dataset(sdms_api_server, sdms_client: SDMSCli
         datasetid="text",
         path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -45,7 +45,7 @@ def test_sdms_copy_dataset(sdms_api_server, sdms_client: SDMSClient):
         sdpath_to="text",
         lock="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -55,7 +55,7 @@ def test_sdms_create_impersonation_token(sdms_api_server, sdms_client: SDMSClien
         metadata={},
         user_token="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -65,7 +65,7 @@ def test_sdms_create_imptoken(sdms_api_server, sdms_client: SDMSClient):
         resources=[dict(resource="example-resource")],
         refresh_url="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -80,7 +80,7 @@ def test_sdms_create_new_subproject(sdms_api_server, sdms_client: SDMSClient):
         subprojectid="text",
         tenantid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -89,7 +89,7 @@ def test_sdms_delete_all_datasets_in_subproject(sdms_api_server, sdms_client: SD
         filter={},
         path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -101,7 +101,7 @@ def test_sdms_delete_dataset(sdms_api_server, sdms_client: SDMSClient):
         path="text",
         datasetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -110,7 +110,7 @@ def test_sdms_delete_subproject(sdms_api_server, sdms_client: SDMSClient):
         subprojectid="text",
         tenantid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -119,7 +119,7 @@ def test_sdms_delete_user(sdms_api_server, sdms_client: SDMSClient):
         email="text",
         path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -127,7 +127,7 @@ def test_sdms_get_app(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_app(
         sdpath="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -135,7 +135,7 @@ def test_sdms_get_app_trusted(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_app_trusted(
         sdpath="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -146,7 +146,7 @@ def test_sdms_get_content_list(sdms_api_server, sdms_client: SDMSClient):
         subprojectid="text",
         path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -161,7 +161,7 @@ def test_sdms_get_dataset(sdms_api_server, sdms_client: SDMSClient):
         translate_user_info="text",
         record_version="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -173,7 +173,7 @@ def test_sdms_get_dataset_access_permissions(sdms_api_server, sdms_client: SDMSC
         path="text",
         datasetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -185,7 +185,7 @@ def test_sdms_get_datasets_sizes(sdms_api_server, sdms_client: SDMSClient):
         datasetid="text",
         path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -194,7 +194,7 @@ def test_sdms_get_download_connection_credentials_string(sdms_api_server, sdms_c
         impersonation_token_context="text",
         sdpath="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -204,14 +204,14 @@ def test_sdms_get_gcs_access_token(sdms_api_server, sdms_client: SDMSClient):
         sdpath="text",
         readonly="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_sdms_get_info(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_info(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -219,7 +219,7 @@ def test_sdms_get_operation_bulk_delete_status(sdms_api_server, sdms_client: SDM
     sdms_client.get_operation_bulk_delete_status(
         operation_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -229,21 +229,21 @@ def test_sdms_get_subproject_metadata(sdms_api_server, sdms_client: SDMSClient):
         tenantid="text",
         translate_user_info="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_sdms_get_svcstatus(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_svcstatus(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_sdms_get_svcstatus_access(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_svcstatus_access(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -251,7 +251,7 @@ def test_sdms_get_tenant(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_tenant(
         tenantid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -259,7 +259,7 @@ def test_sdms_get_tenant_sdpath(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_tenant_sdpath(
         datapartition="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -268,7 +268,7 @@ def test_sdms_get_upload_connection_credential_string(sdms_api_server, sdms_clie
         impersonation_token_context="text",
         sdpath="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -276,7 +276,7 @@ def test_sdms_get_user(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_user(
         sdpath="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -284,7 +284,7 @@ def test_sdms_get_user_roles(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.get_user_roles(
         sdpath="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -301,7 +301,7 @@ def test_sdms_list_datasets_in_subproject(sdms_api_server, sdms_client: SDMSClie
         subprojectid="text",
         translate_user_info="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -312,14 +312,14 @@ def test_sdms_list_datasets_sizes(sdms_api_server, sdms_client: SDMSClient):
         tenantid="text",
         subprojectid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_sdms_list_storage_tiers(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.list_storage_tiers(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -327,7 +327,7 @@ def test_sdms_list_subprojects_in_tenant(sdms_api_server, sdms_client: SDMSClien
     sdms_client.list_subprojects_in_tenant(
         tenantid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -339,7 +339,7 @@ def test_sdms_ls(sdms_api_server, sdms_client: SDMSClient):
         limit="text",
         cursor="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -351,7 +351,7 @@ def test_sdms_ls_post(sdms_api_server, sdms_client: SDMSClient):
         cursor="text",
         impersonation_token_context="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -376,7 +376,7 @@ def test_sdms_patch_dataset_metadata(sdms_api_server, sdms_client: SDMSClient):
         datasetid="text",
         close="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -385,7 +385,7 @@ def test_sdms_patch_imptoken(sdms_api_server, sdms_client: SDMSClient):
         token="text",
         refresh_url="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -398,7 +398,7 @@ def test_sdms_patch_subprojects_metadata(sdms_api_server, sdms_client: SDMSClien
         subprojectid="text",
         recursive="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -407,7 +407,7 @@ def test_sdms_refresh_impersonation_token(sdms_api_server, sdms_client: SDMSClie
         impersonation_token="text",
         impersonation_token_context="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -415,7 +415,7 @@ def test_sdms_refresh_imptoken(sdms_api_server, sdms_client: SDMSClient):
     sdms_client.refresh_imptoken(
         token="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -424,7 +424,7 @@ def test_sdms_register_app(sdms_api_server, sdms_client: SDMSClient):
         email="text",
         sdpath="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -443,7 +443,7 @@ def test_sdms_register_new_dataset(sdms_api_server, sdms_client: SDMSClient):
         path="text",
         datasetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -454,7 +454,7 @@ def test_sdms_register_tenant(sdms_api_server, sdms_client: SDMSClient):
         default_acls="text",
         tenantid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -466,7 +466,7 @@ def test_sdms_remove_lock_associated_with_dataset(sdms_api_server, sdms_client: 
         path="text",
         datasetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -475,7 +475,7 @@ def test_sdms_set_app_trusted(sdms_api_server, sdms_client: SDMSClient):
         email="text",
         sdpath="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -485,7 +485,7 @@ def test_sdms_update_user(sdms_api_server, sdms_client: SDMSClient):
         path="text",
         group="viewer",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -498,7 +498,7 @@ def test_sdms_upsert_tags_to_dataset(sdms_api_server, sdms_client: SDMSClient):
         datasetid="text",
         gtag="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -511,5 +511,5 @@ def test_sdms_validate_ctag(sdms_api_server, sdms_client: SDMSClient):
         datasetid="text",
         ctag="text",
         data_partition_id="text",
-        tenant="text",
+
     )

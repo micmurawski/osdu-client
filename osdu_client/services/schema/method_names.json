@@ -1,6 +1,6 @@
 {
     "put:/schemas/system": [
-        "update_schemas_system",
+        "create_or_update_schema_system",
         "Creates/Updates a schema in development status",
         "Creates a new schema or updates an already existing schema with status `DEVELOPMENT` in the schema repository. If a user tries to create a schema with status other than `DEVELOPMENT`, API will not throw an exception. <p>The update of schema without `DEVELOPMENT` status would cause error. Any schema instance with the same schemaIdentity is replaced. A schema state can also be changed from `DEVELOPMENT` to `PUBLISHED` or `OBSOLETE` while updating schema content or by providing the same schema content.</p> <p>**Note:** The schema may refer to other schema definitions in `DEVELOPMENT` state. If those schemas are updated themselves, it is the developer's responsibility to PUT the dependent schemas again to update the schema. Scope for a schema will be SHARED for all the schemas created using this API.</p><p>Service principal authorization is required to call thi API.</p>"
     ],

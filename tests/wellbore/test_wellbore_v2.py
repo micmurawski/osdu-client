@@ -9,56 +9,56 @@ def test_wellbore_create_alpha_logs_sessions(wellbore_api_server, wellbore_clien
         time_to_live=10,
         record_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_create_or_update_dipset(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.create_or_update_dipset(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_create_or_update_logs(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.create_or_update_logs(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_create_or_update_logsets(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.create_or_update_logsets(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_create_or_update_marker(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.create_or_update_marker(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_create_or_update_trajectories(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.create_or_update_trajectories(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_create_or_update_well(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.create_or_update_well(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_create_or_update_wellbore_v2(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.create_or_update_wellbore_v2(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -67,7 +67,7 @@ def test_wellbore_create_trajectory_data(wellbore_api_server, wellbore_client_v2
         trajectoryid="text",
         orient="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -75,7 +75,7 @@ def test_wellbore_define_dips_dipset(wellbore_api_server, wellbore_client_v2: We
     wellbore_client_v2.define_dips_dipset(
         dipsetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -84,7 +84,7 @@ def test_wellbore_delete_dip(wellbore_api_server, wellbore_client_v2: WellboreCl
         dipsetid="text",
         index="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -93,7 +93,7 @@ def test_wellbore_delete_dipset(wellbore_api_server, wellbore_client_v2: Wellbor
         dipsetid="text",
         recursive="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -101,7 +101,7 @@ def test_wellbore_delete_log(wellbore_api_server, wellbore_client_v2: WellboreCl
     wellbore_client_v2.delete_log(
         logid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -110,7 +110,7 @@ def test_wellbore_delete_logset(wellbore_api_server, wellbore_client_v2: Wellbor
         logsetid="text",
         recursive="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -118,7 +118,7 @@ def test_wellbore_delete_marker(wellbore_api_server, wellbore_client_v2: Wellbor
     wellbore_client_v2.delete_marker(
         markerid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -126,7 +126,7 @@ def test_wellbore_delete_trajectory(wellbore_api_server, wellbore_client_v2: Wel
     wellbore_client_v2.delete_trajectory(
         trajectoryid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -135,7 +135,7 @@ def test_wellbore_delete_well(wellbore_api_server, wellbore_client_v2: WellboreC
         wellid="text",
         recursive="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -144,14 +144,14 @@ def test_wellbore_delete_wellbores(wellbore_api_server, wellbore_client_v2: Well
         wellboreid="text",
         recursive="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_get_about(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.get_about(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -165,7 +165,7 @@ def test_wellbore_get_alpha_logs_data(wellbore_api_server, wellbore_client_v2: W
         filter="text",
         orient="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -180,7 +180,7 @@ def test_wellbore_get_alpha_logs_versions_data(wellbore_api_server, wellbore_cli
         filter="text",
         orient="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -193,7 +193,7 @@ def test_wellbore_get_decimated_log(wellbore_api_server, wellbore_client_v2: Wel
         orient="text",
         bulk_path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -203,7 +203,7 @@ def test_wellbore_get_dip(wellbore_api_server, wellbore_client_v2: WellboreClien
         index="text",
         limit="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -212,7 +212,7 @@ def test_wellbore_get_dip_at_index(wellbore_api_server, wellbore_client_v2: Well
         dipsetid="text",
         index="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -220,7 +220,7 @@ def test_wellbore_get_dipset(wellbore_api_server, wellbore_client_v2: WellboreCl
     wellbore_client_v2.get_dipset(
         dipsetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -229,7 +229,7 @@ def test_wellbore_get_dipsets_versions(wellbore_api_server, wellbore_client_v2: 
         dipsetid="text",
         version="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -237,7 +237,7 @@ def test_wellbore_get_log(wellbore_api_server, wellbore_client_v2: WellboreClien
     wellbore_client_v2.get_log(
         logid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -247,7 +247,7 @@ def test_wellbore_get_log_data(wellbore_api_server, wellbore_client_v2: Wellbore
         orient="text",
         bulk_path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -256,7 +256,7 @@ def test_wellbore_get_log_statistics(wellbore_api_server, wellbore_client_v2: We
         logid="text",
         bulk_path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -265,7 +265,7 @@ def test_wellbore_get_log_version(wellbore_api_server, wellbore_client_v2: Wellb
         logid="text",
         version="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -276,7 +276,7 @@ def test_wellbore_get_log_version_data(wellbore_api_server, wellbore_client_v2: 
         orient="text",
         bulk_path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -284,7 +284,7 @@ def test_wellbore_get_log_versions(wellbore_api_server, wellbore_client_v2: Well
     wellbore_client_v2.get_log_versions(
         logid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -292,7 +292,7 @@ def test_wellbore_get_logset(wellbore_api_server, wellbore_client_v2: WellboreCl
     wellbore_client_v2.get_logset(
         logsetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -301,7 +301,7 @@ def test_wellbore_get_logset_version(wellbore_api_server, wellbore_client_v2: We
         logsetid="text",
         version="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -309,7 +309,7 @@ def test_wellbore_get_logset_versions(wellbore_api_server, wellbore_client_v2: W
     wellbore_client_v2.get_logset_versions(
         logsetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -317,7 +317,7 @@ def test_wellbore_get_marker(wellbore_api_server, wellbore_client_v2: WellboreCl
     wellbore_client_v2.get_marker(
         markerid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -326,7 +326,7 @@ def test_wellbore_get_marker_version(wellbore_api_server, wellbore_client_v2: We
         markerid="text",
         version="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -334,7 +334,7 @@ def test_wellbore_get_marker_versions(wellbore_api_server, wellbore_client_v2: W
     wellbore_client_v2.get_marker_versions(
         markerid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -343,7 +343,7 @@ def test_wellbore_get_record_session_v2(wellbore_api_server, wellbore_client_v2:
         record_id="text",
         session_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -351,7 +351,7 @@ def test_wellbore_get_trajectory(wellbore_api_server, wellbore_client_v2: Wellbo
     wellbore_client_v2.get_trajectory(
         trajectoryid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -361,7 +361,7 @@ def test_wellbore_get_trajectory_data(wellbore_api_server, wellbore_client_v2: W
         channels="text",
         orient="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -370,7 +370,7 @@ def test_wellbore_get_trajectory_version(wellbore_api_server, wellbore_client_v2
         trajectoryid="text",
         version="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -381,7 +381,7 @@ def test_wellbore_get_trajectory_version_data(wellbore_api_server, wellbore_clie
         channels="text",
         orient="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -389,14 +389,14 @@ def test_wellbore_get_trajectory_versions(wellbore_api_server, wellbore_client_v
     wellbore_client_v2.get_trajectory_versions(
         trajectoryid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
 def test_wellbore_get_version(wellbore_api_server, wellbore_client_v2: WellboreClient):
     wellbore_client_v2.get_version(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -404,7 +404,7 @@ def test_wellbore_get_versions_dipset(wellbore_api_server, wellbore_client_v2: W
     wellbore_client_v2.get_versions_dipset(
         dipsetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -412,7 +412,7 @@ def test_wellbore_get_versions_wellbore(wellbore_api_server, wellbore_client_v2:
     wellbore_client_v2.get_versions_wellbore(
         wellboreid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -420,7 +420,7 @@ def test_wellbore_get_well_v2(wellbore_api_server, wellbore_client_v2: WellboreC
     wellbore_client_v2.get_well_v2(
         wellid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -429,7 +429,7 @@ def test_wellbore_get_well_version(wellbore_api_server, wellbore_client_v2: Well
         wellid="text",
         version="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -437,7 +437,7 @@ def test_wellbore_get_well_versions_v2(wellbore_api_server, wellbore_client_v2: 
     wellbore_client_v2.get_well_versions_v2(
         wellid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -445,7 +445,7 @@ def test_wellbore_get_wellbores(wellbore_api_server, wellbore_client_v2: Wellbor
     wellbore_client_v2.get_wellbores(
         wellboreid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -454,7 +454,7 @@ def test_wellbore_get_wellbores_versions(wellbore_api_server, wellbore_client_v2
         wellboreid="text",
         version="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -462,7 +462,7 @@ def test_wellbore_insert_dip_in_dipset(wellbore_api_server, wellbore_client_v2: 
     wellbore_client_v2.insert_dip_in_dipset(
         dipsetid="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -470,7 +470,7 @@ def test_wellbore_list_records_sessions_v2(wellbore_api_server, wellbore_client_
     wellbore_client_v2.list_records_sessions_v2(
         record_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -480,7 +480,7 @@ def test_wellbore_patch_alpha_logs_sessions(wellbore_api_server, wellbore_client
         record_id="text",
         session_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -491,7 +491,7 @@ def test_wellbore_query_dip_from_dipset(wellbore_api_server, wellbore_client_v2:
         max_reference="text",
         classification="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -501,7 +501,7 @@ def test_wellbore_recognize_family(wellbore_api_server, wellbore_client_v2: Well
         description="text",
         log_unit="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -510,7 +510,7 @@ def test_wellbore_send_alpha_logs_sessions_data(wellbore_api_server, wellbore_cl
         record_id="text",
         session_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -548,7 +548,7 @@ def test_wellbore_update_dip(wellbore_api_server, wellbore_client_v2: WellboreCl
         dipsetid="text",
         index="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -563,7 +563,7 @@ def test_wellbore_update_log_recognition_upload_catalog(wellbore_api_server, wel
         },
         legal={},
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -573,7 +573,7 @@ def test_wellbore_upload_log_data(wellbore_api_server, wellbore_client_v2: Wellb
         orient="text",
         bulk_path="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -581,7 +581,7 @@ def test_wellbore_write_alpha_logs_data(wellbore_api_server, wellbore_client_v2:
     wellbore_client_v2.write_alpha_logs_data(
         record_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 
@@ -591,5 +591,5 @@ def test_wellbore_write_log_data(wellbore_api_server, wellbore_client_v2: Wellbo
         orient="text",
         bulk_path="text",
         data_partition_id="text",
-        tenant="text",
+
     )

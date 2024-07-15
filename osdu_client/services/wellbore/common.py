@@ -17,14 +17,10 @@ class WellboreAPIError(OSDUAPIError):
 class WellboreCommonClient(OSDUAPIClient):
     service_path = ""
 
-    def get_about(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_about(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "about")
         response = requests.get(url, headers=headers)
@@ -39,13 +35,10 @@ class WellboreCommonClient(OSDUAPIClient):
         description: str | None = None,
         log_unit: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         request_data = {
             "label": label,
@@ -71,13 +64,10 @@ class WellboreCommonClient(OSDUAPIClient):
         data: dict,
         legal: dict,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         request_data = {
             "acl": acl,
@@ -96,14 +86,10 @@ class WellboreCommonClient(OSDUAPIClient):
             raise WellboreAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_version(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_version(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "version")
         response = requests.get(url, headers=headers)

@@ -18,39 +18,29 @@ class FileClient(OSDUAPIClient):
     service_path = ""
 
     def get_location(
-        self,
-        *,
-        file_id: str | None = None,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, file_id: str | None = None, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if file_id is not None:
-            data["FileID"] = file_id
+            request_data["FileID"] = file_id
 
         if self.validation:
-            validate_data(data, LocationRequest, FileAPIError)
+            validate_data(request_data, LocationRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getLocation")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_files_upload_url(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_files_upload_url(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "v2/files/uploadURL")
         response = requests.get(url, headers=headers)
@@ -68,46 +58,37 @@ class FileClient(OSDUAPIClient):
         id: str | None = None,
         ancestry: dict | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "kind": kind,
             "acl": acl,
             "legal": legal,
             "data": data,
         }
         if id is not None:
-            data["id"] = id
+            request_data["id"] = id
         if ancestry is not None:
-            data["ancestry"] = ancestry
+            request_data["ancestry"] = ancestry
 
         if self.validation:
-            validate_data(data, Record, FileAPIError)
+            validate_data(request_data, Record, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/files/metadata")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
     def get_files_metadata(
-        self,
-        *,
-        id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "v2/files/%s/metadata" % id)
         response = requests.get(url, headers=headers)
@@ -116,17 +97,11 @@ class FileClient(OSDUAPIClient):
         return response.json()
 
     def delete_files_metadata(
-        self,
-        *,
-        id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "v2/files/%s/metadata" % id)
         response = requests.delete(url, headers=headers)
@@ -140,13 +115,10 @@ class FileClient(OSDUAPIClient):
         id: str,
         expiry_time: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if expiry_time is not None:
@@ -159,53 +131,41 @@ class FileClient(OSDUAPIClient):
         return response.json()
 
     def get_file_location(
-        self,
-        *,
-        file_id: str | None = None,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, file_id: str | None = None, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if file_id is not None:
-            data["FileID"] = file_id
+            request_data["FileID"] = file_id
 
         if self.validation:
-            validate_data(data, FileLocationRequest, FileAPIError)
+            validate_data(request_data, FileLocationRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getFileLocation")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
     def get_file_signed_url(
-        self,
-        *,
-        srn: list[str] | None = None,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, srn: list[str] | None = None, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if srn is not None:
-            data["srn"] = srn
+            request_data["srn"] = srn
 
         if self.validation:
-            validate_data(data, DeliveryGetFileSignedURLRequest, FileAPIError)
+            validate_data(request_data, DeliveryGetFileSignedURLRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/delivery/getFileSignedUrl")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
         return response.json()
@@ -219,43 +179,36 @@ class FileClient(OSDUAPIClient):
         items: int | None = None,
         user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {}
+        request_data = {}
         if time_from is not None:
-            data["TimeFrom"] = time_from
+            request_data["TimeFrom"] = time_from
         if time_to is not None:
-            data["TimeTo"] = time_to
+            request_data["TimeTo"] = time_to
         if page_num is not None:
-            data["PageNum"] = page_num
+            request_data["PageNum"] = page_num
         if items is not None:
-            data["Items"] = items
+            request_data["Items"] = items
         if user_id is not None:
-            data["UserID"] = user_id
+            request_data["UserID"] = user_id
 
         if self.validation:
-            validate_data(data, FileListRequest, FileAPIError)
+            validate_data(request_data, FileListRequest, FileAPIError)
 
         url = urljoin(self.base_url, self.service_path, "v2/getFileList")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_info(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_info(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "v2/info")
         response = requests.get(url, headers=headers)
@@ -264,13 +217,11 @@ class FileClient(OSDUAPIClient):
         return response.json()
 
     def get_file_collections_storage_instructions(
-        self, data_partition_id: str | None = None, tenant: str | None = None
+        self, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "v2/file-collections/storageInstructions"
@@ -281,13 +232,11 @@ class FileClient(OSDUAPIClient):
         return response.json()
 
     def get_file_collections_retrieval_instructions(
-        self, data_partition_id: str | None = None, tenant: str | None = None
+        self, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -299,14 +248,10 @@ class FileClient(OSDUAPIClient):
             raise FileAPIError(response.text, response.status_code)
         return response.json()
 
-    def copy_file_collections(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def copy_file_collections(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "v2/file-collections/copy")
         response = requests.post(url, headers=headers)

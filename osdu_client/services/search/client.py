@@ -31,41 +31,38 @@ class SearchClient(OSDUAPIClient):
         spatial_filter: dict | None = None,
         cursor: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "kind": kind,
         }
         if limit is not None:
-            data["limit"] = limit
+            request_data["limit"] = limit
         if query is not None:
-            data["query"] = query
+            request_data["query"] = query
         if highlighted_fields is not None:
-            data["highlightedFields"] = highlighted_fields
+            request_data["highlightedFields"] = highlighted_fields
         if returned_fields is not None:
-            data["returnedFields"] = returned_fields
+            request_data["returnedFields"] = returned_fields
         if sort is not None:
-            data["sort"] = sort
+            request_data["sort"] = sort
         if query_as_owner is not None:
-            data["queryAsOwner"] = query_as_owner
+            request_data["queryAsOwner"] = query_as_owner
         if track_total_count is not None:
-            data["trackTotalCount"] = track_total_count
+            request_data["trackTotalCount"] = track_total_count
         if spatial_filter is not None:
-            data["spatialFilter"] = spatial_filter
+            request_data["spatialFilter"] = spatial_filter
         if cursor is not None:
-            data["cursor"] = cursor
+            request_data["cursor"] = cursor
 
         if self.validation:
-            validate_data(data, CursorQueryRequest, SearchAPIError)
+            validate_data(request_data, CursorQueryRequest, SearchAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query_with_cursor")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SearchAPIError(response.text, response.status_code)
         return response.json()
@@ -85,55 +82,48 @@ class SearchClient(OSDUAPIClient):
         aggregate_by: str | None = None,
         offset: int | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "kind": kind,
         }
         if limit is not None:
-            data["limit"] = limit
+            request_data["limit"] = limit
         if query is not None:
-            data["query"] = query
+            request_data["query"] = query
         if highlighted_fields is not None:
-            data["highlightedFields"] = highlighted_fields
+            request_data["highlightedFields"] = highlighted_fields
         if returned_fields is not None:
-            data["returnedFields"] = returned_fields
+            request_data["returnedFields"] = returned_fields
         if sort is not None:
-            data["sort"] = sort
+            request_data["sort"] = sort
         if query_as_owner is not None:
-            data["queryAsOwner"] = query_as_owner
+            request_data["queryAsOwner"] = query_as_owner
         if track_total_count is not None:
-            data["trackTotalCount"] = track_total_count
+            request_data["trackTotalCount"] = track_total_count
         if spatial_filter is not None:
-            data["spatialFilter"] = spatial_filter
+            request_data["spatialFilter"] = spatial_filter
         if aggregate_by is not None:
-            data["aggregateBy"] = aggregate_by
+            request_data["aggregateBy"] = aggregate_by
         if offset is not None:
-            data["offset"] = offset
+            request_data["offset"] = offset
 
         if self.validation:
-            validate_data(data, QueryRequest, SearchAPIError)
+            validate_data(request_data, QueryRequest, SearchAPIError)
 
         url = urljoin(self.base_url, self.service_path, "query")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SearchAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_readiness_check(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_readiness_check(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "readiness_check")
         response = requests.get(url, headers=headers)
@@ -141,14 +131,10 @@ class SearchClient(OSDUAPIClient):
             raise SearchAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_liveness_check(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_liveness_check(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
@@ -156,14 +142,10 @@ class SearchClient(OSDUAPIClient):
             raise SearchAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_info(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_info(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)

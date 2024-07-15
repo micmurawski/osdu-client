@@ -19,14 +19,10 @@ class SDMSAPIError(OSDUAPIError):
 class SDMSClient(OSDUAPIClient):
     service_path = "api/seismic-store/v3"
 
-    def get_svcstatus(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_svcstatus(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "svcstatus")
         response = requests.get(url, headers=headers)
@@ -34,14 +30,10 @@ class SDMSClient(OSDUAPIClient):
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_svcstatus_access(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_svcstatus_access(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "svcstatus/access")
         response = requests.get(url, headers=headers)
@@ -49,14 +41,10 @@ class SDMSClient(OSDUAPIClient):
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_info(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_info(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
@@ -80,13 +68,10 @@ class SDMSClient(OSDUAPIClient):
         path: str | None = None,
         datasetid: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
         if ltag is not None:
@@ -96,22 +81,22 @@ class SDMSClient(OSDUAPIClient):
         if path is not None:
             params["path"] = path
 
-        data = {}
+        request_data = {}
         if type is not None:
-            data["type"] = type
+            request_data["type"] = type
         if gtags is not None:
-            data["gtags"] = gtags
+            request_data["gtags"] = gtags
         if seismicmeta is not None:
-            data["seismicmeta"] = seismicmeta
+            request_data["seismicmeta"] = seismicmeta
         if openzgy_v1 is not None:
-            data["openzgy_v1"] = openzgy_v1
+            request_data["openzgy_v1"] = openzgy_v1
         if segy_v1 is not None:
-            data["segy_v1"] = segy_v1
+            request_data["segy_v1"] = segy_v1
         if acls is not None:
-            data["acls"] = acls
+            request_data["acls"] = acls
 
         if self.validation:
-            validate_data(data, DatasetRegisterBody, SDMSAPIError)
+            validate_data(request_data, DatasetRegisterBody, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -119,7 +104,7 @@ class SDMSClient(OSDUAPIClient):
             "dataset/tenant/%s/subproject/%s/dataset/%s"
             % (tenantid, subprojectid, datasetid),
         )
-        response = requests.post(url, headers=headers, params=params, json=data)
+        response = requests.post(url, headers=headers, params=params, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
@@ -136,13 +121,10 @@ class SDMSClient(OSDUAPIClient):
         translate_user_info: str | None = None,
         record_version: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -176,13 +158,10 @@ class SDMSClient(OSDUAPIClient):
         path: str | None = None,
         datasetid: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -223,13 +202,10 @@ class SDMSClient(OSDUAPIClient):
         datasetid: str,
         close: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -239,34 +215,34 @@ class SDMSClient(OSDUAPIClient):
         if close is not None:
             params["close"] = close
 
-        data = {}
+        request_data = {}
         if dataset_new_name is not None:
-            data["dataset_new_name"] = dataset_new_name
+            request_data["dataset_new_name"] = dataset_new_name
         if metadata is not None:
-            data["metadata"] = metadata
+            request_data["metadata"] = metadata
         if filemetadata is not None:
-            data["filemetadata"] = filemetadata
+            request_data["filemetadata"] = filemetadata
         if last_modified_date is not None:
-            data["last_modified_date"] = last_modified_date
+            request_data["last_modified_date"] = last_modified_date
         if gtags is not None:
-            data["gtags"] = gtags
+            request_data["gtags"] = gtags
         if ltag is not None:
-            data["ltag"] = ltag
+            request_data["ltag"] = ltag
         if readonly is not None:
-            data["readonly"] = readonly
+            request_data["readonly"] = readonly
         if status is not None:
-            data["status"] = status
+            request_data["status"] = status
         if seismicmeta is not None:
-            data["seismicmeta"] = seismicmeta
+            request_data["seismicmeta"] = seismicmeta
         if openzgy_v1 is not None:
-            data["openzgy_v1"] = openzgy_v1
+            request_data["openzgy_v1"] = openzgy_v1
         if segy_v1 is not None:
-            data["segy_v1"] = segy_v1
+            request_data["segy_v1"] = segy_v1
         if acls is not None:
-            data["acls"] = acls
+            request_data["acls"] = acls
 
         if self.validation:
-            validate_data(data, DatasetPatch, SDMSAPIError)
+            validate_data(request_data, DatasetPatch, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
@@ -274,7 +250,9 @@ class SDMSClient(OSDUAPIClient):
             "dataset/tenant/%s/subproject/%s/dataset/%s"
             % (tenantid, subprojectid, datasetid),
         )
-        response = requests.patch(url, headers=headers, params=params, json=data)
+        response = requests.patch(
+            url, headers=headers, params=params, json=request_data
+        )
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
@@ -290,13 +268,10 @@ class SDMSClient(OSDUAPIClient):
         openmode: str | None = None,
         wid: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -328,13 +303,10 @@ class SDMSClient(OSDUAPIClient):
         path: str | None = None,
         datasetid: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -362,13 +334,10 @@ class SDMSClient(OSDUAPIClient):
         path: str | None = None,
         datasetid: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -397,13 +366,10 @@ class SDMSClient(OSDUAPIClient):
         datasetid: str,
         ctag: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -434,13 +400,10 @@ class SDMSClient(OSDUAPIClient):
         datasetid: str,
         gtag: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -470,13 +433,10 @@ class SDMSClient(OSDUAPIClient):
         datasetid: str,
         path: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -504,13 +464,10 @@ class SDMSClient(OSDUAPIClient):
         datasetid: str | None = None,
         path: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -538,13 +495,10 @@ class SDMSClient(OSDUAPIClient):
         subprojectid: str,
         path: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -577,13 +531,10 @@ class SDMSClient(OSDUAPIClient):
         subprojectid: str,
         translate_user_info: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -591,29 +542,29 @@ class SDMSClient(OSDUAPIClient):
         if translate_user_info is not None:
             params["translate-user-info"] = translate_user_info
 
-        data = {}
+        request_data = {}
         if type is not None:
-            data["type"] = type
+            request_data["type"] = type
         if gtags is not None:
-            data["gtags"] = gtags
+            request_data["gtags"] = gtags
         if search is not None:
-            data["search"] = search
+            request_data["search"] = search
         if filter is not None:
-            data["filter"] = filter
+            request_data["filter"] = filter
         if limit is not None:
-            data["limit"] = limit
+            request_data["limit"] = limit
         if cursor is not None:
-            data["cursor"] = cursor
+            request_data["cursor"] = cursor
 
         if self.validation:
-            validate_data(data, DatasetListBody, SDMSAPIError)
+            validate_data(request_data, DatasetListBody, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
             self.service_path,
             "dataset/tenant/%s/subproject/%s" % (tenantid, subprojectid),
         )
-        response = requests.post(url, headers=headers, params=params, json=data)
+        response = requests.post(url, headers=headers, params=params, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
@@ -626,29 +577,26 @@ class SDMSClient(OSDUAPIClient):
         tenantid: str,
         subprojectid: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
-        data = {
+        request_data = {
             "datasets": datasets,
         }
 
         if self.validation:
-            validate_data(data, DatasetCheckList, SDMSAPIError)
+            validate_data(request_data, DatasetCheckList, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
             self.service_path,
             "dataset/tenant/%s/subproject/%s/exist" % (tenantid, subprojectid),
         )
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
@@ -661,29 +609,26 @@ class SDMSClient(OSDUAPIClient):
         tenantid: str,
         subprojectid: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
-        data = {
+        request_data = {
             "datasets": datasets,
         }
 
         if self.validation:
-            validate_data(data, DatasetCheckList, SDMSAPIError)
+            validate_data(request_data, DatasetCheckList, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
             self.service_path,
             "dataset/tenant/%s/subproject/%s/sizes" % (tenantid, subprojectid),
         )
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
@@ -697,13 +642,10 @@ class SDMSClient(OSDUAPIClient):
         limit: str | None = None,
         cursor: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -732,43 +674,36 @@ class SDMSClient(OSDUAPIClient):
         cursor: str | None = None,
         impersonation_token_context: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
-        data = {
+        request_data = {
             "sdpath": sdpath,
         }
         if wmode is not None:
-            data["wmode"] = wmode
+            request_data["wmode"] = wmode
         if limit is not None:
-            data["limit"] = limit
+            request_data["limit"] = limit
         if cursor is not None:
-            data["cursor"] = cursor
+            request_data["cursor"] = cursor
 
         if self.validation:
-            validate_data(data, DatasetLsBody, SDMSAPIError)
+            validate_data(request_data, DatasetLsBody, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "utility/ls")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
-    def list_storage_tiers(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def list_storage_tiers(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "utility/storage-tiers")
         response = requests.get(url, headers=headers)
@@ -784,13 +719,10 @@ class SDMSClient(OSDUAPIClient):
         sdpath_to: str,
         lock: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -814,13 +746,10 @@ class SDMSClient(OSDUAPIClient):
         sdpath: str,
         readonly: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -842,13 +771,10 @@ class SDMSClient(OSDUAPIClient):
         impersonation_token_context: str | None = None,
         sdpath: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -870,13 +796,10 @@ class SDMSClient(OSDUAPIClient):
         impersonation_token_context: str | None = None,
         sdpath: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if impersonation_token_context is not None:
             headers["impersonation-token-context"] = impersonation_token_context
 
@@ -899,79 +822,63 @@ class SDMSClient(OSDUAPIClient):
         resources: list[dict],
         refresh_url: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "token": token,
             "resources": resources,
             "refresh-url": refresh_url,
         }
 
         if self.validation:
-            validate_data(data, ImpTokenRequest, SDMSAPIError)
+            validate_data(request_data, ImpTokenRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "imptoken")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
     def refresh_imptoken(
-        self,
-        *,
-        token: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, token: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "token": token,
         }
 
         if self.validation:
-            validate_data(data, RefreshTokenRequest, SDMSAPIError)
+            validate_data(request_data, RefreshTokenRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "imptoken")
-        response = requests.put(url, headers=headers, json=data)
+        response = requests.put(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
     def patch_imptoken(
-        self,
-        *,
-        token: str,
-        refresh_url: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, token: str, refresh_url: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "token": token,
             "refresh-url": refresh_url,
         }
 
         if self.validation:
-            validate_data(data, ImpTokenPatchRequest, SDMSAPIError)
+            validate_data(request_data, ImpTokenPatchRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "imptoken")
-        response = requests.patch(url, headers=headers, json=data)
+        response = requests.patch(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
@@ -983,30 +890,27 @@ class SDMSClient(OSDUAPIClient):
         metadata: dict | None = None,
         user_token: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         headers.update(
             {
                 "user-token": user_token,
             }
         )
 
-        data = {
+        request_data = {
             "resources": resources,
         }
         if metadata is not None:
-            data["metadata"] = metadata
+            request_data["metadata"] = metadata
 
         if self.validation:
-            validate_data(data, ImpersonationTokenRequest, SDMSAPIError)
+            validate_data(request_data, ImpersonationTokenRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "impersonation-token")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
@@ -1017,13 +921,10 @@ class SDMSClient(OSDUAPIClient):
         impersonation_token: str,
         impersonation_token_context: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         headers.update(
             {
                 "impersonation-token": impersonation_token,
@@ -1049,37 +950,34 @@ class SDMSClient(OSDUAPIClient):
         subprojectid: str,
         tenantid: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if ltag is not None:
             headers["ltag"] = ltag
 
-        data = {}
+        request_data = {}
         if admin is not None:
-            data["admin"] = admin
+            request_data["admin"] = admin
         if storage_class is not None:
-            data["storage_class"] = storage_class
+            request_data["storage_class"] = storage_class
         if storage_location is not None:
-            data["storage_location"] = storage_location
+            request_data["storage_location"] = storage_location
         if access_policy is not None:
-            data["access_policy"] = access_policy
+            request_data["access_policy"] = access_policy
         if acls is not None:
-            data["acls"] = acls
+            request_data["acls"] = acls
 
         if self.validation:
-            validate_data(data, SubProjectCreateBody, SDMSAPIError)
+            validate_data(request_data, SubProjectCreateBody, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
             self.service_path,
             "subproject/tenant/%s/subproject/%s" % (subprojectid, tenantid),
         )
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
@@ -1091,13 +989,10 @@ class SDMSClient(OSDUAPIClient):
         tenantid: str,
         translate_user_info: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if translate_user_info is not None:
@@ -1114,18 +1009,11 @@ class SDMSClient(OSDUAPIClient):
         return response.json()
 
     def delete_subproject(
-        self,
-        *,
-        subprojectid: str,
-        tenantid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, subprojectid: str, tenantid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -1147,13 +1035,10 @@ class SDMSClient(OSDUAPIClient):
         subprojectid: str,
         recursive: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         headers.update(
             {
                 "ltag": ltag,
@@ -1164,37 +1049,33 @@ class SDMSClient(OSDUAPIClient):
         if recursive is not None:
             params["recursive"] = recursive
 
-        data = {}
+        request_data = {}
         if access_policy is not None:
-            data["access_policy"] = access_policy
+            request_data["access_policy"] = access_policy
         if acls is not None:
-            data["acls"] = acls
+            request_data["acls"] = acls
 
         if self.validation:
-            validate_data(data, SubProjectPatchBody, SDMSAPIError)
+            validate_data(request_data, SubProjectPatchBody, SDMSAPIError)
 
         url = urljoin(
             self.base_url,
             self.service_path,
             "subproject/tenant/%s/subproject/%s" % (tenantid, subprojectid),
         )
-        response = requests.patch(url, headers=headers, params=params, json=data)
+        response = requests.patch(
+            url, headers=headers, params=params, json=request_data
+        )
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
     def list_subprojects_in_tenant(
-        self,
-        *,
-        tenantid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, tenantid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "subproject/tenant/%s" % tenantid
@@ -1212,41 +1093,32 @@ class SDMSClient(OSDUAPIClient):
         default_acls: str,
         tenantid: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "gcpid": gcpid,
             "esd": esd,
             "default_acls": default_acls,
         }
 
         if self.validation:
-            validate_data(data, TenantCreateBody, SDMSAPIError)
+            validate_data(request_data, TenantCreateBody, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "tenant/%s" % tenantid)
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
     def get_tenant(
-        self,
-        *,
-        tenantid: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, tenantid: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "tenant/%s" % tenantid)
         response = requests.get(url, headers=headers)
@@ -1255,17 +1127,11 @@ class SDMSClient(OSDUAPIClient):
         return response.json()
 
     def get_tenant_sdpath(
-        self,
-        *,
-        datapartition: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, datapartition: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "datapartition": datapartition,
@@ -1278,47 +1144,31 @@ class SDMSClient(OSDUAPIClient):
         return response.json()
 
     def update_user(
-        self,
-        *,
-        email: str,
-        path: str,
-        group: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, email: str, path: str, group: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "email": email,
             "path": path,
             "group": group,
         }
 
         if self.validation:
-            validate_data(data, UserAddRequest, SDMSAPIError)
+            validate_data(request_data, UserAddRequest, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "user")
-        response = requests.put(url, headers=headers, json=data)
+        response = requests.put(url, headers=headers, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_user(
-        self,
-        *,
-        sdpath: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
-    ) -> dict:
+    def get_user(self, *, sdpath: str, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "sdpath": sdpath,
@@ -1331,18 +1181,11 @@ class SDMSClient(OSDUAPIClient):
         return response.json()
 
     def delete_user(
-        self,
-        *,
-        email: str,
-        path: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, email: str, path: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "email": email,
@@ -1356,17 +1199,11 @@ class SDMSClient(OSDUAPIClient):
         return response.json()
 
     def get_user_roles(
-        self,
-        *,
-        sdpath: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, sdpath: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "sdpath": sdpath,
@@ -1379,18 +1216,11 @@ class SDMSClient(OSDUAPIClient):
         return response.json()
 
     def register_app(
-        self,
-        *,
-        email: str,
-        sdpath: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, email: str, sdpath: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "email": email,
@@ -1403,18 +1233,10 @@ class SDMSClient(OSDUAPIClient):
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_app(
-        self,
-        *,
-        sdpath: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
-    ) -> dict:
+    def get_app(self, *, sdpath: str, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "sdpath": sdpath,
@@ -1427,18 +1249,11 @@ class SDMSClient(OSDUAPIClient):
         return response.json()
 
     def set_app_trusted(
-        self,
-        *,
-        email: str,
-        sdpath: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, email: str, sdpath: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "email": email,
@@ -1452,17 +1267,11 @@ class SDMSClient(OSDUAPIClient):
         return response.json()
 
     def get_app_trusted(
-        self,
-        *,
-        sdpath: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, sdpath: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "sdpath": sdpath,
@@ -1480,43 +1289,34 @@ class SDMSClient(OSDUAPIClient):
         filter: dict | None = None,
         path: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "path": path,
         }
 
-        data = {}
+        request_data = {}
         if filter is not None:
-            data["filter"] = filter
+            request_data["filter"] = filter
 
         if self.validation:
-            validate_data(data, DatasetBulkDeleteBody, SDMSAPIError)
+            validate_data(request_data, DatasetBulkDeleteBody, SDMSAPIError)
 
         url = urljoin(self.base_url, self.service_path, "operation/bulk-delete")
-        response = requests.put(url, headers=headers, params=params, json=data)
+        response = requests.put(url, headers=headers, params=params, json=request_data)
         if not response.ok:
             raise SDMSAPIError(response.text, response.status_code)
         return response.json()
 
     def get_operation_bulk_delete_status(
-        self,
-        *,
-        operation_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, operation_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "operation/bulk-delete/%s" % operation_id

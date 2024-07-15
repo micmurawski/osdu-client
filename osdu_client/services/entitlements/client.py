@@ -14,14 +14,10 @@ class EntitlementsAPIError(OSDUAPIError):
 class EntitlementsClient(OSDUAPIClient):
     service_path = "/api/entitlements/v2"
 
-    def get_liveness_check(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_liveness_check(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "_ah/liveness_check")
         response = requests.get(url, headers=headers)
@@ -29,14 +25,10 @@ class EntitlementsClient(OSDUAPIClient):
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_readiness_check(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_readiness_check(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "_ah/readiness_check")
         response = requests.get(url, headers=headers)
@@ -50,13 +42,10 @@ class EntitlementsClient(OSDUAPIClient):
         on_behalf_of: str | None = None,
         role_required: str | None = False,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if on_behalf_of is not None:
             headers["on-behalf-of"] = on_behalf_of
 
@@ -71,40 +60,28 @@ class EntitlementsClient(OSDUAPIClient):
         return response.json()
 
     def create_group(
-        self,
-        *,
-        group_info_dto: dict,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, group_info_dto: dict, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "groupInfoDto": group_info_dto,
         }
 
         url = urljoin(self.base_url, self.service_path, "groups")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
     def delete_group(
-        self,
-        *,
-        group_email: str | None = None,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, group_email: str | None = None, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if group_email is not None:
@@ -122,20 +99,17 @@ class EntitlementsClient(OSDUAPIClient):
         update_group_request: list[dict],
         group_email: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "updateGroupRequest": update_group_request,
         }
 
         url = urljoin(self.base_url, self.service_path, "groups/%s" % group_email)
-        response = requests.patch(url, headers=headers, json=data)
+        response = requests.patch(url, headers=headers, json=request_data)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
@@ -147,13 +121,10 @@ class EntitlementsClient(OSDUAPIClient):
         role: str | None = None,
         include_type: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if role is not None:
@@ -175,22 +146,19 @@ class EntitlementsClient(OSDUAPIClient):
         add_member_dto: dict,
         group_email: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "addMemberDto": add_member_dto,
         }
 
         url = urljoin(
             self.base_url, self.service_path, "groups/%s/members" % group_email
         )
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
@@ -201,13 +169,10 @@ class EntitlementsClient(OSDUAPIClient):
         group_email: str,
         member_email: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -220,17 +185,11 @@ class EntitlementsClient(OSDUAPIClient):
         return response.json()
 
     def delete_member(
-        self,
-        *,
-        member_email: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, member_email: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "members/%s" % member_email)
         response = requests.delete(url, headers=headers)
@@ -246,13 +205,10 @@ class EntitlementsClient(OSDUAPIClient):
         appid: str | None = None,
         role_required: str | None = False,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "type": type,
@@ -270,14 +226,10 @@ class EntitlementsClient(OSDUAPIClient):
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
-    def initiate_tenant(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def initiate_tenant(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "tenant-provisioning")
         response = requests.post(url, headers=headers)
@@ -285,14 +237,10 @@ class EntitlementsClient(OSDUAPIClient):
             raise EntitlementsAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_info(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_info(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
@@ -306,13 +254,10 @@ class EntitlementsClient(OSDUAPIClient):
         group_email: str,
         role: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if role is not None:
@@ -333,13 +278,10 @@ class EntitlementsClient(OSDUAPIClient):
         cursor: str | None = None,
         limit: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "type": type,

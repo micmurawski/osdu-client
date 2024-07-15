@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import os
 import re
@@ -32,7 +34,6 @@ INDENT = " "*4
 
 SPECIAL_HEADERS = (
     "data-partition-id",
-    "tenant",
 )
 
 FORBIDDEN_NAMES = {
@@ -170,8 +171,8 @@ def create_headers_block(required_header_params_without_special, optional_header
         "headers = self.auth.get_headers()",
         "if data_partition_id:",
         f"{INDENT}headers['data-partition-id'] = data_partition_id",
-        "if tenant:",
-        f"{INDENT}headers['tenant'] = tenant"
+        #"if tenant:",
+        #f"{INDENT}headers['tenant'] = tenant"
     ]
     if required_header_params_without_special:
         lines.append(
@@ -517,18 +518,16 @@ def create_method_sig(swagger: dict, name: str, params: list[str], body_required
         p for p in params if p['name'] not in SPECIAL_HEADERS and p["in"] != "body"
     ]
     elements = [name, ]
-
     sig = ""
     _input_parameters_strings = []
 
     if body_required:
         _input_parameters_strings += parse_request_body(swagger, body_required)
-
     if body_not_required:
         _input_parameters_strings += parse_request_body(swagger, body_not_required)
-
-    _input_parameters_strings += [param_to_function_argument(p) for p in path_params]
-
+    
+    _input_parameters_strings += [param_to_function_argument(p) for p in sorted(path_params, key=lambda x: 0 if x.get("required") else 1)]
+    
     if _input_parameters_strings:
         sig += ", ".join(_input_parameters_strings)
 
@@ -537,9 +536,9 @@ def create_method_sig(swagger: dict, name: str, params: list[str], body_required
 
     try:
         if len(elements) > 1:
-            sig = "def %s(self, *, %s, data_partition_id: str | None = None, tenant: str | None = None) -> dict:" % tuple(elements)
+            sig = "def %s(self, *, %s, data_partition_id: str | None = None) -> dict:" % tuple(elements)
         else:
-            sig = "def %s(self, data_partition_id: str | None = None, tenant: str | None = None) -> dict:" % tuple(elements)
+            sig = "def %s(self, data_partition_id: str | None = None) -> dict:" % tuple(elements)
         return sig
     except Exception as e:
         raise Exception(elements, len(elements)) from e

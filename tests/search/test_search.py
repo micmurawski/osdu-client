@@ -4,19 +4,19 @@ from osdu_client.services.search.client import SearchClient
 def test_search_get_info(search_api_server, search_client: SearchClient):
     search_client.get_info(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_search_get_liveness_check(search_api_server, search_client: SearchClient):
     search_client.get_liveness_check(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_search_get_readiness_check(search_api_server, search_client: SearchClient):
     search_client.get_readiness_check(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_search_query(search_api_server, search_client: SearchClient):
@@ -35,7 +35,7 @@ def test_search_query(search_api_server, search_client: SearchClient):
         aggregate_by="text",
         offset=10,
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_search_query_with_cursor(search_api_server, search_client: SearchClient):
@@ -53,6 +53,6 @@ def test_search_query_with_cursor(search_api_server, search_client: SearchClient
         },
         cursor="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 

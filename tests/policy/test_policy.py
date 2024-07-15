@@ -8,7 +8,7 @@ def test_policy_bootstrap(policy_api_server, policy_client: PolicyClient):
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_create_api_policy_v1_compile(policy_api_server, policy_client: PolicyClient):
@@ -19,7 +19,7 @@ def test_policy_create_api_policy_v1_compile(policy_api_server, policy_client: P
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_create_or_update_partition_policy(policy_api_server, policy_client: PolicyClient):
@@ -30,7 +30,7 @@ def test_policy_create_or_update_partition_policy(policy_api_server, policy_clie
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_delete_partition_policy(policy_api_server, policy_client: PolicyClient):
@@ -41,7 +41,7 @@ def test_policy_delete_partition_policy(policy_api_server, policy_client: Policy
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_delete_tenant(policy_api_server, policy_client: PolicyClient):
@@ -50,7 +50,7 @@ def test_policy_delete_tenant(policy_api_server, policy_client: PolicyClient):
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_evaluate_policy(policy_api_server, policy_client: PolicyClient):
@@ -61,7 +61,7 @@ def test_policy_evaluate_policy(policy_api_server, policy_client: PolicyClient):
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_api_policy_v1_config(policy_api_server, policy_client: PolicyClient):
@@ -70,7 +70,7 @@ def test_policy_get_api_policy_v1_config(policy_api_server, policy_client: Polic
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_api_policy_v1_info(policy_api_server, policy_client: PolicyClient):
@@ -78,7 +78,7 @@ def test_policy_get_api_policy_v1_info(policy_api_server, policy_client: PolicyC
         correlation_id="text",
         user_agent="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_api_policy_v1_policies(policy_api_server, policy_client: PolicyClient):
@@ -87,7 +87,7 @@ def test_policy_get_api_policy_v1_policies(policy_api_server, policy_client: Pol
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_api_policy_v1_policies_osdu_partition(policy_api_server, policy_client: PolicyClient):
@@ -98,7 +98,7 @@ def test_policy_get_api_policy_v1_policies_osdu_partition(policy_api_server, pol
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_backup(policy_api_server, policy_client: PolicyClient):
@@ -107,7 +107,7 @@ def test_policy_get_backup(policy_api_server, policy_client: PolicyClient):
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_fetch_instance_policy(policy_api_server, policy_client: PolicyClient):
@@ -117,7 +117,7 @@ def test_policy_get_fetch_instance_policy(policy_api_server, policy_client: Poli
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_fetch_policy(policy_api_server, policy_client: PolicyClient):
@@ -127,7 +127,7 @@ def test_policy_get_fetch_policy(policy_api_server, policy_client: PolicyClient)
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_health(policy_api_server, policy_client: PolicyClient):
@@ -135,7 +135,7 @@ def test_policy_get_health(policy_api_server, policy_client: PolicyClient):
         correlation_id="text",
         user_agent="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_ready(policy_api_server, policy_client: PolicyClient):
@@ -143,7 +143,7 @@ def test_policy_get_ready(policy_api_server, policy_client: PolicyClient):
         correlation_id="text",
         user_agent="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_get_tenant(policy_api_server, policy_client: PolicyClient):
@@ -153,7 +153,7 @@ def test_policy_get_tenant(policy_api_server, policy_client: PolicyClient):
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_home_page(policy_api_server, policy_client: PolicyClient):
@@ -161,7 +161,7 @@ def test_policy_home_page(policy_api_server, policy_client: PolicyClient):
         correlation_id="text",
         user_agent="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_translate_policy_api(policy_api_server, policy_client: PolicyClient):
@@ -175,7 +175,7 @@ def test_policy_translate_policy_api(policy_api_server, policy_client: PolicyCli
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_update_tenant(policy_api_server, policy_client: PolicyClient):
@@ -187,7 +187,7 @@ def test_policy_update_tenant(policy_api_server, policy_client: PolicyClient):
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_policy_validate_policy(policy_api_server, policy_client: PolicyClient):
@@ -198,6 +198,6 @@ def test_policy_validate_policy(policy_api_server, policy_client: PolicyClient):
         user_agent="text",
         x_user_id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 

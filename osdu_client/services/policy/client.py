@@ -23,13 +23,10 @@ class PolicyClient(OSDUAPIClient):
         correlation_id: str | None = None,
         user_agent: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -48,13 +45,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -76,13 +70,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -106,13 +97,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -139,13 +127,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -172,13 +157,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -205,13 +187,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -238,13 +217,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -276,13 +252,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -290,17 +263,17 @@ class PolicyClient(OSDUAPIClient):
         if x_user_id is not None:
             headers["x-user-id"] = x_user_id
 
-        data = {
+        request_data = {
             "query": query,
             "input": input,
             "unknowns": unknowns,
         }
 
         if self.validation:
-            validate_data(data, TranslateItem, PolicyAPIError)
+            validate_data(request_data, TranslateItem, PolicyAPIError)
 
         url = urljoin(self.base_url, self.service_path, "api/policy/v1/translate")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise PolicyAPIError(response.text, response.status_code)
         return response.json()
@@ -311,13 +284,10 @@ class PolicyClient(OSDUAPIClient):
         correlation_id: str | None = None,
         user_agent: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -338,13 +308,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -372,13 +339,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -406,13 +370,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -441,13 +402,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -467,13 +425,10 @@ class PolicyClient(OSDUAPIClient):
         correlation_id: str | None = None,
         user_agent: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -491,13 +446,10 @@ class PolicyClient(OSDUAPIClient):
         correlation_id: str | None = None,
         user_agent: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -518,13 +470,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -551,13 +500,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -579,13 +525,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:
@@ -610,13 +553,10 @@ class PolicyClient(OSDUAPIClient):
         user_agent: str | None = None,
         x_user_id: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
         if correlation_id is not None:
             headers["correlation-id"] = correlation_id
         if user_agent is not None:

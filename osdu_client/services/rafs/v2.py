@@ -15,17 +15,11 @@ class RAFSClient(RAFSCommonClient):
     service_path = ""
 
     def get_sar_record(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -38,17 +32,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def soft_delete_sar_record(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -61,17 +49,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_sar_record_versions(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -84,18 +66,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_sar_record_specific_version(
-        self,
-        *,
-        version: str,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, version: str, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -109,13 +84,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def create_or_update_sar_records(
-        self, data_partition_id: str | None = None, tenant: str | None = None
+        self, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "api/rafs-ddms/v2/samplesanalysesreport"
@@ -131,13 +104,10 @@ class RAFSClient(RAFSCommonClient):
         record_id: str,
         version: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if version is not None:
@@ -153,14 +123,10 @@ class RAFSClient(RAFSCommonClient):
             raise RAFSAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_sa_types(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_sa_types(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -173,17 +139,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_sa_record(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -196,17 +156,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def soft_delete_sa_record(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -219,17 +173,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_sa_record_versions(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -242,18 +190,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_sa_record_version(
-        self,
-        *,
-        version: str,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, version: str, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -265,14 +206,10 @@ class RAFSClient(RAFSCommonClient):
             raise RAFSAPIError(response.text, response.status_code)
         return response.json()
 
-    def create_or_update_sa_records(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def create_or_update_sa_records(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "api/rafs-ddms/v2/samplesanalysis"
@@ -283,17 +220,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_sa_content_schema(
-        self,
-        *,
-        analysistype: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, analysistype: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -315,13 +246,10 @@ class RAFSClient(RAFSCommonClient):
         rows_filter: str | None = None,
         columns_aggregation: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if columns_filter is not None:
@@ -348,13 +276,10 @@ class RAFSClient(RAFSCommonClient):
         record_id: str,
         analysis_type: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -374,13 +299,10 @@ class RAFSClient(RAFSCommonClient):
         rows_filter: str | None = None,
         columns_aggregation: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if columns_filter is not None:
@@ -408,13 +330,10 @@ class RAFSClient(RAFSCommonClient):
         rows_filter: str | None = None,
         columns_aggregation: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if columns_filter is not None:
@@ -435,17 +354,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_masterdata_record(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -458,17 +371,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def soft_delete_masterdata_record(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -481,17 +388,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_masterdata_record_versions(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -504,18 +405,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_masterdata_record_version(
-        self,
-        *,
-        version: str,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, version: str, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -528,13 +422,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def create_or_update_masterdata_records(
-        self, data_partition_id: str | None = None, tenant: str | None = None
+        self, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "api/rafs-ddms/v2/masterdata")
         response = requests.post(url, headers=headers)
@@ -543,17 +435,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_pvt_record(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "api/rafs-ddms/v2/pvtmodel/%s" % record_id
@@ -564,17 +450,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def soft_delete_pvt_record(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url, self.service_path, "api/rafs-ddms/v2/pvtmodel/%s" % record_id
@@ -585,17 +465,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_pvt_record_versions(
-        self,
-        *,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -608,18 +482,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def get_pvt_record_version(
-        self,
-        *,
-        version: str,
-        record_id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, version: str, record_id: str, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,
@@ -632,13 +499,11 @@ class RAFSClient(RAFSCommonClient):
         return response.json()
 
     def create_or_update_pvt_records(
-        self, data_partition_id: str | None = None, tenant: str | None = None
+        self, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "api/rafs-ddms/v2/pvtmodel")
         response = requests.post(url, headers=headers)
@@ -656,13 +521,10 @@ class RAFSClient(RAFSCommonClient):
         rows_filter: str | None = None,
         columns_aggregation: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if columns_filter is not None:
@@ -689,13 +551,10 @@ class RAFSClient(RAFSCommonClient):
         record_id: str,
         analysis_type: str,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(
             self.base_url,

@@ -17,14 +17,10 @@ class IndexerAPIError(OSDUAPIError):
 class IndexerClient(OSDUAPIClient):
     service_path = "/api/indexer/v2"
 
-    def provision_partition(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def provision_partition(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "partitions/provision")
         response = requests.put(url, headers=headers)
@@ -39,45 +35,36 @@ class IndexerClient(OSDUAPIClient):
         cursor: str | None = None,
         force_clean: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if force_clean is not None:
             params["force_clean"] = force_clean
 
-        data = {
+        request_data = {
             "kind": kind,
         }
         if cursor is not None:
-            data["cursor"] = cursor
+            request_data["cursor"] = cursor
 
         if self.validation:
-            validate_data(data, RecordReindexRequest, IndexerAPIError)
+            validate_data(request_data, RecordReindexRequest, IndexerAPIError)
 
         url = urljoin(self.base_url, self.service_path, "reindex")
-        response = requests.post(url, headers=headers, params=params, json=data)
+        response = requests.post(url, headers=headers, params=params, json=request_data)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
         return response.json()
 
     def reindex_partition(
-        self,
-        *,
-        force_clean: str | None = None,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, force_clean: str | None = None, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if force_clean is not None:
@@ -90,39 +77,29 @@ class IndexerClient(OSDUAPIClient):
         return response.json()
 
     def reindex_records(
-        self,
-        *,
-        record_ids: list[str],
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, record_ids: list[str], data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "recordIds": record_ids,
         }
 
         if self.validation:
-            validate_data(data, ReindexRecordsRequest, IndexerAPIError)
+            validate_data(request_data, ReindexRecordsRequest, IndexerAPIError)
 
         url = urljoin(self.base_url, self.service_path, "reindex/records")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise IndexerAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_readiness_check(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_readiness_check(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "readiness_check")
         response = requests.get(url, headers=headers)
@@ -130,14 +107,10 @@ class IndexerClient(OSDUAPIClient):
             raise IndexerAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_liveness_check(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_liveness_check(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
@@ -145,14 +118,10 @@ class IndexerClient(OSDUAPIClient):
             raise IndexerAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_info(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_info(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)
@@ -160,18 +129,10 @@ class IndexerClient(OSDUAPIClient):
             raise IndexerAPIError(response.text, response.status_code)
         return response.json()
 
-    def delete_index(
-        self,
-        *,
-        kind: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
-    ) -> dict:
+    def delete_index(self, *, kind: str, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {
             "kind": kind,

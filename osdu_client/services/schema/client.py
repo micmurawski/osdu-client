@@ -17,30 +17,23 @@ class SchemaAPIError(OSDUAPIError):
 class SchemaClient(OSDUAPIClient):
     service_path = "/api/schema-service/v1"
 
-    def update_schemas_system(
-        self,
-        *,
-        schema_info: dict,
-        schema: dict,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+    def create_or_update_schema_system(
+        self, *, schema_info: dict, schema: dict, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "schemaInfo": schema_info,
             "schema": schema,
         }
 
         if self.validation:
-            validate_data(data, SchemaRequest, SchemaAPIError)
+            validate_data(request_data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schemas/system")
-        response = requests.put(url, headers=headers, json=data)
+        response = requests.put(url, headers=headers, json=request_data)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
         return response.json()
@@ -60,13 +53,10 @@ class SchemaClient(OSDUAPIClient):
         limit: str | None = None,
         offset: str | None = None,
         data_partition_id: str | None = None,
-        tenant: str | None = None,
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         params = {}
         if authority is not None:
@@ -99,73 +89,51 @@ class SchemaClient(OSDUAPIClient):
         return response.json()
 
     def update_schema(
-        self,
-        *,
-        schema_info: dict,
-        schema: dict,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, schema_info: dict, schema: dict, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "schemaInfo": schema_info,
             "schema": schema,
         }
 
         if self.validation:
-            validate_data(data, SchemaRequest, SchemaAPIError)
+            validate_data(request_data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schema")
-        response = requests.put(url, headers=headers, json=data)
+        response = requests.put(url, headers=headers, json=request_data)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
         return response.json()
 
     def create_schema(
-        self,
-        *,
-        schema_info: dict,
-        schema: dict,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
+        self, *, schema_info: dict, schema: dict, data_partition_id: str | None = None
     ) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
-        data = {
+        request_data = {
             "schemaInfo": schema_info,
             "schema": schema,
         }
 
         if self.validation:
-            validate_data(data, SchemaRequest, SchemaAPIError)
+            validate_data(request_data, SchemaRequest, SchemaAPIError)
 
         url = urljoin(self.base_url, self.service_path, "schema")
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=request_data)
         if not response.ok:
             raise SchemaAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_schema(
-        self,
-        *,
-        id: str,
-        data_partition_id: str | None = None,
-        tenant: str | None = None,
-    ) -> dict:
+    def get_schema(self, *, id: str, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "schema/%s" % id)
         response = requests.get(url, headers=headers)
@@ -173,14 +141,10 @@ class SchemaClient(OSDUAPIClient):
             raise SchemaAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_liveness_check(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_liveness_check(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "liveness_check")
         response = requests.get(url, headers=headers)
@@ -188,14 +152,10 @@ class SchemaClient(OSDUAPIClient):
             raise SchemaAPIError(response.text, response.status_code)
         return response.json()
 
-    def get_info(
-        self, data_partition_id: str | None = None, tenant: str | None = None
-    ) -> dict:
+    def get_info(self, data_partition_id: str | None = None) -> dict:
         headers = self.auth.get_headers()
         if data_partition_id:
             headers["data-partition-id"] = data_partition_id
-        if tenant:
-            headers["tenant"] = tenant
 
         url = urljoin(self.base_url, self.service_path, "info")
         response = requests.get(url, headers=headers)

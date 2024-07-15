@@ -5,7 +5,7 @@ def test_storage_create_records_delete(storage_api_server, storage_client: Stora
     storage_client.create_records_delete(
         x_collaboration="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_create_replay(storage_api_server, storage_client: StorageClient):
@@ -13,13 +13,13 @@ def test_storage_create_replay(storage_api_server, storage_client: StorageClient
         operation="text",
         filter=[],
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_create_whoami(storage_api_server, storage_client: StorageClient):
     storage_client.create_whoami(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_delete_record(storage_api_server, storage_client: StorageClient):
@@ -27,25 +27,25 @@ def test_storage_delete_record(storage_api_server, storage_client: StorageClient
         x_collaboration="text",
         id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_delete_whoami(storage_api_server, storage_client: StorageClient):
     storage_client.delete_whoami(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_get_info(storage_api_server, storage_client: StorageClient):
     storage_client.get_info(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_get_liveness_check(storage_api_server, storage_client: StorageClient):
     storage_client.get_liveness_check(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_get_record(storage_api_server, storage_client: StorageClient):
@@ -54,7 +54,7 @@ def test_storage_get_record(storage_api_server, storage_client: StorageClient):
         id="text",
         attribute="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_get_record_version(storage_api_server, storage_client: StorageClient):
@@ -64,7 +64,7 @@ def test_storage_get_record_version(storage_api_server, storage_client: StorageC
         version="text",
         attribute="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_get_record_versions(storage_api_server, storage_client: StorageClient):
@@ -72,32 +72,32 @@ def test_storage_get_record_versions(storage_api_server, storage_client: Storage
         x_collaboration="text",
         id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_get_replay_status(storage_api_server, storage_client: StorageClient):
     storage_client.get_replay_status(
         id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_get_whoami(storage_api_server, storage_client: StorageClient):
     storage_client.get_whoami(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_head_whoami(storage_api_server, storage_client: StorageClient):
     storage_client.head_whoami(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_options_whoami(storage_api_server, storage_client: StorageClient):
     storage_client.options_whoami(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_patch_records(storage_api_server, storage_client: StorageClient):
@@ -108,13 +108,13 @@ def test_storage_patch_records(storage_api_server, storage_client: StorageClient
         ops=[{"value": []}],
         x_collaboration="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_patch_whoami(storage_api_server, storage_client: StorageClient):
     storage_client.patch_whoami(
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_purge_record(storage_api_server, storage_client: StorageClient):
@@ -122,7 +122,7 @@ def test_storage_purge_record(storage_api_server, storage_client: StorageClient)
         x_collaboration="text",
         id="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_purge_record_versions(storage_api_server, storage_client: StorageClient):
@@ -133,7 +133,7 @@ def test_storage_purge_record_versions(storage_api_server, storage_client: Stora
         limit="text",
         _form="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_query_records(storage_api_server, storage_client: StorageClient):
@@ -142,7 +142,7 @@ def test_storage_query_records(storage_api_server, storage_client: StorageClient
         attributes=["text"],
         x_collaboration="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_query_records_batch(storage_api_server, storage_client: StorageClient):
@@ -151,7 +151,7 @@ def test_storage_query_records_batch(storage_api_server, storage_client: Storage
         x_collaboration="text",
         frame_of_reference="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_query_records_from_kind(storage_api_server, storage_client: StorageClient):
@@ -161,7 +161,7 @@ def test_storage_query_records_from_kind(storage_api_server, storage_client: Sto
         limit="text",
         kind="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
 def test_storage_update_records(storage_api_server, storage_client: StorageClient):
@@ -169,6 +169,6 @@ def test_storage_update_records(storage_api_server, storage_client: StorageClien
         x_collaboration="text",
         skipdupes="text",
         data_partition_id="text",
-        tenant="text",
+
     )
 
