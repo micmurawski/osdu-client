@@ -32,7 +32,7 @@ TYPE_DEFAULTS = {
 def create_conftest(module_path: str, name: str):
     module = import_module(f"osdu_client.services.{name.lower()}")
     versions = getattr(module, "VERSIONS", {})
-    
+
     import_lines = [
         "import pytest",
         "import os",
@@ -51,7 +51,7 @@ def create_conftest(module_path: str, name: str):
         f"{INDENT}class AuthSession(AuthBackendInterface):",
         f'{INDENT*2}base_url = "https://base.url"',
         f'{INDENT*2}default_data_partition_id = "osdu"',
-        f'{INDENT*2}default_tenant = "osdu"',
+        f'{INDENT*2}',
         '%sauthorization_header = {"Authorization": "Bearer access_token"}' % (INDENT*2),
         "\n",
         f"{INDENT*2}def get_sd_connection_params(self):",
