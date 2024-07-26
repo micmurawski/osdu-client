@@ -8,18 +8,9 @@ class AuthBackendInterface(metaclass=ABCMeta):
     def get_headers(self) -> dict:
         headers = {}
         headers.update(self.authorization_header)
-        headers.update(
-            {
-                "tenant": self.default_tenant,
-                "data-partition-id": self.default_data_partition_id
-            }
-        )
+        headers["data-partition-id"] = self.default_data_partition_id
+        
         return headers
-
-    @property
-    @abstractmethod
-    def default_tenant(self) -> str:
-        pass
 
     @property
     @abstractmethod

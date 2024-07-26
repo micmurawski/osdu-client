@@ -15,7 +15,6 @@ def auth_backend() -> AuthBackendInterface:
     class AuthSession(AuthBackendInterface):
         base_url = "https://base.url"
         default_data_partition_id = "osdu"
-        default_tenant = "osdu"
         authorization_header = {"Authorization": "Bearer access_token"}
 
 
