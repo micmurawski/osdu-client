@@ -2,12 +2,17 @@ from __future__ import annotations
 
 import requests
 
+from osdu_client.utils import urljoin
 from osdu_client.exceptions import OSDUAPIError
 from osdu_client.services.wellbore.common import WellboreCommonClient
-from osdu_client.utils import urljoin
 from osdu_client.validation import validate_data
 
-from .models import CreateDataSessionRequest, UpdateSessionState
+from .models import (
+    CreateDataSessionRequest,
+    UpdateSessionState,
+    CreateDataSessionRequest,
+    UpdateSessionState,
+)
 
 
 class WellboreAPIError(OSDUAPIError):
@@ -672,11 +677,11 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         record_id: str,
-        offset: str | None = None,
-        limit: str | None = None,
+        offset: int | None = None,
+        limit: int | None = None,
         curves: str | None = None,
-        describe: str | None = None,
-        filter: str | None = None,
+        describe: bool | None = None,
+        filter: list[str] | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -709,11 +714,11 @@ class WellboreClient(WellboreCommonClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 record_id (str):
-                offset (str): The number of rows that are to be skipped and not included in the result.
-                limit (str): The maximum number of rows to be returned.
+                offset (int): The number of rows that are to be skipped and not included in the result.
+                limit (int): The maximum number of rows to be returned.
                 curves (str): Filters curves. List of curves to be returned. The curves are returned in the same order as it is given.
-                describe (str): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
-                filter (str):
+                describe (bool): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
+                filter (list[str]):
 
         The "filter" query parameter allows clients to filter by rows, it selects rows data following the pattern `$column_name:$operator:$value`.
         The supported operators are : lt, lte, gt, gte, eq, neq, in.
@@ -989,11 +994,11 @@ class WellboreClient(WellboreCommonClient):
         *,
         record_id: str,
         version: str,
-        offset: str | None = None,
-        limit: str | None = None,
+        offset: int | None = None,
+        limit: int | None = None,
         curves: str | None = None,
-        describe: str | None = None,
-        filter: str | None = None,
+        describe: bool | None = None,
+        filter: list[str] | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1027,11 +1032,11 @@ class WellboreClient(WellboreCommonClient):
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 record_id (str):
                 version (str):
-                offset (str): The number of rows that are to be skipped and not included in the result.
-                limit (str): The maximum number of rows to be returned.
+                offset (int): The number of rows that are to be skipped and not included in the result.
+                limit (int): The maximum number of rows to be returned.
                 curves (str): Filters curves. List of curves to be returned. The curves are returned in the same order as it is given.
-                describe (str): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
-                filter (str):
+                describe (bool): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
+                filter (list[str]):
 
         The "filter" query parameter allows clients to filter by rows, it selects rows data following the pattern `$column_name:$operator:$value`.
         The supported operators are : lt, lte, gt, gte, eq, neq, in.
@@ -1077,7 +1082,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         wellboretrajectoryid: str,
-        purge: str | None = None,
+        purge: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1085,7 +1090,7 @@ class WellboreClient(WellboreCommonClient):
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             wellboretrajectoryid (str):
-            purge (str):
+            purge (bool):
         Returns:
             response data (dict)
         Raises:
@@ -1230,11 +1235,11 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         record_id: str,
-        offset: str | None = None,
-        limit: str | None = None,
+        offset: int | None = None,
+        limit: int | None = None,
         curves: str | None = None,
-        describe: str | None = None,
-        filter: str | None = None,
+        describe: bool | None = None,
+        filter: list[str] | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1267,11 +1272,11 @@ class WellboreClient(WellboreCommonClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 record_id (str):
-                offset (str): The number of rows that are to be skipped and not included in the result.
-                limit (str): The maximum number of rows to be returned.
+                offset (int): The number of rows that are to be skipped and not included in the result.
+                limit (int): The maximum number of rows to be returned.
                 curves (str): Filters curves. List of curves to be returned. The curves are returned in the same order as it is given.
-                describe (str): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
-                filter (str):
+                describe (bool): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
+                filter (list[str]):
 
         The "filter" query parameter allows clients to filter by rows, it selects rows data following the pattern `$column_name:$operator:$value`.
         The supported operators are : lt, lte, gt, gte, eq, neq, in.
@@ -1590,11 +1595,11 @@ class WellboreClient(WellboreCommonClient):
         *,
         record_id: str,
         version: str,
-        offset: str | None = None,
-        limit: str | None = None,
+        offset: int | None = None,
+        limit: int | None = None,
         curves: str | None = None,
-        describe: str | None = None,
-        filter: str | None = None,
+        describe: bool | None = None,
+        filter: list[str] | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1628,11 +1633,11 @@ class WellboreClient(WellboreCommonClient):
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 record_id (str):
                 version (str):
-                offset (str): The number of rows that are to be skipped and not included in the result.
-                limit (str): The maximum number of rows to be returned.
+                offset (int): The number of rows that are to be skipped and not included in the result.
+                limit (int): The maximum number of rows to be returned.
                 curves (str): Filters curves. List of curves to be returned. The curves are returned in the same order as it is given.
-                describe (str): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
-                filter (str):
+                describe (bool): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
+                filter (list[str]):
 
         The "filter" query parameter allows clients to filter by rows, it selects rows data following the pattern `$column_name:$operator:$value`.
         The supported operators are : lt, lte, gt, gte, eq, neq, in.
@@ -1763,7 +1768,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         welllogid: str,
-        purge: str | None = None,
+        purge: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1771,7 +1776,7 @@ class WellboreClient(WellboreCommonClient):
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             welllogid (str):
-            purge (str):
+            purge (bool):
         Returns:
             response data (dict)
         Raises:

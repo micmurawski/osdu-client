@@ -2,12 +2,16 @@ from __future__ import annotations
 
 import requests
 
+from osdu_client.utils import urljoin
 from osdu_client.exceptions import OSDUAPIError
 from osdu_client.services.wellbore.common import WellboreCommonClient
-from osdu_client.utils import urljoin
 from osdu_client.validation import validate_data
 
-from .models import CreateDataSessionRequest, Dip, UpdateSessionState
+from .models import (
+    CreateDataSessionRequest,
+    UpdateSessionState,
+    Dip,
+)
 
 
 class WellboreAPIError(OSDUAPIError):
@@ -21,11 +25,11 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         record_id: str,
-        offset: str | None = None,
-        limit: str | None = None,
+        offset: int | None = None,
+        limit: int | None = None,
         curves: str | None = None,
-        describe: str | None = None,
-        filter: str | None = None,
+        describe: bool | None = None,
+        filter: list[str] | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -58,11 +62,11 @@ class WellboreClient(WellboreCommonClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 record_id (str):
-                offset (str): The number of rows that are to be skipped and not included in the result.
-                limit (str): The maximum number of rows to be returned.
+                offset (int): The number of rows that are to be skipped and not included in the result.
+                limit (int): The maximum number of rows to be returned.
                 curves (str): Filters curves. List of curves to be returned. The curves are returned in the same order as it is given.
-                describe (str): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
-                filter (str):
+                describe (bool): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
+                filter (list[str]):
 
         The "filter" query parameter allows clients to filter by rows, it selects rows data following the pattern `$column_name:$operator:$value`.
         The supported operators are : lt, lte, gt, gte, eq, neq, in.
@@ -333,11 +337,11 @@ class WellboreClient(WellboreCommonClient):
         *,
         record_id: str,
         version: str,
-        offset: str | None = None,
-        limit: str | None = None,
+        offset: int | None = None,
+        limit: int | None = None,
         curves: str | None = None,
-        describe: str | None = None,
-        filter: str | None = None,
+        describe: bool | None = None,
+        filter: list[str] | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -371,11 +375,11 @@ class WellboreClient(WellboreCommonClient):
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 record_id (str):
                 version (str):
-                offset (str): The number of rows that are to be skipped and not included in the result.
-                limit (str): The maximum number of rows to be returned.
+                offset (int): The number of rows that are to be skipped and not included in the result.
+                limit (int): The maximum number of rows to be returned.
                 curves (str): Filters curves. List of curves to be returned. The curves are returned in the same order as it is given.
-                describe (str): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
-                filter (str):
+                describe (bool): The "describe" query option allows clients to request a description of the matching result. (number of rows, columns name)
+                filter (list[str]):
 
         The "filter" query parameter allows clients to filter by rows, it selects rows data following the pattern `$column_name:$operator:$value`.
         The supported operators are : lt, lte, gt, gte, eq, neq, in.
@@ -442,7 +446,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         dipsetid: str,
-        recursive: str | None = None,
+        recursive: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -450,7 +454,7 @@ class WellboreClient(WellboreCommonClient):
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             dipsetid (str):
-            recursive (str): Whether or not to delete records children
+            recursive (bool): Whether or not to delete records children
         Returns:
             response data (dict)
         Raises:
@@ -501,8 +505,8 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         dipsetid: str,
-        index: str | None = None,
-        limit: str | None = None,
+        index: int | None = None,
+        limit: int | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -513,8 +517,8 @@ class WellboreClient(WellboreCommonClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 dipsetid (str):
-                index (str):
-                limit (str):
+                index (int):
+                limit (int):
             Returns:
                 response data (dict)
             Raises:
@@ -602,8 +606,8 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         dipsetid: str,
-        min_reference: str | None = None,
-        max_reference: str | None = None,
+        min_reference: int | None = None,
+        max_reference: int | None = None,
         classification: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -614,8 +618,8 @@ class WellboreClient(WellboreCommonClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 dipsetid (str):
-                min_reference (str): Min reference for the dips to search in the dipset
-                max_reference (str):
+                min_reference (int): Min reference for the dips to search in the dipset
+                max_reference (int):
                 classification (str):
             Returns:
                 response data (dict)
@@ -983,9 +987,9 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         logid: str,
-        quantiles: str | None = None,
-        start: str | None = None,
-        stop: str | None = None,
+        quantiles: int | None = None,
+        start: int | None = None,
+        stop: int | None = None,
         orient: str | None = None,
         bulk_path: str | None = None,
         data_partition_id: str | None = None,
@@ -998,9 +1002,9 @@ class WellboreClient(WellboreCommonClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 logid (str):
-                quantiles (str): Number of division desired
-                start (str): The start value for the log decimation
-                stop (str): The stop value for the log decimation
+                quantiles (int): Number of division desired
+                start (int): The start value for the log decimation
+                stop (int): The stop value for the log decimation
                 orient (str): response format JSON. Only "values" is allowed.
                 bulk_path (str): The json path to the bulk reference (see https://goessner.net/articles/JsonPath/). Required for non wks:log.
             Returns:
@@ -1237,7 +1241,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         logsetid: str,
-        recursive: str | None = None,
+        recursive: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1245,7 +1249,7 @@ class WellboreClient(WellboreCommonClient):
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             logsetid (str):
-            recursive (str): Whether or not to delete records children
+            recursive (bool): Whether or not to delete records children
         Returns:
             response data (dict)
         Raises:
@@ -1559,7 +1563,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         trajectoryid: str,
-        channels: str | None = None,
+        channels: list[str] | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1570,7 +1574,7 @@ class WellboreClient(WellboreCommonClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 trajectoryid (str):
-                channels (str): List of channels to get. If not provided, return all channels.
+                channels (list[str]): List of channels to get. If not provided, return all channels.
                 orient (str): format for JSON only.
             Returns:
                 response data (dict)
@@ -1700,7 +1704,7 @@ class WellboreClient(WellboreCommonClient):
         *,
         trajectoryid: str,
         version: str,
-        channels: str | None = None,
+        channels: list[str] | None = None,
         orient: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1712,7 +1716,7 @@ class WellboreClient(WellboreCommonClient):
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 trajectoryid (str):
                 version (str):
-                channels (str): List of channels to get. If not provided, return all channels.
+                channels (list[str]): List of channels to get. If not provided, return all channels.
                 orient (str): format for JSON only.
             Returns:
                 response data (dict)
@@ -1767,7 +1771,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         wellboreid: str,
-        recursive: str | None = None,
+        recursive: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1775,7 +1779,7 @@ class WellboreClient(WellboreCommonClient):
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             wellboreid (str):
-            recursive (str): Whether or not to delete records children
+            recursive (bool): Whether or not to delete records children
         Returns:
             response data (dict)
         Raises:
@@ -1919,7 +1923,7 @@ class WellboreClient(WellboreCommonClient):
         self,
         *,
         wellid: str,
-        recursive: str | None = None,
+        recursive: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1927,7 +1931,7 @@ class WellboreClient(WellboreCommonClient):
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             wellid (str):
-            recursive (str): Whether or not to delete records children
+            recursive (bool): Whether or not to delete records children
         Returns:
             response data (dict)
         Raises:

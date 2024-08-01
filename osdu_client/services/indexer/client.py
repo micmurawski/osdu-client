@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.exceptions import OSDUAPIError
-from osdu_client.services.base import OSDUAPIClient
 from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
 from osdu_client.validation import validate_data
 
-from .models import RecordReindexRequest, ReindexRecordsRequest
+from .models import (
+    RecordReindexRequest,
+    ReindexRecordsRequest,
+)
 
 
 class IndexerAPIError(OSDUAPIError):
@@ -41,7 +44,7 @@ class IndexerClient(OSDUAPIClient):
     def reindex_kind(
         self,
         *,
-        force_clean: str | None = None,
+        force_clean: bool | None = None,
         kind: str,
         cursor: str | None = None,
         data_partition_id: str | None = None,
@@ -50,7 +53,7 @@ class IndexerClient(OSDUAPIClient):
         This API allows users to re-index a 'kind' without re-ingesting the records via storage API. Required roles: `service.search.admin`
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
-            force_clean (str): Force Clean
+            force_clean (bool): Force Clean
             kind (str):
             cursor (str):
         Returns:
@@ -83,13 +86,13 @@ class IndexerClient(OSDUAPIClient):
         return response.json()
 
     def reindex_partition(
-        self, *, force_clean: str | None = None, data_partition_id: str | None = None
+        self, *, force_clean: bool | None = None, data_partition_id: str | None = None
     ) -> dict:
         """
         This API allows users to re-index an entire partition without re-ingesting the records via storage API.Required roles: `users.datalake.ops`
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
-            force_clean (str): Force Clean
+            force_clean (bool): Force Clean
         Returns:
             response data (dict)
         Raises:

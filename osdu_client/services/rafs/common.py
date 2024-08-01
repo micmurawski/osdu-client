@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.exceptions import OSDUAPIError
-from osdu_client.services.base import OSDUAPIClient
 from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
 
 
 class RAFSAPIError(OSDUAPIError):

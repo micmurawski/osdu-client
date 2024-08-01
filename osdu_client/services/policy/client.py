@@ -2,12 +2,14 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.exceptions import OSDUAPIError
-from osdu_client.services.base import OSDUAPIClient
 from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
 from osdu_client.validation import validate_data
 
-from .models import TranslateItem
+from .models import (
+    TranslateItem,
+)
 
 
 class PolicyAPIError(OSDUAPIError):
@@ -382,7 +384,7 @@ class PolicyClient(OSDUAPIClient):
         self,
         *,
         policy_id: str,
-        include_auth: str | None = None,
+        include_auth: bool | None = None,
         correlation_id: str | None = None,
         user_agent: str | None = None,
         x_user_id: str | None = None,
@@ -425,7 +427,7 @@ class PolicyClient(OSDUAPIClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 policy_id (str):
-                include_auth (str): Update posted data to include auth (token, xuserid and data partition id) from headers
+                include_auth (bool): Update posted data to include auth (token, xuserid and data partition id) from headers
                 correlation_id (str):
                 user_agent (str):
                 x_user_id (str): identifier the user in the query
@@ -552,8 +554,8 @@ class PolicyClient(OSDUAPIClient):
     def create_api_policy_v1_compile(
         self,
         *,
-        metrics: str | None = None,
-        instrument: str | None = None,
+        metrics: bool | None = None,
+        instrument: bool | None = None,
         correlation_id: str | None = None,
         user_agent: str | None = None,
         x_user_id: str | None = None,
@@ -581,8 +583,8 @@ class PolicyClient(OSDUAPIClient):
         We recommend leaving query instrumentation off unless you are debugging a performance problem.
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
-                metrics (str): Include report detailed performance metrics on requested on individual API call. Returned inline with the API response
-                instrument (str): Include instrumentation data wth detailed performance metrics on requested on individual API call. Returned inline with the API response
+                metrics (bool): Include report detailed performance metrics on requested on individual API call. Returned inline with the API response
+                instrument (bool): Include instrumentation data wth detailed performance metrics on requested on individual API call. Returned inline with the API response
                 correlation_id (str):
                 user_agent (str):
                 x_user_id (str): identifier the user in the query
@@ -617,7 +619,7 @@ class PolicyClient(OSDUAPIClient):
     def get_tenant(
         self,
         *,
-        all_data: str | None = None,
+        all_data: bool | None = None,
         correlation_id: str | None = None,
         user_agent: str | None = None,
         x_user_id: str | None = None,
@@ -628,7 +630,7 @@ class PolicyClient(OSDUAPIClient):
         These details are read from OPA configmap.
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
-                all_data (str):
+                all_data (bool):
                 correlation_id (str):
                 user_agent (str):
                 x_user_id (str): identifier the user in the query
@@ -662,8 +664,8 @@ class PolicyClient(OSDUAPIClient):
         self,
         *,
         service: str,
-        polling_min_delay_seconds: str | None = None,
-        polling_max_delay_seconds: str | None = None,
+        polling_min_delay_seconds: int | None = None,
+        polling_max_delay_seconds: int | None = None,
         correlation_id: str | None = None,
         user_agent: str | None = None,
         x_user_id: str | None = None,
@@ -675,8 +677,8 @@ class PolicyClient(OSDUAPIClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 service (str):
-                polling_min_delay_seconds (str):
-                polling_max_delay_seconds (str):
+                polling_min_delay_seconds (int):
+                polling_max_delay_seconds (int):
                 correlation_id (str):
                 user_agent (str):
                 x_user_id (str): identifier the user in the query
@@ -832,7 +834,7 @@ class PolicyClient(OSDUAPIClient):
         self,
         *,
         policy_id: str,
-        template: str | None = None,
+        template: bool | None = None,
         correlation_id: str | None = None,
         user_agent: str | None = None,
         x_user_id: str | None = None,
@@ -849,7 +851,7 @@ class PolicyClient(OSDUAPIClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 policy_id (str):
-                template (str):
+                template (bool):
                 correlation_id (str):
                 user_agent (str):
                 x_user_id (str): identifier the user in the query
@@ -925,7 +927,7 @@ class PolicyClient(OSDUAPIClient):
     def bootstrap(
         self,
         *,
-        force: str | None = None,
+        force: bool | None = None,
         correlation_id: str | None = None,
         user_agent: str | None = None,
         x_user_id: str | None = None,
@@ -949,7 +951,7 @@ class PolicyClient(OSDUAPIClient):
             * HTTP_424_FAILED_DEPENDENCY - bundle server caused failure
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
-                force (str):
+                force (bool):
                 correlation_id (str):
                 user_agent (str):
                 x_user_id (str): identifier the user in the query

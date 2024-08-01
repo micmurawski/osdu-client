@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import shutil
 from importlib import import_module
@@ -17,14 +19,10 @@ TYPE_DEFAULTS = {
     dict: '{}',
     'dict': '{}',
     bool | None: 'False',
-    list[str]: '["text"]',
     'list[str]': '["text"]',
-    list[dict]: '[{}]',
     'list[dict]': '[{}]',
-    list[dict] | None: '[{}]',
     dict | None: '{}',
     'dict | None': '{}',
-    list[str] | None: '["text"]',
     'list[str] | None': '["text"]'
 }
 

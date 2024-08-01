@@ -2,12 +2,18 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.exceptions import OSDUAPIError
-from osdu_client.services.base import OSDUAPIClient
 from osdu_client.utils import urljoin
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.exceptions import OSDUAPIError
 from osdu_client.validation import validate_data
 
-from .models import LegalTagDto, RequestLegalTags, SearchLegalTag, UpdateLegalTag
+from .models import (
+    UpdateLegalTag,
+    LegalTagDto,
+    RequestLegalTags,
+    SearchLegalTag,
+    RequestLegalTags,
+)
 
 
 class LegalAPIError(OSDUAPIError):
@@ -18,13 +24,13 @@ class LegalClient(OSDUAPIClient):
     service_path = "/api/legal/v1/"
 
     def list_legaltags(
-        self, *, valid: str | None = None, data_partition_id: str | None = None
+        self, *, valid: bool | None = None, data_partition_id: str | None = None
     ) -> dict:
         """
         This allows for the retrieval of all LegalTags.
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
-            valid (str): If true returns only valid LegalTags, if false returns only invalid LegalTags.  Default value is true.
+            valid (bool): If true returns only valid LegalTags, if false returns only invalid LegalTags.  Default value is true.
         Returns:
             response data (dict)
         Raises:
@@ -171,7 +177,7 @@ class LegalClient(OSDUAPIClient):
     def query_legaltags(
         self,
         *,
-        valid: str | None = None,
+        valid: bool | None = None,
         query_list: list[str] | None = None,
         operator_list: list[str] | None = None,
         sort_by: str | None = None,
@@ -183,7 +189,7 @@ class LegalClient(OSDUAPIClient):
         This allows search for specific attributes of legaltags including the attributes of extensionproperties
         Args:
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
-            valid (str): If true returns only valid LegalTags, if false returns only invalid LegalTags.  Default value is true.
+            valid (bool): If true returns only valid LegalTags, if false returns only invalid LegalTags.  Default value is true.
             query_list (list[str]): Filter condition query
             operator_list (list[str]): If there are multiple conditions need to be joined in by logical operators
             sort_by (str):
