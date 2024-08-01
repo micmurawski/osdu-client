@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import os
 import shutil
 from importlib import import_module
@@ -11,17 +9,15 @@ INDENT = " "*4
 
 TYPE_DEFAULTS = {
     str: '"text"',
-    str | None: '"text"',
     'str | None': '"text"',
     'str': '"text"',
-    int | None: '10',
     'int | None': '10',
     dict: '{}',
     'dict': '{}',
-    bool | None: 'False',
+    'bool | None': 'False',
     'list[str]': '["text"]',
     'list[dict]': '[{}]',
-    dict | None: '{}',
+    'list[dict] | None': '[{}]',
     'dict | None': '{}',
     'list[str] | None': '["text"]'
 }
