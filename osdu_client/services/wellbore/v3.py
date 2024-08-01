@@ -2,15 +2,12 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.utils import urljoin
 from osdu_client.exceptions import OSDUAPIError
 from osdu_client.services.wellbore.common import WellboreCommonClient
+from osdu_client.utils import urljoin
 from osdu_client.validation import validate_data
 
-from .models import (
-    CreateDataSessionRequest,
-    UpdateSessionState,
-)
+from .models import CreateDataSessionRequest, UpdateSessionState
 
 
 class WellboreAPIError(OSDUAPIError):

@@ -2,14 +2,12 @@ from __future__ import annotations
 
 import requests
 
-from osdu_client.utils import urljoin
-from osdu_client.services.base import OSDUAPIClient
 from osdu_client.exceptions import OSDUAPIError
+from osdu_client.services.base import OSDUAPIClient
+from osdu_client.utils import urljoin
 from osdu_client.validation import validate_data
 
-from .models import (
-    StatusDto,
-)
+from .models import StatusDto
 
 
 class PWSAPIError(OSDUAPIError):
