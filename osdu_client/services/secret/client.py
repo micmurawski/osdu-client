@@ -9,7 +9,6 @@ from osdu_client.validation import validate_data
 
 from .models import (
     Secret,
-    Secret,
 )
 
 
