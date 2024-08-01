@@ -436,7 +436,7 @@ class EntitlementsClient(OSDUAPIClient):
         *,
         type: str,
         cursor: str | None = None,
-        limit: str | None = None,
+        limit: int | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -445,7 +445,7 @@ class EntitlementsClient(OSDUAPIClient):
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             type (str): type
             cursor (str): cursor
-            limit (str): limit
+            limit (int): limit
         Returns:
             response data (dict)
         Raises:

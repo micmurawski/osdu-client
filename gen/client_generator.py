@@ -58,9 +58,25 @@ COMPLEX_TYPES_MAP = {
 def get_type_for_param(param: dict, swagger: dict | None = None) -> str:
     if swagger is None:
         swagger = {}
+    _in = param.get("in")
 
-    if param.get("in") in ("query", "path"):
+    if _in == "path":
         return str.__name__
+    elif _in == "query":
+        _type = get_path(
+            param,
+            "schema.type",
+            default="string"
+        )
+        if _type in SIMPLE_TYPES_MAP:
+            return SIMPLE_TYPES_MAP[_type]
+        else:
+            _items_type = get_path(
+                param,
+                "schema.items.type",
+                default="string"
+            )
+            return COMPLEX_TYPES_MAP[(_type, _items_type)]
 
     param_type = param.get("type")
     schema_type = get_path(param, "schema.type", None)
@@ -154,6 +170,7 @@ def param_to_function_argument(param: dict, swagger: dict | None = None) -> str:
         swagger = {}
 
     name = convert_to_snake_case(param["name"])
+
     _type = get_type_for_param(param, swagger)
 
     is_required = param.get('required', False)
@@ -556,6 +573,7 @@ def create_method_sig(swagger: dict, name: str, params: list[str], body_required
     path_params = [
         p for p in params if p['name'] not in SPECIAL_HEADERS and p["in"] != "body"
     ]
+
     elements = [name, ]
     sig = ""
     _input_parameters_strings = [param_to_function_argument(p)
@@ -575,6 +593,7 @@ def create_method_sig(swagger: dict, name: str, params: list[str], body_required
 
     doc = generate_doc_string(name, path_params, body_required, body_not_required,
                               swagger, method, path, indent_offset=1)
+
     try:
         if len(elements) > 1:
             sig = "def %s(self, *, %s, data_partition_id: str | None = None) -> dict:" % tuple(elements)

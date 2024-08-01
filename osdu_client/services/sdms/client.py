@@ -169,8 +169,8 @@ class SDMSClient(OSDUAPIClient):
         subprojectid: str,
         path: str | None = None,
         datasetid: str,
-        seismicmeta: str | None = None,
-        translate_user_info: str | None = None,
+        seismicmeta: bool | None = None,
+        translate_user_info: bool | None = None,
         record_version: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -183,8 +183,8 @@ class SDMSClient(OSDUAPIClient):
             subprojectid (str): Name of the subproject.
             path (str): Hierarchical path of the dataset.
             datasetid (str): Name of the dataset.
-            seismicmeta (str): Include the seismic storage metadata record if it exists.
-            translate_user_info (str): translate the user-id to a more human readable user info
+            seismicmeta (bool): Include the seismic storage metadata record if it exists.
+            translate_user_info (bool): translate the user-id to a more human readable user info
             record_version (str): Retrieve a specific version of the seismic storage metadata record
         Returns:
             response data (dict)
@@ -397,7 +397,7 @@ class SDMSClient(OSDUAPIClient):
         path: str | None = None,
         datasetid: str,
         openmode: str | None = None,
-        wid: str | None = None,
+        wid: int | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -426,7 +426,7 @@ class SDMSClient(OSDUAPIClient):
                 path (str): Hierarchical path of the dataset.
                 datasetid (str): Name of the dataset.
                 openmode (str): Type of the lock which can be set to 'read' (default) or 'write'.
-                wid (str): Session identifier issued for a previous write lock acquisition operation.
+                wid (int): Session identifier issued for a previous write lock acquisition operation.
             Returns:
                 response data (dict)
             Raises:
@@ -626,7 +626,7 @@ class SDMSClient(OSDUAPIClient):
         subprojectid: str,
         path: str | None = None,
         datasetid: str,
-        gtag: str,
+        gtag: list[str],
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -647,7 +647,7 @@ class SDMSClient(OSDUAPIClient):
               subprojectid (str): Name of the subproject.
               path (str): Hierarchical path of the dataset.
               datasetid (str): Name of the dataset.
-              gtag (str): Gtags array list.
+              gtag (list[str]): Gtags array list.
           Returns:
               response data (dict)
           Raises:
@@ -828,7 +828,7 @@ class SDMSClient(OSDUAPIClient):
         impersonation_token_context: str | None = None,
         tenantid: str,
         subprojectid: str,
-        translate_user_info: str | None = None,
+        translate_user_info: bool | None = None,
         type: str | None = None,
         gtags: list[str] | None = None,
         search: str | None = None,
@@ -848,7 +848,7 @@ class SDMSClient(OSDUAPIClient):
               impersonation_token_context (str): The impersonation token context (required only with impersonation token credentials)
               tenantid (str): Name of the tenant.
               subprojectid (str): Name of the subproject.
-              translate_user_info (str): translate the user-id to a more human readable user info
+              translate_user_info (bool): translate the user-id to a more human readable user info
               type (str):
               gtags (list[str]): Array of global tags associated with the dataset metadata. Once assigned, they can be used to filter datasets.
               search (str):
@@ -1004,7 +1004,7 @@ class SDMSClient(OSDUAPIClient):
         impersonation_token_context: str | None = None,
         sdpath: str,
         wmode: str | None = None,
-        limit: str | None = None,
+        limit: int | None = None,
         cursor: str | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -1018,7 +1018,7 @@ class SDMSClient(OSDUAPIClient):
                 impersonation_token_context (str): The impersonation token context (required only with impersonation token credentials)
                 sdpath (str): Seismic store path, sd://tenant/sub-project/path.
                 wmode (str): Working mode, dirs or datasets or undefined for both.
-                limit (str): Limits the total number of datasets to return.
+                limit (int): Limits the total number of datasets to return.
                 cursor (str): Pagination token - this query parameter can be omitted on first call.
             Returns:
                 response data (dict)
@@ -1128,7 +1128,7 @@ class SDMSClient(OSDUAPIClient):
         impersonation_token_context: str | None = None,
         sdpath_from: str,
         sdpath_to: str,
-        lock: str | None = None,
+        lock: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1147,7 +1147,7 @@ class SDMSClient(OSDUAPIClient):
                 impersonation_token_context (str): The impersonation token context (required only with impersonation token credentials)
                 sdpath_from (str): Seismic store source dataset path.
                 sdpath_to (str): Seismic store destination dataset path.
-                lock (str): Lock source and destination while copying.
+                lock (bool): Lock source and destination while copying.
             Returns:
                 response data (dict)
             Raises:
@@ -1178,7 +1178,7 @@ class SDMSClient(OSDUAPIClient):
         *,
         impersonation_token_context: str | None = None,
         sdpath: str,
-        readonly: str | None = None,
+        readonly: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1196,7 +1196,7 @@ class SDMSClient(OSDUAPIClient):
               data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
               impersonation_token_context (str): The impersonation token context (required only with impersonation token credentials)
               sdpath (str): Seismic store path in the format sd://tenant/sub-project.
-              readonly (str): Readonly access, true(default) or false.
+              readonly (bool): Readonly access, true(default) or false.
           Returns:
               response data (dict)
           Raises:
@@ -1555,7 +1555,7 @@ class SDMSClient(OSDUAPIClient):
         *,
         subprojectid: str,
         tenantid: str,
-        translate_user_info: str | None = None,
+        translate_user_info: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -1564,7 +1564,7 @@ class SDMSClient(OSDUAPIClient):
             data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
             subprojectid (str): Name of the subproject.
             tenantid (str): Name of the tenant.
-            translate_user_info (str): translate the user-id to a more human readable user info
+            translate_user_info (bool): translate the user-id to a more human readable user info
         Returns:
             response data (dict)
         Raises:
@@ -1624,7 +1624,7 @@ class SDMSClient(OSDUAPIClient):
         ltag: str,
         tenantid: str,
         subprojectid: str,
-        recursive: str | None = None,
+        recursive: bool | None = None,
         access_policy: str | None = "dataset",
         acls: dict | None = None,
         data_partition_id: str | None = None,
@@ -1644,7 +1644,7 @@ class SDMSClient(OSDUAPIClient):
               ltag (str): Legal tag of the subproject.
               tenantid (str): Name of the tenant.
               subprojectid (str): Name of the subproject.
-              recursive (str): True if the legal tags of all datasets in a subproject needs to be updated.
+              recursive (bool): True if the legal tags of all datasets in a subproject needs to be updated.
               access_policy (str): Access Policy for the subproject.
               acls (dict): ACLs with admin groups and viewer groups. Existing acls will be replaced with the provided acls.
           Returns:

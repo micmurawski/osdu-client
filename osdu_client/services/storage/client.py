@@ -21,7 +21,7 @@ class StorageClient(OSDUAPIClient):
         self,
         *,
         x_collaboration: str | None = None,
-        skipdupes: str | None = None,
+        skipdupes: bool | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -31,7 +31,7 @@ class StorageClient(OSDUAPIClient):
             Args:
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 x_collaboration (str): x-collaboration
-                skipdupes (str): Skip duplicates when updating records with the same value.
+                skipdupes (bool): Skip duplicates when updating records with the same value.
             Returns:
                 response data (dict)
             Raises:
@@ -205,7 +205,7 @@ class StorageClient(OSDUAPIClient):
         *,
         x_collaboration: str | None = None,
         cursor: str | None = None,
-        limit: str | None = None,
+        limit: int | None = None,
         kind: str,
         data_partition_id: str | None = None,
     ) -> dict:
@@ -216,7 +216,7 @@ class StorageClient(OSDUAPIClient):
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 x_collaboration (str): x-collaboration
                 cursor (str): Cursor
-                limit (str): Page Size
+                limit (int): Page Size
                 kind (str): Filter Kind
             Returns:
                 response data (dict)
@@ -338,7 +338,7 @@ class StorageClient(OSDUAPIClient):
         *,
         x_collaboration: str | None = None,
         id: str,
-        attribute: str | None = None,
+        attribute: list[str] | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -348,7 +348,7 @@ class StorageClient(OSDUAPIClient):
                 data_partition_id (str): identifier of the data partition to query. If None sets by auth session.
                 x_collaboration (str): x-collaboration
                 id (str): Record id
-                attribute (str): Filter attributes to restrict the returned fields of the record.  Usage: data.{record-data-field-name}.
+                attribute (list[str]): Filter attributes to restrict the returned fields of the record.  Usage: data.{record-data-field-name}.
             Returns:
                 response data (dict)
             Raises:
@@ -410,7 +410,7 @@ class StorageClient(OSDUAPIClient):
         x_collaboration: str | None = None,
         id: str,
         version: str,
-        attribute: str | None = None,
+        attribute: list[str] | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -421,7 +421,7 @@ class StorageClient(OSDUAPIClient):
                 x_collaboration (str): x-collaboration
                 id (str): Record id
                 version (str): Record version
-                attribute (str): Filter attributes to restrict the returned fields of the record.  Usage: data.{record-data-field-name}.
+                attribute (list[str]): Filter attributes to restrict the returned fields of the record.  Usage: data.{record-data-field-name}.
             Returns:
                 response data (dict)
             Raises:
@@ -524,8 +524,8 @@ class StorageClient(OSDUAPIClient):
         x_collaboration: str | None = None,
         id: str,
         version_ids: str | None = None,
-        limit: str | None = None,
-        _form: str | None = None,
+        limit: int | None = None,
+        _form: int | None = None,
         data_partition_id: str | None = None,
     ) -> dict:
         """
@@ -536,8 +536,8 @@ class StorageClient(OSDUAPIClient):
                x_collaboration (str): x-collaboration
                id (str): Record id
                version_ids (str): Comma separated version ids (excluding latest version) to be deleted. Maximum 50 versions can be deleted per request.
-               limit (str): limit
-               _form (str): Record version id from which all record versions aside from the current one are deleted
+               limit (int): limit
+               _form (int): Record version id from which all record versions aside from the current one are deleted
            Returns:
                response data (dict)
            Raises:

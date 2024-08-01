@@ -763,8 +763,8 @@ components:
           description: Endianness of binary value. Enumeration- \BIG\ \LITTLE\.  If absent applications will need to interpret from context indicators.
           type: string
           enum: [
-              BIG
-                LITTLE
+              BIG,
+              LITTLE
           ]
 
         Checksum:
