@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 from importlib import import_module
 
@@ -21,6 +22,22 @@ TYPE_DEFAULTS = {
     'dict | None': '{}',
     'list[str] | None': '["text"]'
 }
+
+IMPORT_TEMPLATE_1 = '\n'.join([
+    "from {module_path} import {class_name}",
+    "\n",
+])
+
+UNIT_TEST_TEMPLATE_1 = '\n'.join([
+    "def test_{module}_{method_name}({module}_api_server, {module}_client_{version}: {class_name}):",
+    "{indent}{module}_client_{version}.{method_name}("
+])
+
+
+UNIT_TEST_TEMPLATE_2 = '\n'.join([
+    "def test_{module}_{method_name}({module}_api_server, {module}_client: {class_name}):",
+    "{indent}{module}_client.{method_name}("
+])
 
 
 def create_conftest(module_path: str, name: str):
@@ -80,6 +97,12 @@ def create_conftest(module_path: str, name: str):
             file.write(line+"\n")
 
 
+def gather_implemented_method_tests(tests_path: str):
+    tests_content = open(tests_path).read()
+    result = re.findall('def test_(.*)\(', tests_content)
+    return set(result)
+
+
 def create_tests(
     name: str,
     tests_path: str,
@@ -96,21 +119,17 @@ def create_tests(
                     getattr(client_class, method_name), "__annotations__"
                 ) and method_name not in ("__init__") and getattr(client_class, method_name).__class__.__name__ == "function"
             ]
-            import_template = '\n'.join([
-                "from {module_path} import {class_name}",
-                "\n",
-            ])
-            test_template = '\n'.join([
-                "def test_{module}_{method_name}({module}_api_server, {module}_client_{version}: {class_name}):",
-                "{indent}{module}_client_{version}.{method_name}("
-            ])
+
             versioned_tests_path = tests_path.replace(name.lower()+".py", f"{name.lower()}_{version}.py")
-            with open(versioned_tests_path, "w") as f:
-                _import = import_template.format(module=name, class_name=client_class.__name__,
-                                                 module_path=client_class.__module__)
+            implemented_tests = gather_implemented_method_tests(versioned_tests_path)
+            with open(versioned_tests_path, "a") as f:
+                _import = IMPORT_TEMPLATE_1.format(module=name, class_name=client_class.__name__,
+                                                   module_path=client_class.__module__)
                 f.write(_import)
                 for method in methods:
-                    test = test_template.format(
+                    if method in implemented_tests:
+                        continue
+                    test = UNIT_TEST_TEMPLATE_1.format(
                         module=name.lower(),
                         class_name=client_class.__name__,
                         method_name=method.__name__,
@@ -132,22 +151,16 @@ def create_tests(
                 getattr(client_class, method_name), "__annotations__"
             ) and method_name not in ("__init__") and getattr(client_class, method_name).__class__.__name__ == "function"
         ]
+        implemented_tests = gather_implemented_method_tests(tests_path)
 
-        import_template = '\n'.join([
-            "from {module_path} import {class_name}",
-            "\n",
-        ])
-        test_template = '\n'.join([
-            "def test_{module}_{method_name}({module}_api_server, {module}_client: {class_name}):",
-            "{indent}{module}_client.{method_name}("
-        ])
-
-        with open(tests_path, "w") as f:
-            _import = import_template.format(module=name, class_name=client_class.__name__,
+        with open(tests_path, "a") as f:
+            _import = IMPORT_TEMPLATE_1.format(module=name, class_name=client_class.__name__,
                                              module_path=client_class.__module__)
             f.write(_import)
             for method in methods:
-                test = test_template.format(
+                if method in implemented_tests:
+                    continue
+                test = UNIT_TEST_TEMPLATE_2.format(
                     module=name.lower(),
                     class_name=client_class.__name__,
                     method_name=method.__name__,

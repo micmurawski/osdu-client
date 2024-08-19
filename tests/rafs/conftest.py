@@ -1,11 +1,10 @@
-import os
-
 import pytest
-import requests_mock
-
+import os
+from tests.utils import create_swagger_server
 from osdu_client.auth import AuthBackendInterface
 from osdu_client.client import OSDUAPI, OSDUAPIClient
-from tests.utils import create_swagger_server
+import requests_mock
+
 
 BASE_DIR = os.path.dirname(__file__)
 
